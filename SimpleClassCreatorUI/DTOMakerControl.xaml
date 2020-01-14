@@ -1,0 +1,35 @@
+﻿<UserControl Name="DtoMaker"
+             x:Class="SimpleClassCreatorUI.DTOMakerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="532" d:DesignWidth="675">
+    <Grid Background="White" Margin="0,0,0,-59">
+        <TreeView Height="326" 
+                              HorizontalAlignment="Left" 
+                              Margin="17,229,0,0" 
+                              Name="tvAssebliesAndClasses" VerticalAlignment="Top" Width="528">
+        </TreeView>
+        <Label Content="Assembly File Path" Height="28" HorizontalAlignment="Left" Margin="12,10,0,0" Name="lblAssembly" VerticalAlignment="Top" />
+        <Label Content="Fully Qualified Class Name" Height="28" HorizontalAlignment="Left" Margin="12,176,0,0" Name="lblClassName" VerticalAlignment="Top" MouseEnter="lblClassName_MouseEnter" MouseLeave="lblClassName_MouseLeave" ToolTip="Double click for help..." MouseDoubleClick="lblClassName_MouseDoubleClick" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="17,34,0,0" Name="txtAssemblyFullFilePath" VerticalAlignment="Top" Width="270" />
+        <TextBox Height="23" Margin="17,200,0,0" Name="txtFullyQualifiedClassName" VerticalAlignment="Top" HorizontalAlignment="Left" Width="270" />
+        <Button Content="..." Height="23" HorizontalAlignment="Left" Margin="293,33,0,0" Name="btnAssemblyOpenDialog" VerticalAlignment="Top" Width="28" Click="btnAssemblyOpenDialog_Click" />
+        <Label Content="Chosen Assembly:" Height="28" HorizontalAlignment="Left" Margin="12,63,0,0" Name="lblAssemblyTarget" VerticalAlignment="Top" Width="109" />
+        <Label Height="28" HorizontalAlignment="Left" Margin="124,63,0,0" Name="lblAssemblyChosen" VerticalAlignment="Top" Width="158" />
+        <Button Content="Load Class" Height="23" HorizontalAlignment="Left" Margin="293,200,0,0" Name="btnLoadClass" VerticalAlignment="Top" Width="74" Click="btnLoadClass_Click" />
+        <GroupBox Header="Options" Height="149" HorizontalAlignment="Left" Margin="388,25,0,0" Name="groupOptions" VerticalAlignment="Top" Width="203">
+            <Grid Margin="0,0,-2,0">
+                <CheckBox Content="Add WCF Attributes" HorizontalAlignment="Left" Margin="29,48,0,0" Name="cbxWcfEnabled" Height="16" VerticalAlignment="Top" ToolTip="Add standard WCF attributes to the DTO" />
+                <CheckBox Content="Serializable Only" Height="16" HorizontalAlignment="Left" Margin="6,26,0,0" Name="cbxSerializableOnly" VerticalAlignment="Top" ToolTip="Only include serializable properties (helpful for web services)" />
+                <CheckBox Content="Exclude Collections" Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Name="cbxExcludeCollections" VerticalAlignment="Top" ToolTip="Exclude collections from the DTO output" />
+                <CheckBox Content="Include clone method" HorizontalAlignment="Left" Margin="7,66,0,0" Name="cbxIncludeCloneMethod" Height="16" VerticalAlignment="Top" ToolTip="Add a method for cloning this DTO" />
+                <CheckBox Content="Include translate method" HorizontalAlignment="Left" Margin="6,87,0,0" Name="cbxIncludeTranslateMethod" Height="16" VerticalAlignment="Top" ToolTip="Add a method for cloning this DTO" />
+                <CheckBox Content="Include IEquatable&lt;T&gt; method" HorizontalAlignment="Left" Margin="6,106,0,0" x:Name="cbxIncludeIEquatableOfTMethod" Height="16" VerticalAlignment="Top" ToolTip="Include all of the methods used for equality" />
+            </Grid>
+        </GroupBox>
+        <Button Content="Generate DTO" Height="23" HorizontalAlignment="Left" Margin="578,532,0,0" Name="btnGenerate" VerticalAlignment="Top" Width="87" Click="btnGenerate_Click" />
+    </Grid>
+</UserControl>
