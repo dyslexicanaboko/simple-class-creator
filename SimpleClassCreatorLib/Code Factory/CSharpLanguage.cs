@@ -73,9 +73,10 @@ namespace SimpleClassCreator
 
         public override void CreateObjectGenerationMethod(StringBuilder sb, string body)
         {
-            sb.AppendFormat("public static {0} ObjectGeneration(IDataReader dr){1}{{{1}{0} obj = null;{1}{1}", 
-                ClassName, //0
-                Environment.NewLine); //1
+            var n = Environment.NewLine;
+
+            sb.Append(
+                $"public static {ClassName} ObjectGeneration(IDataReader dr){n}{{{n}var obj = new {ClassName}();{n}{n}");
 
             sb.Append(body);
             //CreateForEach(sb, "dr", "DataRow", "dt.Rows", string.Format("{3}obj = new {0}(){1}{2}{3}lst.Add(obj);", ClassName, LineTerminator, body, Environment.NewLine));

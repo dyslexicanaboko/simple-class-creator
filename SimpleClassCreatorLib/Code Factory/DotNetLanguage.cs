@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-
-using System.CodeDom;
-using Microsoft.CSharp;
+﻿using Microsoft.CSharp;
 using Microsoft.VisualBasic;
+using System;
+using System.CodeDom;
 using System.CodeDom.Compiler;
+using System.Data;
+using System.Text;
 
 namespace SimpleClassCreator
 {
