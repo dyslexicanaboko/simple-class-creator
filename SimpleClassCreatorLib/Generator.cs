@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SimpleClassCreator.DataAccess;
+using SimpleClassCreator.DTO;
+using System;
 using System.Data;
 using System.IO;
-using System.Linq;
 using System.Text;
-using SimpleClassCreator.DataAccess;
-using SimpleClassCreator.DTO;
 
 namespace SimpleClassCreator
 {
@@ -266,7 +264,21 @@ namespace SimpleClassCreator
                 motif.CreateProperty(sbProperties, info);
 
                 //Object Generation Code
-                sbObjectGen.Append("obj.").Append(info.Property).Append(" = ").Append(info.ConvertTo).Append(motif.DataRowGet("dr", dc.ColumnName)).Append(")").Append(motif.LineTerminator);
+                sbObjectGen.Append("obj.").Append(info.Property).Append(" = ");
+
+                var dr = motif.DataRowGet("dr", dc.ColumnName);
+                var conv = info.ConvertTo + dr + ")";
+
+                if (info.IsNullable)
+                {
+                    sbObjectGen.Append(dr).Append(" == DBNull.Value ? null : new ").Append(info.SystemType).Append("(").Append(conv).Append(")");
+                }
+                else
+                {
+                    sbObjectGen.Append(conv);
+                }
+
+                sbObjectGen.Append(motif.LineTerminator);
 
                 //I don't remember why I did any of this:
                 if (tableName != null && info.ColumnName != primaryKey)
