@@ -1,8 +1,8 @@
-﻿using SimpleClassCreator.Code_Factory;
+﻿using SimpleClassCreator.Models;
+using SimpleClassCreator.Services;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using SimpleClassCreator.DTO;
 
 namespace SimpleClassCreatorUI
 {
@@ -11,12 +11,18 @@ namespace SimpleClassCreatorUI
     /// </summary>
     public partial class DTOMakerControl : UserControl
     {
-        private string AssemblyName => txtAssemblyFullFilePath.Text;
-        private string ClassName => txtFullyQualifiedClassName.Text;
+        private readonly IDtoGenerator _generator;
+        
+        private string AssemblyFullPath => txtAssemblyFullFilePath.Text;
+        
+        private string ClassFqdn => txtFullyQualifiedClassName.Text;
 
         public DTOMakerControl()
         {
             InitializeComponent();
+
+            //TODO: Need to use Dependency Injection here
+            _generator = new DtoGenerator();
         }
 
         private void btnAssemblyOpenDialog_Click(object sender, RoutedEventArgs e)
@@ -54,7 +60,9 @@ Please keep in mind casing matters.";
 
         private void btnLoadClass_Click(object sender, RoutedEventArgs e)
         {
-            AssemblyInfo asm = Proxy.GetClassProperties(AssemblyName, ClassName);
+            _generator.LoadAssembly(AssemblyFullPath);
+
+            var asm = _generator.GetClassProperties(ClassFqdn);
 
             LoadTreeView(asm);
         }
@@ -125,7 +133,9 @@ Please keep in mind casing matters.";
         {
             var p = GetParametersFromUi();
 
-            var win = new ResultWindow(Proxy.GenerateDto(AssemblyName, ClassName, p));
+            _generator.LoadAssembly(AssemblyFullPath);
+
+            var win = new ResultWindow(_generator.MakeDto(ClassFqdn, p));
             
             win.Show();
         }

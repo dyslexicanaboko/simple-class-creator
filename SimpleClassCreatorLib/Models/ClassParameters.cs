@@ -1,4 +1,4 @@
-﻿namespace SimpleClassCreator.DTO
+﻿namespace SimpleClassCreator.Models
 {
     public class ClassParameters
     {
@@ -22,5 +22,6 @@
         public string Filepath { get; set; }
         public string MemberPrefix { get; set; }
         public string Namespace { get; set; }
+        public TableQuery TableQuery { get; set; } = new TableQuery();
     }
 }

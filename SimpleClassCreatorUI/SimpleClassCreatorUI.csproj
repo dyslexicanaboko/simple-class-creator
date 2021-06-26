@@ -91,7 +91,6 @@
     <Compile Include="DTOMakerControl.xaml.cs">
       <DependentUpon>DTOMakerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Proxy.cs" />
     <Compile Include="ResultWindow.xaml.cs">
       <DependentUpon>ResultWindow.xaml</DependentUpon>
     </Compile>

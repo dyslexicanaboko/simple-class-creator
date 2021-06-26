@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace SimpleClassCreator
+namespace SimpleClassCreator.Services.CodeFactory
 {
     public class CSharpLanguage : DotNetLanguage
     {
         private bool _buildOutProperties = false;
 
-        public CSharpLanguage(string className, bool includeWCFTags, bool buildOutProperties = false)
+        public CSharpLanguage(string className, bool includeSerializableAttribute, bool buildOutProperties = false)
         {
             ClassName = CapitalizeFirstLetter(className);
 
             _buildOutProperties = buildOutProperties;
-            IncludeWCFTags = includeWCFTags;
+            IncludeSerializableAttribute = includeSerializableAttribute;
         }
 
         public override void InitializeMotifValues()
@@ -54,7 +52,7 @@ namespace SimpleClassCreator
                 //Private Member
                 sb.AppendFormat("private {0} {1}{2}", info.SystemType, info.Member, LineTerminator);
 
-                if (IncludeWCFTags)
+                if (IncludeSerializableAttribute)
                     sb.Append(DataMember);
 
                 //Public Property
@@ -62,7 +60,7 @@ namespace SimpleClassCreator
             }
             else
             {
-                if (IncludeWCFTags)
+                if (IncludeSerializableAttribute)
                     sb.Append(DataMember);
 
                 sb.AppendFormat("{0} {1} {2} {{ get; set; }}", Public, info.SystemType, info.Property);
