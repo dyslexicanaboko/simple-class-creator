@@ -1,28 +1,23 @@
-﻿using System;
+﻿using Microsoft.CSharp;
+using SimpleClassCreator.Models;
+using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Microsoft.CSharp;
-using SimpleClassCreator.DTO;
 
-namespace SimpleClassCreator.Code_Factory
+namespace SimpleClassCreator.Services
 {
-    public class DtoGenerator
+    public class DtoGenerator 
+        : IDtoGenerator
     {
+        private readonly string _templatesPath;
+        
         private readonly CSharpCodeProvider _compiler;
 
-        public DtoGenerator(string assemblyPath)
+        public DtoGenerator()
         {
-            AssemblyPath = assemblyPath;
-
-            BasePath = Path.GetDirectoryName(assemblyPath);
-
-            FileName = Path.GetFileName(assemblyPath);
-
-            AssemblyReference = Assembly.LoadFile(AssemblyPath);
-
             _compiler = new CSharpCodeProvider();
 
             var dir = AppDomain.CurrentDomain.BaseDirectory;
@@ -30,11 +25,23 @@ namespace SimpleClassCreator.Code_Factory
             _templatesPath = Path.Combine(dir, "Templates");
         }
 
-        private string _templatesPath;
-        public string AssemblyPath { get; set; }
-        public string FileName { get; set; }
-        public string BasePath { get; }
-        public Assembly AssemblyReference { get; }
+        
+        private string AssemblyPath { get; set; }
+        
+        private string FileName { get; set; }
+        
+        public Assembly AssemblyReference { get; private set; }
+
+        public void LoadAssembly(string assemblyPath)
+        {
+            AssemblyPath = assemblyPath;
+
+            //BasePath = Path.GetDirectoryName(assemblyPath);
+
+            FileName = Path.GetFileName(assemblyPath);
+
+            AssemblyReference = Assembly.LoadFile(AssemblyPath);
+        }
 
         public Type PrintClass(string className)
         {
@@ -65,7 +72,7 @@ namespace SimpleClassCreator.Code_Factory
             {
                 Console.WriteLine(pi.Name);
 
-                cInfo.Properties.Add(new PropertyInfo
+                cInfo.Properties.Add(new Models.PropertyInfo
                 {
                     Name = pi.Name,
                     TypeName = GetTypeAsString(pi.PropertyType),
@@ -109,7 +116,7 @@ namespace SimpleClassCreator.Code_Factory
                 Console.WriteLine(pi.Name);
 
                 lstPropertyNames.Add(pi.Name);
-                
+
                 var tp = pi.PropertyType;
 
                 //Class properties
@@ -152,13 +159,13 @@ namespace SimpleClassCreator.Code_Factory
         private StringBuilder GetIEquatableOfTMethods(string className, List<string> propertyNames)
         {
             var cn = className;
-            
+
             var sb = new StringBuilder();
 
             var template = File.ReadAllText(Path.Combine(_templatesPath, "IEquatableOfT.cs"));
 
             sb.Append(template);
-            
+
             var hc = new StringBuilder();
             var eq = new StringBuilder();
 

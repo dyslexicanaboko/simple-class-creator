@@ -14,38 +14,38 @@ namespace SimpleClassCreator
                 List<string> lst = new List<string>(args);
 
                 //Execute(string tableName, CodeType language, string memberPrefix, bool includeWCFTags, bool buildOutProperties)
-                switch (lst.Count)
-                {
-                    case 2:
-                        Generator.Execute(
-                            lst[0], //Table Name
-                            GetEnum(lst[1])); //Code Type
-                        break;
-                    case 3:
-                        Generator.Execute(
-                            lst[0], //Table Name
-                            GetEnum(lst[1]), //Code Type
-                            GetMemberPrefix(lst[2])); //Member Prefix
-                        break;
-                    case 4:
-                        Generator.Execute(
-                            lst[0], //Table Name
-                            GetEnum(lst[1]), //Code Type
-                            GetMemberPrefix(lst[2]), //Member Prefix
-                            Convert.ToBoolean(lst[3])); //Include WCF Tags  
-                        break;
-                    case 5:
-                        Generator.Execute(
-                            lst[0], //Table Name
-                            GetEnum(lst[1]), //Code Type
-                            GetMemberPrefix(lst[2]), //Member Prefix
-                            Convert.ToBoolean(lst[3]), //Include WCF Tags  
-                            Convert.ToBoolean(lst[4])); //Build Out Properties
-                        break;
-                    default:
-                        PrintCommandLineMenu();
-                        break;
-                }
+                //switch (lst.Count)
+                //{
+                //    case 2:
+                //        QueryToClassService.Execute(
+                //            lst[0], //Table Name
+                //            GetEnum(lst[1])); //Code Type
+                //        break;
+                //    case 3:
+                //        QueryToClassService.Execute(
+                //            lst[0], //Table Name
+                //            GetEnum(lst[1]), //Code Type
+                //            GetMemberPrefix(lst[2])); //Member Prefix
+                //        break;
+                //    case 4:
+                //        QueryToClassService.Execute(
+                //            lst[0], //Table Name
+                //            GetEnum(lst[1]), //Code Type
+                //            GetMemberPrefix(lst[2]), //Member Prefix
+                //            Convert.ToBoolean(lst[3])); //Include WCF Tags  
+                //        break;
+                //    case 5:
+                //        QueryToClassService.Execute(
+                //            lst[0], //Table Name
+                //            GetEnum(lst[1]), //Code Type
+                //            GetMemberPrefix(lst[2]), //Member Prefix
+                //            Convert.ToBoolean(lst[3]), //Include WCF Tags  
+                //            Convert.ToBoolean(lst[4])); //Build Out Properties
+                //        break;
+                //    default:
+                //        PrintCommandLineMenu();
+                //        break;
+                //}
             }
             else
             {
@@ -97,10 +97,10 @@ namespace SimpleClassCreator
             includeWCFTags = Convert.ToBoolean(QuestionAndAnswer("Include WCF Tags? {true/false}"));
             buildOutProperties = Convert.ToBoolean(QuestionAndAnswer("Build Out Properties? {true/false}"));
 
-            if (tableBasedSet)
-                Generator.Execute(strTableName, ct, strMemberPrefix, includeWCFTags, buildOutProperties);
-            else
-                Generator.Execute(strSqlQuery, strClassName, ct, strMemberPrefix, includeWCFTags, buildOutProperties);
+            //if (tableBasedSet)
+            //    QueryToClassService.Execute(strTableName, ct, strMemberPrefix, includeWCFTags, buildOutProperties);
+            //else
+            //    QueryToClassService.Execute(strSqlQuery, strClassName, ct, strMemberPrefix, includeWCFTags, buildOutProperties);
         }
 
         private static string QuestionAndAnswer(string question)

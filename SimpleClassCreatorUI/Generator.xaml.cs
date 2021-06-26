@@ -1,11 +1,13 @@
-﻿using System;
+﻿using SimpleClassCreator;
+using SimpleClassCreator.DataAccess;
+using SimpleClassCreator.Models;
+using SimpleClassCreator.Services;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using SimpleClassCreator;
-using SimpleClassCreator.DTO;
-using System.Collections.ObjectModel;
 
 namespace SimpleClassCreatorUI
 {
@@ -17,7 +19,10 @@ namespace SimpleClassCreatorUI
         private const string DEFAULT_MEMBER_PREFIX = "m_";
         private const string DEFAULT_NAMESPACE = "Namespace1";
 
-        private string DefaultPath { get { return System.AppDomain.CurrentDomain.BaseDirectory; } }
+        private readonly IQueryToClassService _service;
+        private readonly IGeneralDatabaseQueries _generalRepo;
+
+        private string DefaultPath => AppDomain.CurrentDomain.BaseDirectory;
 
         private List<ResultWindow> ResultWindows { get; set; }
         private ConnectionManager VerifiedConnections { get; set; }
@@ -26,16 +31,12 @@ namespace SimpleClassCreatorUI
         {
             get 
             {
-                ConnectionManager.Connection obj = null;
+                if (cbConnectionString.SelectedIndex > -1) 
+                    return (ConnectionManager.Connection)cbConnectionString.SelectedItem;
 
-                if (cbConnectionString.SelectedIndex > -1)
-                    obj = (ConnectionManager.Connection)cbConnectionString.SelectedItem;
-                else
-                {
-                    obj = new ConnectionManager.Connection();
-                    obj.Verified = false;
-                    obj.ConnectionString = cbConnectionString.Text;
-                }
+                var obj = new ConnectionManager.Connection();
+                obj.Verified = false;
+                obj.ConnectionString = cbConnectionString.Text;
 
                 return obj; 
             }
@@ -44,6 +45,12 @@ namespace SimpleClassCreatorUI
         public Generator()
         {
             InitializeComponent();
+
+            //For now until I setup dependency injection
+            var repo = new QueryToClassRepository();
+
+            _service = new QueryToClassService(repo);
+            _generalRepo = new GeneralDatabaseQueries();
 
             SetPathAsDefault();
 
@@ -66,9 +73,9 @@ namespace SimpleClassCreatorUI
 
         private bool TestConnectionString(bool showMessageOnFailureOnly = false)
         {
-            ConnectionManager.Connection con = CurrentConnection;
+            var con = CurrentConnection;
 
-            ConnectionResult obj = Proxy.TestConnectionString(con.ConnectionString);
+            var obj = _generalRepo.TestConnectionString(con.ConnectionString);
 
             con.Verified = obj.Success;
 
@@ -163,7 +170,11 @@ namespace SimpleClassCreatorUI
             string strName;
 
             if (rbSourceTypeTableName.IsChecked == true)
-                strName = System.Text.RegularExpressions.Regex.Replace(txtSource.Text, @"\s+", "").Replace("[", "").Replace("]", "");
+            {
+                var tbl = _service.ParseTableName(txtSource.Text);
+
+                strName = tbl.Table;
+            }
             else
             {
                 int i = 0;
@@ -249,15 +260,11 @@ namespace SimpleClassCreatorUI
         }
 
         private void SetFileName()
-        { 
-            try
-            {
-                txtFileName.Text = txtClassName.Text + "." + GetClassFileExtension();
-            }
-            catch
-            { 
-                //Trap Exception
-            }
+        {
+            //On startup this control is null and so it throws an exception
+            if (txtFileName == null) return;
+
+            txtFileName.Text = txtClassName.Text + "." + GetClassFileExtension();
         }
 
         private void txtFileName_TextChanged(object sender, TextChangedEventArgs e)
@@ -280,7 +287,7 @@ namespace SimpleClassCreatorUI
 
         private void rbGenerateAsVB_Checked(object sender, RoutedEventArgs e)
         {
-            bool isChecked = (rbGenerateAsVB.IsChecked == true);
+            bool isChecked = rbGenerateAsVB.IsChecked == true;
 
             cbBuildClassProperties.IsChecked = isChecked;
             cbBuildClassProperties.IsEnabled = !isChecked;
@@ -293,12 +300,12 @@ namespace SimpleClassCreatorUI
         {
             try
             {
-                ClassParameters obj = GetCodeGeneratorParameters();
+                var obj = GetCodeGeneratorParameters();
 
-                if (obj == null)
-                    return;
+                if (obj == null) return;
 
-                ResultWindow win = new ResultWindow(Proxy.BuildClass(obj).ToString());
+                var win = new ResultWindow(_service.GenerateClass(obj).ToString());
+                
                 win.Show();
 
                 ResultWindows.Add(win);
@@ -321,11 +328,11 @@ namespace SimpleClassCreatorUI
 
         private ClassParameters CommonValidation()
         {
-            ClassParameters obj = new ClassParameters();
+            var obj = new ClassParameters();
 
-            ConnectionManager.Connection con = CurrentConnection;
+            var con = CurrentConnection;
 
-            if (!con.Verified && !TestConnectionString())
+            if (!con.Verified && !TestConnectionString(true))
                 return null;
 
             obj.ConnectionString = CurrentConnection.ConnectionString;
@@ -357,11 +364,10 @@ namespace SimpleClassCreatorUI
 
         private ClassParameters GetCodeGeneratorParameters()
         {
-            ClassParameters obj = CommonValidation();
+            var obj = CommonValidation();
 
             //Check if the common validation failed
-            if (obj == null)
-                return null;
+            if (obj == null) return null;
 
             obj.LanguageType = GetCodeType();
             obj.IncludeWcfTags = GetCheckBoxState(cbIncludeWCFTags);
@@ -389,6 +395,7 @@ namespace SimpleClassCreatorUI
             if (IsTextInvalid(txtClassName, "Class name cannot be empty."))
                 return null;
 
+            obj.TableQuery = _service.ParseTableName(txtSource.Text);
             obj.ClassName = txtClassName.Text;
 
             return obj;
@@ -422,7 +429,7 @@ namespace SimpleClassCreatorUI
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             
-            foreach (ResultWindow obj in ResultWindows)
+            foreach (var obj in ResultWindows)
             {
                 try
                 {
@@ -451,12 +458,12 @@ namespace SimpleClassCreatorUI
         {
             try
             {
-                ClassParameters obj = CommonValidation();
+                var obj = CommonValidation();
 
-                if (obj == null)
-                    return;
+                if (obj == null) return;
 
-                ResultWindow win = new ResultWindow(Proxy.BuildGridViewColumns(obj).ToString());
+                var win = new ResultWindow(_service.GenerateGridViewColumns(obj).ToString());
+                
                 win.Show();
 
                 ResultWindows.Add(win);
@@ -469,7 +476,7 @@ namespace SimpleClassCreatorUI
 
         private void btnAbout_Click(object sender, RoutedEventArgs e)
         {
-            using (AboutSimpleClassCreator obj = new AboutSimpleClassCreator())
+            using (var obj = new AboutSimpleClassCreator())
             {
                 obj.ShowDialog();
             }

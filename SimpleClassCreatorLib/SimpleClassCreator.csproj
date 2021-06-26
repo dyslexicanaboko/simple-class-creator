@@ -44,23 +44,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code Factory\AssemblyInfo.cs" />
-    <Compile Include="Code Factory\ClassInfo.cs" />
-    <Compile Include="Code Factory\DtoGenerator.cs" />
-    <Compile Include="Code Factory\Property.cs" />
-    <Compile Include="DTO\ClassParameters.cs" />
-    <Compile Include="Code Factory\CodeMotif.cs" />
-    <Compile Include="Code Factory\CSharpLanguage.cs" />
-    <Compile Include="DataAccess\DAL.cs" />
-    <Compile Include="Code Factory\DotNetLanguage.cs" />
-    <Compile Include="DataAccess\GeneratorDAL.cs" />
-    <Compile Include="DTO\ConnectionResult.cs" />
-    <Compile Include="Generator.cs" />
-    <Compile Include="GeneratorService.cs" />
-    <Compile Include="IGeneratorService.cs" />
+    <Compile Include="Models\AssemblyInfo.cs" />
+    <Compile Include="Models\ClassInfo.cs" />
+    <Compile Include="Services\CodeFactory\DotNetLanguage.MemberInfo.cs" />
+    <Compile Include="Services\DtoGenerator.cs" />
+    <Compile Include="Models\PropertyInfo.cs" />
+    <Compile Include="DataAccess\GeneralDatabaseQueries.cs" />
+    <Compile Include="DataAccess\IGeneralDatabaseQueries.cs" />
+    <Compile Include="DataAccess\IQueryToClassRepository.cs" />
+    <Compile Include="Enumerations.cs" />
+    <Compile Include="Models\ClassParameters.cs" />
+    <Compile Include="Services\CodeFactory\CSharpLanguage.cs" />
+    <Compile Include="DataAccess\BaseRepository.cs" />
+    <Compile Include="Services\CodeFactory\DotNetLanguage.cs" />
+    <Compile Include="DataAccess\QueryToClassRepository.cs" />
+    <Compile Include="Models\ConnectionResult.cs" />
+    <Compile Include="Models\TableQuery.cs" />
+    <Compile Include="Services\IDtoGenerator.cs" />
+    <Compile Include="Services\IQueryToClassService.cs" />
+    <Compile Include="Services\QueryToClassService.cs" />
     <Compile Include="StartUp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Code Factory\VBDotNetLanguage.cs" />
+    <Compile Include="Services\CodeFactory\VbDotNetLanguage.cs" />
     <Content Include="Templates\IEquatableOfT.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
