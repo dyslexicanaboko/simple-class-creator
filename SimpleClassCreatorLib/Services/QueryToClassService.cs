@@ -1,4 +1,5 @@
-﻿using SimpleClassCreator.Models;
+﻿using SimpleClassCreator.DataAccess;
+using SimpleClassCreator.Models;
 using SimpleClassCreator.Services.CodeFactory;
 using System;
 using System.Data;
@@ -27,9 +28,9 @@ namespace SimpleClassCreator.Services
             DotNetLanguage motif;
 
             if (p.LanguageType == CodeType.CSharp)
-                motif = new CSharpLanguage(p.ClassName, p.IncludeWcfTags, p.BuildOutClassProperties);
+                motif = new CSharpLanguage(p.ClassName, p.IncludeSerializableAttribute, p.BuildOutClassProperties);
             else
-                motif = new VbDotNetLanguage(p.ClassName, p.IncludeWcfTags);
+                motif = new VbDotNetLanguage(p.ClassName, p.IncludeSerializableAttribute);
 
             if (parameters.IncludeNamespace)
                 motif.NamespaceName = parameters.Namespace;

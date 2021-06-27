@@ -14,10 +14,10 @@ namespace SimpleClassCreatorUI
     /// <summary>
     /// Interaction logic for Generator.xaml
     /// </summary>
-    public partial class QueryToClassWindow 
+    public partial class QueryToClassWindow
         : Window
     {
-        private const string DEFAULT_MEMBER_PREFIX = "m_";
+        private const string DEFAULT_FIELD_PREFIX = "m_";
         private const string DEFAULT_NAMESPACE = "Namespace1";
 
         private readonly IQueryToClassService _service;
@@ -43,15 +43,12 @@ namespace SimpleClassCreatorUI
             }
         }
 
-        public QueryToClassWindow()
+        public QueryToClassWindow(IQueryToClassService service, IGeneralDatabaseQueries repository)
         {
             InitializeComponent();
 
-            //For now until I setup dependency injection
-            var repo = new QueryToClassRepository();
-
-            _service = new QueryToClassService(repo);
-            _generalRepo = new GeneralDatabaseQueries();
+            _service = service;
+            _generalRepo = repository;
 
             SetPathAsDefault();
 
@@ -128,10 +125,10 @@ namespace SimpleClassCreatorUI
 
         private void ToggleClassPropertyDependentControls(bool isEnabled)
         {
-            cbMemberPrefix.IsEnabled = isEnabled;
-            cbMemberPrefix.IsChecked = false;
+            cbFieldPrefix.IsEnabled = isEnabled;
+            cbFieldPrefix.IsChecked = false;
 
-            txtMemberPrefix.IsEnabled = isEnabled;
+            txtFieldPrefix.IsEnabled = isEnabled;
             
             btnMemberPrefixDefault.IsEnabled = isEnabled;
         }
@@ -150,7 +147,7 @@ namespace SimpleClassCreatorUI
 
         private void btnMemberPrefixDefault_Click(object sender, RoutedEventArgs e)
         {
-            txtMemberPrefix.Text = DEFAULT_MEMBER_PREFIX;
+            txtFieldPrefix.Text = DEFAULT_FIELD_PREFIX;
         }
 
         private void btnNamespaceDefault_Click(object sender, RoutedEventArgs e)
@@ -371,9 +368,9 @@ namespace SimpleClassCreatorUI
             if (obj == null) return null;
 
             obj.LanguageType = GetCodeType();
-            obj.IncludeWcfTags = GetCheckBoxState(cbIncludeWCFTags);
+            obj.IncludeSerializableAttribute = GetCheckBoxState(cbIncludeSerializableAttribute);
             obj.BuildOutClassProperties = cbBuildClassProperties.IsChecked.Value;
-            obj.IncludeMemberPrefix = GetCheckBoxState(cbMemberPrefix);
+            obj.IncludeFieldPrefix = GetCheckBoxState(cbFieldPrefix);
             obj.IncludeNamespace = GetCheckBoxState(cbIncludeNamespace);
             obj.ReplaceExisting = GetCheckBoxState(cbReplaceExistingFiles);
 
@@ -385,13 +382,13 @@ namespace SimpleClassCreatorUI
 
             obj.Namespace = txtNamespace.Text;
 
-            if (obj.IncludeMemberPrefix)
+            if (obj.IncludeFieldPrefix)
             {
-                if (IsTextInvalid(txtMemberPrefix, "If including a member prefix, it cannot be empty."))
+                if (IsTextInvalid(txtFieldPrefix, "If including a member prefix, it cannot be empty."))
                     return null;
             }
 
-            obj.MemberPrefix = txtMemberPrefix.Text;
+            obj.MemberPrefix = txtFieldPrefix.Text;
 
             if (IsTextInvalid(txtClassName, "Class name cannot be empty."))
                 return null;

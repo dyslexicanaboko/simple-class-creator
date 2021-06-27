@@ -113,7 +113,7 @@ Please keep in mind casing matters.";
             {
                 IncludeCloneMethod = GetValue(cbxIncludeCloneMethod),
                 IncludeSerializeablePropertiesOnly = GetValue(cbxSerializableOnly),
-                IncludeWcfTags = GetValue(cbxWcfEnabled),
+                IncludeSerializableAttribute = GetValue(cbxWcfEnabled),
                 ExcludeCollections = GetValue(cbxExcludeCollections),
                 IncludeTranslateMethod = GetValue(cbxIncludeTranslateMethod),
                 IncludeIEquatableOfTMethods = GetValue(cbxIncludeIEquatableOfTMethod)

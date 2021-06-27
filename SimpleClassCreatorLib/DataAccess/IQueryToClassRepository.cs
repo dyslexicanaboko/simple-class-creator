@@ -1,7 +1,7 @@
 ﻿using SimpleClassCreator.Models;
 using System.Data;
 
-namespace SimpleClassCreator
+namespace SimpleClassCreator.DataAccess
 {
     public interface IQueryToClassRepository
     {

@@ -25,9 +25,9 @@
                             <RadioButton Content="C#" Height="16" HorizontalAlignment="Left" Margin="83,6,0,0" Name="rbGenerateAsCS" VerticalAlignment="Top" IsChecked="True" GroupName="rbgCodeType" Checked="rbGenerateAsCS_Checked" />
                             <RadioButton Content="VB.Net" Height="16" HorizontalAlignment="Left" Margin="121,6,0,0" Name="rbGenerateAsVB" VerticalAlignment="Top" GroupName="rbgCodeType" Checked="rbGenerateAsVB_Checked" Unchecked="rbGenerateAsVB_Checked" />
                             <Label Content="Generate as" Height="28" HorizontalAlignment="Left" Margin="8,1,0,0" Name="lblGenerateAs" VerticalAlignment="Top" Width="72" />
-                            <CheckBox Content="Include member prefix" Height="16" HorizontalAlignment="Left" Margin="180,50,0,0" Name="cbMemberPrefix" VerticalAlignment="Top" Width="140" IsEnabled="False" />
-                            <TextBox Height="23" HorizontalAlignment="Left" Margin="329,46,0,0" Name="txtMemberPrefix" VerticalAlignment="Top" Width="120" IsEnabled="False" />
-                            <CheckBox Content="Include WCF Tags" Height="16" HorizontalAlignment="Left" Margin="16,28,0,0" Name="cbIncludeWCFTags" VerticalAlignment="Top" Width="140" />
+                            <CheckBox Content="Include field prefix" Height="16" HorizontalAlignment="Left" Margin="180,50,0,0" Name="cbFieldPrefix" VerticalAlignment="Top" Width="140" IsEnabled="False" />
+                            <TextBox Height="23" HorizontalAlignment="Left" Margin="329,46,0,0" Name="txtFieldPrefix" VerticalAlignment="Top" Width="120" IsEnabled="False" />
+                            <CheckBox Content="Include Serializable attribute" Height="16" HorizontalAlignment="Left" Margin="16,28,0,0" Name="cbIncludeSerializableAttribute" VerticalAlignment="Top" Width="173" />
                             <CheckBox Content="Build out class properties" Height="16" HorizontalAlignment="Left" Margin="16,50,0,0" Name="cbBuildClassProperties" VerticalAlignment="Top" Width="158" Checked="cbBuildClassProperties_Checked" Unchecked="cbBuildClassProperties_Checked" />
                             <CheckBox Content="Include namespace" Height="16" HorizontalAlignment="Left" Margin="16,76,0,0" Name="cbIncludeNamespace" VerticalAlignment="Top" Width="127" Checked="cbIncludeNamespace_Checked" Unchecked="cbIncludeNamespace_Checked" />
                             <TextBox Height="23" HorizontalAlignment="Left" Margin="141,73,0,0" Name="txtNamespace" VerticalAlignment="Top" Width="120" IsEnabled="False" />
