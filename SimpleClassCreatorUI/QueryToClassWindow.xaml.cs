@@ -14,7 +14,8 @@ namespace SimpleClassCreatorUI
     /// <summary>
     /// Interaction logic for Generator.xaml
     /// </summary>
-    public partial class Generator : Window
+    public partial class QueryToClassWindow 
+        : Window
     {
         private const string DEFAULT_MEMBER_PREFIX = "m_";
         private const string DEFAULT_NAMESPACE = "Namespace1";
@@ -42,7 +43,7 @@ namespace SimpleClassCreatorUI
             }
         }
 
-        public Generator()
+        public QueryToClassWindow()
         {
             InitializeComponent();
 

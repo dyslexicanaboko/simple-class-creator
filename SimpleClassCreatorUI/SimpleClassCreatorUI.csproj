@@ -88,8 +88,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DTOMakerControl.xaml.cs">
-      <DependentUpon>DTOMakerControl.xaml</DependentUpon>
+    <Compile Include="DtoMakerControl.xaml.cs">
+      <DependentUpon>DtoMakerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResultWindow.xaml.cs">
       <DependentUpon>ResultWindow.xaml</DependentUpon>
@@ -98,8 +98,8 @@
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Generator.xaml.cs">
-      <DependentUpon>Generator.xaml</DependentUpon>
+    <Compile Include="QueryToClassWindow.xaml.cs">
+      <DependentUpon>QueryToClassWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -129,11 +129,11 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="DTOMakerControl.xaml">
+    <Page Include="DtoMakerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Generator.xaml">
+    <Page Include="QueryToClassWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

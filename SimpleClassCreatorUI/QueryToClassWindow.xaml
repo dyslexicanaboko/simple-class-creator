@@ -1,4 +1,4 @@
-﻿<Window xmlns:my="clr-namespace:SimpleClassCreatorUI"  x:Class="SimpleClassCreatorUI.Generator"
+﻿<Window xmlns:my="clr-namespace:SimpleClassCreatorUI"  x:Class="SimpleClassCreatorUI.QueryToClassWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Simple Class Creator" Height="685" Width="747" Closing="Window_Closing">
@@ -51,7 +51,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Make DTO" Name="tabMakeDto">
-                <my:DTOMakerControl x:Name="ctrlDtoMaker" />
+                <my:DtoMakerControl x:Name="ctrlDtoMaker" />
             </TabItem>
         </TabControl>
         <ToolBarTray Height="26" Name="toolBarTray1" VerticalAlignment="Bottom" />
