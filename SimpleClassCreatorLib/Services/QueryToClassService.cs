@@ -5,7 +5,6 @@ using System;
 using System.Data;
 using System.IO;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace SimpleClassCreator.Services
 {
@@ -245,45 +244,6 @@ namespace SimpleClassCreator.Services
         private StringBuilder TrimEnd(StringBuilder sb, string pattern)
         {
             return sb.Remove(sb.Length - pattern.Length, pattern.Length);
-        }
-
-        public TableQuery ParseTableName(string tableNameQuery)
-        {
-            var q = Regex.Replace(tableNameQuery, @"\s+", string.Empty)
-                .Replace("[", string.Empty)
-                .Replace("]", string.Empty);
-
-            var arr = q.Split('.');
-
-            var tbl = new TableQuery();
-
-            switch (arr.Length)
-            {
-                //Table
-                case 1:
-                    tbl.Table = arr[0];
-                    break;
-                //Schema.Table
-                case 2:
-                    tbl.Schema = arr[0];
-                    tbl.Table = arr[1];
-                    break;
-                //Database.Schema.Table
-                case 3:
-                    tbl.Database = arr[0];
-                    tbl.Schema = arr[1];
-                    tbl.Table = arr[2];
-                    break;
-                //LinkedServer.Database.Schema.Table
-                case 4:
-                    tbl.LinkedServer = arr[0];
-                    tbl.Database = arr[1];
-                    tbl.Schema = arr[2];
-                    tbl.Table = arr[3];
-                    break;
-            }
-
-            return tbl;
         }
     }
 }

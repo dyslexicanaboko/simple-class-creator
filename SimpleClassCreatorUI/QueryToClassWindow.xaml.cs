@@ -12,7 +12,7 @@ using System.Windows.Input;
 namespace SimpleClassCreatorUI
 {
     /// <summary>
-    /// Interaction logic for Generator.xaml
+    /// Interaction logic for QueryToClassWindow.xaml
     /// </summary>
     public partial class QueryToClassWindow
         : Window
@@ -20,7 +20,8 @@ namespace SimpleClassCreatorUI
         private const string DEFAULT_FIELD_PREFIX = "m_";
         private const string DEFAULT_NAMESPACE = "Namespace1";
 
-        private readonly IQueryToClassService _service;
+        private readonly IClassService _svcClass;
+        private readonly IQueryToClassService _svcQueryToClass;
         private readonly IGeneralDatabaseQueries _generalRepo;
 
         private string DefaultPath => AppDomain.CurrentDomain.BaseDirectory;
@@ -43,11 +44,12 @@ namespace SimpleClassCreatorUI
             }
         }
 
-        public QueryToClassWindow(IQueryToClassService service, IGeneralDatabaseQueries repository)
+        public QueryToClassWindow(IClassService classService, IQueryToClassService queryToClassService, IGeneralDatabaseQueries repository)
         {
             InitializeComponent();
 
-            _service = service;
+            _svcClass = classService;
+            _svcQueryToClass = queryToClassService;
             _generalRepo = repository;
 
             SetPathAsDefault();
@@ -169,7 +171,7 @@ namespace SimpleClassCreatorUI
 
             if (rbSourceTypeTableName.IsChecked == true)
             {
-                var tbl = _service.ParseTableName(txtSource.Text);
+                var tbl = _svcClass.ParseTableName(txtSource.Text);
 
                 strName = tbl.Table;
             }
@@ -302,7 +304,7 @@ namespace SimpleClassCreatorUI
 
                 if (obj == null) return;
 
-                var win = new ResultWindow(_service.GenerateClass(obj).ToString());
+                var win = new ResultWindow(_svcQueryToClass.GenerateClass(obj).ToString());
                 
                 win.Show();
 
@@ -393,7 +395,7 @@ namespace SimpleClassCreatorUI
             if (IsTextInvalid(txtClassName, "Class name cannot be empty."))
                 return null;
 
-            obj.TableQuery = _service.ParseTableName(txtSource.Text);
+            obj.TableQuery = _svcClass.ParseTableName(txtSource.Text);
             obj.ClassName = txtClassName.Text;
 
             return obj;
@@ -460,7 +462,7 @@ namespace SimpleClassCreatorUI
 
                 if (obj == null) return;
 
-                var win = new ResultWindow(_service.GenerateGridViewColumns(obj).ToString());
+                var win = new ResultWindow(_svcQueryToClass.GenerateGridViewColumns(obj).ToString());
                 
                 win.Show();
 

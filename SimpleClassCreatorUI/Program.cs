@@ -26,6 +26,7 @@ namespace SimpleClassCreatorUI
             container.Register<IGeneralDatabaseQueries, GeneralDatabaseQueries>();
             container.Register<IQueryToClassRepository, QueryToClassRepository>();
             container.Register<IDtoGenerator, DtoGenerator>();
+            container.Register<IClassService, ClassService>();
             container.Register<IQueryToClassService, QueryToClassService>();
 
             // Register your windows and view models:
