@@ -9,7 +9,7 @@ namespace SimpleClassCreatorUI
     /// <summary>
     /// Interaction logic for DTOMakerControl.xaml
     /// </summary>
-    public partial class DTOMakerControl : UserControl
+    public partial class DtoMakerControl : UserControl
     {
         private readonly IDtoGenerator _generator;
         
@@ -17,7 +17,7 @@ namespace SimpleClassCreatorUI
         
         private string ClassFqdn => txtFullyQualifiedClassName.Text;
 
-        public DTOMakerControl()
+        public DtoMakerControl()
         {
             InitializeComponent();
 
@@ -113,7 +113,7 @@ Please keep in mind casing matters.";
             {
                 IncludeCloneMethod = GetValue(cbxIncludeCloneMethod),
                 IncludeSerializeablePropertiesOnly = GetValue(cbxSerializableOnly),
-                IncludeWcfTags = GetValue(cbxWcfEnabled),
+                IncludeSerializableAttribute = GetValue(cbxWcfEnabled),
                 ExcludeCollections = GetValue(cbxExcludeCollections),
                 IncludeTranslateMethod = GetValue(cbxIncludeTranslateMethod),
                 IncludeIEquatableOfTMethods = GetValue(cbxIncludeIEquatableOfTMethod)

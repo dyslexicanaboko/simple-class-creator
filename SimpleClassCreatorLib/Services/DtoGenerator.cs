@@ -96,7 +96,7 @@ namespace SimpleClassCreator.Services
 
             var cn = t.Name + "Dto";
 
-            var wcfOk = p.IncludeSerializeablePropertiesOnly && p.IncludeWcfTags;
+            var wcfOk = p.IncludeSerializeablePropertiesOnly && p.IncludeSerializableAttribute;
 
             //Class declaration
             if (wcfOk) sb.AppendLine("[DataContract]");
