@@ -49,7 +49,7 @@
   <ItemGroup>
     <Compile Include="Models\AssemblyInfo.cs" />
     <Compile Include="Models\ClassInfo.cs" />
-    <Compile Include="Services\ClassService.cs" />
+    <Compile Include="Services\NameFormatService.cs" />
     <Compile Include="Services\CodeFactory\DotNetLanguage.MemberInfo.cs" />
     <Compile Include="Services\DtoGenerator.cs" />
     <Compile Include="Models\PropertyInfo.cs" />
@@ -64,7 +64,7 @@
     <Compile Include="DataAccess\QueryToClassRepository.cs" />
     <Compile Include="Models\ConnectionResult.cs" />
     <Compile Include="Models\TableQuery.cs" />
-    <Compile Include="Services\IClassService.cs" />
+    <Compile Include="Services\INameFormatService.cs" />
     <Compile Include="Services\IDtoGenerator.cs" />
     <Compile Include="Services\IQueryToClassService.cs" />
     <Compile Include="Services\QueryToClassService.cs" />

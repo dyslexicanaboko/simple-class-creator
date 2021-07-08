@@ -20,7 +20,7 @@ namespace SimpleClassCreatorUI
         private const string DEFAULT_FIELD_PREFIX = "m_";
         private const string DEFAULT_NAMESPACE = "Namespace1";
 
-        private readonly IClassService _svcClass;
+        private readonly INameFormatService _svcClass;
         private readonly IQueryToClassService _svcQueryToClass;
         private readonly IGeneralDatabaseQueries _generalRepo;
 
@@ -44,7 +44,7 @@ namespace SimpleClassCreatorUI
             }
         }
 
-        public QueryToClassWindow(IClassService classService, IQueryToClassService queryToClassService, IGeneralDatabaseQueries repository)
+        public QueryToClassWindow(INameFormatService classService, IQueryToClassService queryToClassService, IGeneralDatabaseQueries repository)
         {
             InitializeComponent();
 
@@ -111,8 +111,7 @@ namespace SimpleClassCreatorUI
             if (string.IsNullOrWhiteSpace(strName))
                 return;
 
-            if (strName.Contains(" ") && !strName.StartsWith("[") && !strName.EndsWith("]"))
-                target.Text = "[" + strName + "]";
+            target.Text = _svcClass.FormatTableQuery(strName);
         }
 
         private void SetClassNameToDefault()
@@ -173,7 +172,7 @@ namespace SimpleClassCreatorUI
             {
                 var tbl = _svcClass.ParseTableName(txtSource.Text);
 
-                strName = tbl.Table;
+                strName = _svcClass.GetClassName(tbl);
             }
             else
             {

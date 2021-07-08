@@ -1,13 +1,15 @@
 ﻿using SimpleClassCreator.Models;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace SimpleClassCreator.Services
 {
-    public class ClassService
-        : IClassService
+    public class NameFormatService
+        : INameFormatService
     {
         private const string DefaultSchema = "dbo";
+        private readonly Regex WhiteSpace = new Regex(@"\s+");
 
         public TableQuery ParseTableName(string tableNameQuery)
         {
@@ -51,6 +53,22 @@ namespace SimpleClassCreator.Services
             }
 
             return tbl;
+        }
+
+        public string GetClassName(TableQuery tableQuery)
+        {
+            var c = WhiteSpace.Replace(tableQuery.Table, string.Empty);
+
+            return c;
+        }
+
+        public string FormatTableQuery(string tableQuery, TableQueryQualifiers qualifiers = TableQueryQualifiers.Schema | TableQueryQualifiers.Table)
+        {
+            var tq = ParseTableName(tableQuery);
+
+            var str = FormatTableQuery(tq, qualifiers);
+
+            return str;
         }
 
         public string FormatTableQuery(TableQuery tableQuery, TableQueryQualifiers qualifiers = TableQueryQualifiers.Schema | TableQueryQualifiers.Table)

@@ -5,14 +5,14 @@ using SimpleClassCreator.Services;
 namespace SimpleClassCreator.Tests.Lib.Services
 {
     [TestFixture]
-    public class ClassServiceTests
+    public class NameFormatServiceTests
     {
-        private IClassService _service;
+        private INameFormatService _service;
 
         [SetUp]
         public void Setup()
         {
-            _service = new ClassService();
+            _service = new NameFormatService();
         }
 
         [TestCase("a", "[dbo].[a]")]
@@ -33,6 +33,24 @@ namespace SimpleClassCreator.Tests.Lib.Services
 
             //Assert
             Assert.IsTrue(expected.Equals(actual, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        [TestCase("TableName", "TableName")]
+        [TestCase("tablename", "tablename")]
+        [TestCase("dbo.TableName", "TableName")]
+        [TestCase("dbo.[T a b l e N a m e]", "TableName")]
+        [TestCase("dbo.[T A B L E N A M E]", "TABLENAME")]
+        [TestCase("[T   a   b   l   e   N   a   m   e]", "TableName")]
+        public void Get_class_name(string input, string expected)
+        {
+            //Arrange
+            var tq = _service.ParseTableName(input);
+
+            //Act
+            var actual = _service.GetClassName(tq);
+
+            //Assert
+            Assert.AreEqual(expected, actual);
         }
     }
 }
