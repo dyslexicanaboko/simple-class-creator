@@ -106,15 +106,6 @@ namespace SimpleClassCreator.Services.CodeFactory
                 Environment.NewLine); //3
         }
 
-        public override void CreateAddStringMethods(StringBuilder sb)
-        {
-            sb.AppendFormat("public string AddString(string target){0}{{{0}return \"'\" + target + \"'\";{0}}}{0}{0}", 
-                Environment.NewLine);
-
-            sb.AppendFormat("public string AddString(DateTime target){0}{{{0}return AddString(target.ToString(\"u\"));{0}}}{0}{0}", 
-                Environment.NewLine);
-        }
-
         protected override string GetParameter(string name, string dataType)
         {
             return string.Format("{0} {1}", dataType, name);

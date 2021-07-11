@@ -24,5 +24,22 @@ namespace SimpleClassCreator.Tests.Lib.Services.CodeFactory
 
             return m.SystemType;
         }
+
+        [TestCase(typeof(string), ExpectedResult = "string")]
+        [TestCase(typeof(int), ExpectedResult = "int?")]
+        [TestCase(typeof(byte), ExpectedResult = "byte?")]
+        [TestCase(typeof(DateTime), ExpectedResult = "DateTime?")]
+        [TestCase(typeof(Guid), ExpectedResult = "Guid?")]
+        public string Nullable_types_are_formatted_as_expected(Type type)
+        {
+            //Arrange
+            var c = new DataColumn("DoesNotMatter", type);
+            c.AllowDBNull = true;
+
+            //Act
+            var m = new ClassMemberStrings(c, CodeType.CSharp, string.Empty);
+
+            return m.SystemType;
+        }
     }
 }

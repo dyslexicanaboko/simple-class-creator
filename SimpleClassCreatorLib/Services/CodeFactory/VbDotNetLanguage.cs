@@ -100,20 +100,6 @@ namespace SimpleClassCreator.Services.CodeFactory
                 Environment.NewLine); //3
         }
 
-        public override void CreateAddStringMethods(StringBuilder sb)
-        {
-            sb.AppendFormat("Public Function AddString(target As String) As String{0}Return \"'\" + target + \"'\"{0}End Function",
-                Environment.NewLine);
-
-            sb.AppendLine();
-            sb.AppendLine();
-
-            sb.AppendFormat("Public Function AddString(target As String) As String{0}Return AddString(target.ToString(\"u\")){0}End Function",
-                Environment.NewLine);
-
-            sb.AppendLine();
-        }
-
         protected override string GetParameter(string name, string dataType)
         {
             return string.Format("{0} As {1}", name, dataType);

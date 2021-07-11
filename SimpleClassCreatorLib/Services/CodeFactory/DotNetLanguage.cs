@@ -31,8 +31,6 @@ namespace SimpleClassCreator.Services.CodeFactory
         
         public abstract void CreateInsertMethod(StringBuilder sb, string columns, string insertStatement);
         
-        public abstract void CreateAddStringMethods(StringBuilder sb);
-        
         protected abstract string GetParameter(string name, string dataType);
 
         protected string CapitalizeFirstLetter(string target)

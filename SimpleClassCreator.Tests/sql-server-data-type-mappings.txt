@@ -1,0 +1,32 @@
+﻿bigint	Int64	BigInt	GetSqlInt64	Int64	GetInt64
+binary	Byte[]	VarBinary	GetSqlBinary	Binary	GetBytes
+bit	Boolean	Bit	GetSqlBoolean	Boolean	GetBoolean
+char	String	GetSqlString	AnsiStringFixedLength
+date 1	DateTime	Date 1	GetSqlDateTime	Date 1	GetDateTime
+datetime	DateTime	DateTime	GetSqlDateTime	DateTime	GetDateTime
+datetime2	DateTime	DateTime2	None	DateTime2	GetDateTime
+datetimeoffset	DateTimeOffset	DateTimeOffset	none	DateTimeOffset	GetDateTimeOffset
+decimal	Decimal	Decimal	GetSqlDecimal	Decimal	GetDecimal
+FILESTREAM attribute (varbinary(max))	Byte[]	VarBinary	GetSqlBytes	Binary	GetBytes
+float	Double	Float	GetSqlDouble	Double	GetDouble
+image	Byte[]	Binary	GetSqlBinary	Binary	GetBytes
+int	Int32	Int	GetSqlInt32	Int32	GetInt32
+money	Decimal	Money	GetSqlMoney	Decimal	GetDecimal
+nchar	String	NChar	GetSqlString	StringFixedLength	GetString
+ntext	String	NText	GetSqlString	String	GetString
+numeric	Decimal	Decimal	GetSqlDecimal	Decimal	GetDecimal
+nvarchar	String	NVarChar	GetSqlString	String	GetString
+real	Single	Real	GetSqlSingle	Single	GetFloat
+rowversion	Byte[]	Timestamp	GetSqlBinary	Binary	GetBytes
+smalldatetime	DateTime	DateTime	GetSqlDateTime	DateTime	GetDateTime
+smallint	Int16	SmallInt	GetSqlInt16	Int16	GetInt16
+smallmoney	Decimal	SmallMoney	GetSqlMoney	Decimal	GetDecimal
+sql_variant	Object 2	Variant	GetSqlValue 2	Object	GetValue 2
+text	String	Text	GetSqlString	String	GetString
+time	TimeSpan	Time	none	Time	GetDateTime
+timestamp	Byte[]	Timestamp	GetSqlBinary	Binary	GetBytes
+tinyint	Byte	TinyInt	GetSqlByte	Byte	GetByte
+uniqueidentifier	Guid	UniqueIdentifier	GetSqlGuid	Guid	GetGuid
+varbinary	Byte[]	VarBinary	GetSqlBinary	Binary	GetBytes
+varchar	String	VarChar	GetSqlString	AnsiString, String	GetString
+xml	Xml	Xml	GetSqlXml	Xml	none

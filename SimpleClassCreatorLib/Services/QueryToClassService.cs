@@ -199,9 +199,6 @@ namespace SimpleClassCreator.Services
 
                 //Insert Method
                 motif.CreateInsertMethod(sb, sbColumns.ToString(), sbInsert.ToString());
-
-                //AddString Methods
-                motif.CreateAddStringMethods(sb);
             }
 
             sb.Append(motif.CloseClass);
