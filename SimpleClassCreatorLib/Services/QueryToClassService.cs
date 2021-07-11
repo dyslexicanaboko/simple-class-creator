@@ -138,7 +138,7 @@ namespace SimpleClassCreator.Services
             //Data Collection and Property Generation
             foreach (DataColumn dc in dt.Columns)
             {
-                var info = new DotNetLanguage.MemberInfo(dc, p.LanguageType, p.MemberPrefix);
+                var info = new ClassMemberStrings(dc, p.LanguageType, p.MemberPrefix);
 
                 //DataColumn as Property
                 motif.CreateProperty(sbProperties, info);
@@ -195,7 +195,7 @@ namespace SimpleClassCreator.Services
             {
                 //Update Method
                 if (dt.Columns[primaryKey] != null)
-                    motif.CreateUpdateMethod(sb, sbUpdate.ToString(), new DotNetLanguage.MemberInfo(dt.Columns[primaryKey], p.LanguageType, p.MemberPrefix));
+                    motif.CreateUpdateMethod(sb, sbUpdate.ToString(), new ClassMemberStrings(dt.Columns[primaryKey], p.LanguageType, p.MemberPrefix));
 
                 //Insert Method
                 motif.CreateInsertMethod(sb, sbColumns.ToString(), sbInsert.ToString());

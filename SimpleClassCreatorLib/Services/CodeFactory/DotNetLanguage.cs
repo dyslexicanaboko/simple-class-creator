@@ -21,13 +21,13 @@ namespace SimpleClassCreator.Services.CodeFactory
             return string.Format("{0} {1}" + Environment.NewLine, StartRegion, regionName);
         }
 
-        public abstract void CreateProperty(StringBuilder sb, MemberInfo info);
+        public abstract void CreateProperty(StringBuilder sb, ClassMemberStrings info);
         
         public abstract void CreateObjectGenerationMethod(StringBuilder sb, string body);
         
         protected abstract void CreateForEach(StringBuilder sb, string name, string dataType, string collection, string body);
         
-        public abstract void CreateUpdateMethod(StringBuilder sb, string updateStatement, MemberInfo primaryKey);
+        public abstract void CreateUpdateMethod(StringBuilder sb, string updateStatement, ClassMemberStrings primaryKey);
         
         public abstract void CreateInsertMethod(StringBuilder sb, string columns, string insertStatement);
         

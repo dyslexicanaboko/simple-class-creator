@@ -49,8 +49,8 @@
   <ItemGroup>
     <Compile Include="Models\AssemblyInfo.cs" />
     <Compile Include="Models\ClassInfo.cs" />
+    <Compile Include="Services\CodeFactory\ClassMemberStrings.cs" />
     <Compile Include="Services\NameFormatService.cs" />
-    <Compile Include="Services\CodeFactory\DotNetLanguage.MemberInfo.cs" />
     <Compile Include="Services\DtoGenerator.cs" />
     <Compile Include="Models\PropertyInfo.cs" />
     <Compile Include="DataAccess\GeneralDatabaseQueries.cs" />
