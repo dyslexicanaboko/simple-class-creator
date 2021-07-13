@@ -21,7 +21,11 @@ namespace SimpleClassCreator.Services.CodeFactory
             else
                 _provider = new VBCodeProvider();
 
-            IsNullable = dc.AllowDBNull && dc.DataType != typeof(string);
+            IsDbNullable = dc.AllowDBNull;
+
+            IsImplicitlyNullable = 
+                dc.DataType == typeof(string) || 
+                dc.DataType.BaseType == typeof(Array);
 
             //Remove unecessary extra padding if it shows up
             ColumnName = dc.ColumnName.Trim();
@@ -45,7 +49,7 @@ namespace SimpleClassCreator.Services.CodeFactory
             SystemType = GetTypeAsString(dc.DataType);
 
             //If this column is nullable then mark it with a question mark
-            if (IsNullable)
+            if (!IsImplicitlyNullable && IsDbNullable)
                 SystemType = SystemType + "?";
 
             //These statements are a matter of preference
@@ -55,7 +59,8 @@ namespace SimpleClassCreator.Services.CodeFactory
         }
 
         public string ColumnName { get; private set; }
-        public bool IsNullable { get; private set; }
+        public bool IsDbNullable { get; private set; }
+        public bool IsImplicitlyNullable { get; private set; }
         public string Field { get; private set; }
         public string Property { get; private set; }
         public string SystemType { get; private set; }

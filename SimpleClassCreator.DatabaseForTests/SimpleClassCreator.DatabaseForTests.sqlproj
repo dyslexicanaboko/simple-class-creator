@@ -61,5 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\DataTypeTest.sql" />
+    <Build Include="dbo\Tables\DataTypeTestNullable.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleClassCreator.DatabaseForTests.publish.xml" />
   </ItemGroup>
 </Project>

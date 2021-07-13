@@ -149,7 +149,7 @@ namespace SimpleClassCreator.Services
                 var dr = motif.DataRowGet("dr", dc.ColumnName);
                 var conv = info.ConvertTo + dr + ")";
 
-                if (info.IsNullable)
+                if (info.IsImplicitlyNullable)
                 {
                     sbObjectGen.Append(dr).Append(" == DBNull.Value ? null : new ").Append(info.SystemType).Append("(").Append(conv).Append(")");
                 }

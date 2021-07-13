@@ -1,8 +1,33 @@
-﻿#https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql-server-data-type-mappings
-# Purposely not supported: FILESTREAM, image, ntext, text, timestamp, sql_variant
-# You should not be using these types
+<Query Kind="Program" />
 
-bigint	long	BigInt	GetSqlInt64	Int64	GetInt64
+void Main()
+{
+	var lines = Data.Split(new[] { Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+	var sb = new StringBuilder();
+	
+	for (var r = 0; r < lines.Length; r++)
+	{
+		var l = lines[r];
+		
+		var arr = l.Split('\t');
+
+		//Column schema
+		//sb.AppendLine($"[{arr[1]}] {arr[0].ToUpper()} NOT NULL,");
+		
+		//Test cases
+		var lower = arr[1].ToLower();
+		
+		sb.AppendLine($"[TestCase(typeof({arr[1].ToLower()}), ExpectedResult = \"{lower}\")]");
+	}
+	
+	var str = sb.ToString();
+	
+	str.Dump();
+}
+
+// Data to parse
+private const string Data =
+@"bigint	long	BigInt	GetSqlInt64	Int64	GetInt64
 binary	Byte[]	VarBinary	GetSqlBinary	Binary	GetBytes
 bit	bool	Bit	GetSqlBoolean	Boolean	GetBoolean
 char	String	GetSqlString	AnsiStringFixedLength
@@ -28,3 +53,4 @@ uniqueidentifier	Guid	UniqueIdentifier	GetSqlGuid	Guid	GetGuid
 varbinary	Byte[]	VarBinary	GetSqlBinary	Binary	GetBytes
 varchar	String	VarChar	GetSqlString	AnsiString, String	GetString
 xml	Xml	Xml	GetSqlXml	Xml	none
+";
