@@ -17,7 +17,7 @@ void Main()
 		//Test cases
 		var lower = arr[1].ToLower();
 		
-		sb.AppendLine($"[TestCase(typeof({arr[1].ToLower()}), ExpectedResult = \"{lower}\")]");
+		sb.AppendLine($"[TestCase(typeof({arr[1].ToLower()}), ExpectedResult = \"{lower}?\")]");
 	}
 	
 	var str = sb.ToString();
