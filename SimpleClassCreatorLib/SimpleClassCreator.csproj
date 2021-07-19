@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Models\AssemblyInfo.cs" />
     <Compile Include="Models\ClassInfo.cs" />
+    <Compile Include="Models\ClassInstructions.cs" />
     <Compile Include="Services\CodeFactory\ClassMemberStrings.cs" />
     <Compile Include="Services\NameFormatService.cs" />
     <Compile Include="Services\DtoGenerator.cs" />
@@ -74,6 +75,7 @@
     <Content Include="Templates\IEquatableOfT.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Templates\Model.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
