@@ -51,6 +51,8 @@
     <Compile Include="Models\ClassInfo.cs" />
     <Compile Include="Models\ClassInstructions.cs" />
     <Compile Include="Services\CodeFactory\ClassMemberStrings.cs" />
+    <Compile Include="Services\Generators\GeneratorBase.cs" />
+    <Compile Include="Services\Generators\ModelGenerator.cs" />
     <Compile Include="Services\NameFormatService.cs" />
     <Compile Include="Services\DtoGenerator.cs" />
     <Compile Include="Models\PropertyInfo.cs" />
@@ -75,7 +77,9 @@
     <Content Include="Templates\IEquatableOfT.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Templates\Model.cs" />
+    <Content Include="Templates\Model.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>

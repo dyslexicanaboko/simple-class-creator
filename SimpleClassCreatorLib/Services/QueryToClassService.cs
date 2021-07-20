@@ -1,6 +1,7 @@
 ﻿using SimpleClassCreator.DataAccess;
 using SimpleClassCreator.Models;
 using SimpleClassCreator.Services.CodeFactory;
+using SimpleClassCreator.Services.Generators;
 using System;
 using System.Data;
 using System.IO;
@@ -93,11 +94,14 @@ namespace SimpleClassCreator.Services
             var dt = _repository.GetSchema(sqlQuery);
 
             var ins = new ClassInstructions();
-            
+
+            ins.ClassName = p.ClassName;
+            ins.Namespace = p.Namespace;
+
             if (language.IncludeSerializableAttribute)
             {
                 ins.Namespaces.Add("System.Runtime.Serialization");
-                ins.Attributes.Add(language.DataContract);
+                ins.ClassAttributes.Add(language.DataContract);
             }
 
             foreach (DataColumn dc in dt.Columns)
@@ -107,7 +111,12 @@ namespace SimpleClassCreator.Services
                 ins.Properties.Add(prop);
             }
 
-            return null;
+            //Needs to be injected
+            var svc = new ModelGenerator(ins);
+
+            var sb = svc.FillTemplate();
+
+            return sb;
         }
 
         /// <summary>

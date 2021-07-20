@@ -5,10 +5,14 @@ namespace SimpleClassCreator.Models
 {
     public class ClassInstructions
     {
-        public List<string> Namespaces { get; set; } = new List<string>();
+        public string ClassName { get; set; }
         
-        public List<string> Attributes { get; set; } = new List<string>();
+        public string Namespace { get; set; }
 
-        public List<ClassMemberStrings> Properties { get; set; } = new List<ClassMemberStrings>();
+        public IList<string> Namespaces { get; set; } = new List<string>();
+        
+        public IList<string> ClassAttributes { get; set; } = new List<string>();
+
+        public IList<ClassMemberStrings> Properties { get; set; } = new List<ClassMemberStrings>();
     }
 }
