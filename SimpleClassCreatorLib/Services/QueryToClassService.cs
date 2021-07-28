@@ -19,7 +19,7 @@ namespace SimpleClassCreator.Services
             _repository = repository;
         }
 
-        public StringBuilder GenerateClass(ClassParameters parameters)
+        public string GenerateClass(ClassParameters parameters)
         {
             var p = parameters;
 
@@ -37,15 +37,15 @@ namespace SimpleClassCreator.Services
 
             motif.InitializeMotifValues();
 
-            StringBuilder sb = GenerateClass(motif, p);
+            var content = GenerateClass(motif, p);
 
             if (p.SaveAsFile)
-                WriteClassToFile(p, sb);
+                WriteClassToFile(p, content);
 
-            return sb;
+            return content;
         }
 
-        public StringBuilder GenerateGridViewColumns(ClassParameters parameters)
+        public string GenerateGridViewColumns(ClassParameters parameters)
         {
             var p = parameters;
             
@@ -68,7 +68,9 @@ namespace SimpleClassCreator.Services
                   .AppendLine("</asp:BoundField>");
             }
 
-            return sb;
+            var content = sb.ToString();
+
+            return content;
         }
 
         private bool IsNumber(Type targetType)
@@ -84,7 +86,7 @@ namespace SimpleClassCreator.Services
         /// The main internal method that orchestrates the code generation for the provided parameters
         /// </summary>
         /// <returns>The generated class code as a StringBuilder</returns>
-        private StringBuilder GenerateClass(DotNetLanguage language, ClassParameters parameters)
+        private string GenerateClass(DotNetLanguage language, ClassParameters parameters)
         {
             var p = parameters;
 
@@ -108,15 +110,18 @@ namespace SimpleClassCreator.Services
             {
                 var prop = new ClassMemberStrings(dc, p.LanguageType, p.MemberPrefix);
 
+                //Add the system namespace if any of the properties require it
+                if (prop.InSystemNamespace) ins.AddNamespace("System");
+
                 ins.Properties.Add(prop);
             }
 
-            //Needs to be injected
+            //How to inject this without having to do away with the constructor access?
             var svc = new ModelGenerator(ins);
 
-            var sb = svc.FillTemplate();
+            var content = svc.FillTemplate();
 
-            return sb;
+            return content;
         }
 
         /// <summary>
@@ -124,16 +129,13 @@ namespace SimpleClassCreator.Services
         /// </summary>
         /// <param name="fileName">The name of the file, including the file extension</param>
         /// <param name="sb">The StringBuilder that contains the generated code</param>
-        private void WriteClassToFile(ClassParameters p, StringBuilder sb)
+        private void WriteClassToFile(ClassParameters p, string content)
         {
-            string fullFilePath = Path.Combine(p.Filepath, p.Filename);
+            var fullFilePath = Path.Combine(p.Filepath, p.Filename);
 
-            using (StreamWriter sw = new StreamWriter(fullFilePath, false))
-            {
-                sw.Write(sb.ToString());
-            }
+            File.WriteAllText(fullFilePath, content);
 
-            Console.WriteLine("{0} Characters Written to {1}", sb.Length, fullFilePath);
+            Console.WriteLine($"{content.Length} Characters Written to {fullFilePath}");
         }
 
         /// <summary>

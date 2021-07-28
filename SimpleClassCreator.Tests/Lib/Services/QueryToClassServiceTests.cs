@@ -45,8 +45,17 @@ namespace SimpleClassCreator.Tests.Lib.Services
             //Act
             var actual = svc.GenerateClass(p).ToString();
 
+            DumpFile("Expected.cs", expected);
+            DumpFile("Actual.cs", actual);
+
             //Assert
             Assert.AreEqual(expected, actual);
+        }
+
+        //This is for debug only
+        private void DumpFile(string fileName, string contents)
+        {
+            System.IO.File.WriteAllText(@"C:\Dump\" + fileName, contents);
         }
     }
 }

@@ -14,5 +14,12 @@ namespace SimpleClassCreator.Models
         public IList<string> ClassAttributes { get; set; } = new List<string>();
 
         public IList<ClassMemberStrings> Properties { get; set; } = new List<ClassMemberStrings>();
+
+        public void AddNamespace(string nameSpace)
+        {
+            if (Namespaces.Contains(nameSpace)) return;
+
+            Namespaces.Add(nameSpace);
+        }
     }
 }

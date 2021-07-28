@@ -1,5 +1,6 @@
 ﻿using SimpleClassCreator.Models;
 using SimpleClassCreator.Services.CodeFactory;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,22 +12,28 @@ namespace SimpleClassCreator.Services.Generators
         public ModelGenerator(ClassInstructions instructions)
             : base(instructions, "Model.cs")
         {
-            
+
         }
 
-        public override StringBuilder FillTemplate()
+        public override string FillTemplate()
         {
             var strTemplate = GetTemplate(TemplateName);
 
-            Template = new StringBuilder(strTemplate);
+            var template = new StringBuilder(strTemplate);
 
-            Template.Replace("{{Namespace}}", Instructions.Namespace);
-            Template.Replace("{{ClassName}}", Instructions.ClassName);
-            Template.Replace("{{ClassAttributes}}", FormatClassAttributes(Instructions.ClassAttributes));
-            Template.Replace("{{Namespaces}}", FormatNamespaces(Instructions.Namespaces));
-            Template.Replace("{{Properties}}", FormatProperties(Instructions.Properties));
+            template.Replace("{{Namespace}}", Instructions.Namespace);
+            template.Replace("{{ClassName}}", Instructions.ClassName);
+            template.Replace("{{ClassAttributes}}", FormatClassAttributes(Instructions.ClassAttributes));
+            template.Replace("{{Namespaces}}", FormatNamespaces(Instructions.Namespaces));
 
-            return Template;
+            var t = template.ToString();
+
+            t = RemoveExcessBlankSpace(t);
+            //t = RemoveBlankLines(t);
+
+            t = t.Replace("{{Properties}}", FormatProperties(Instructions.Properties));
+
+            return t;
         }
 
         /* Need to move what can be reused to the base class
@@ -36,42 +43,25 @@ namespace SimpleClassCreator.Services.Generators
          */
         private string FormatClassAttributes(IList<string> classAttributes)
         {
-            var sb = new StringBuilder();
-
-            foreach (var ca in classAttributes)
-            {
-                sb.Append("[").Append(ca).Append("]").AppendLine();
-            }
-
-            var content = sb.ToString();
+            var content = GetTextBlock(classAttributes, (ca) => { return $"[{ca}]"; });
 
             return content;
         }
 
         private string FormatNamespaces(IList<string> namespaces)
         {
-            var sb = new StringBuilder();
-
-            foreach (var ns in namespaces)
-            {
-                sb.Append("using ").Append(ns).Append(";").AppendLine();
-            }
-
-            var content = sb.ToString();
+            var content = GetTextBlock(namespaces, (ns) => { return $"using {ns};"; });
 
             return content;
         }
 
         private string FormatProperties(IList<ClassMemberStrings> properties)
         {
-            var sb = new StringBuilder();
-
-            foreach (var p in properties)
-            {
-                sb.Append($"public {p.SystemType} {p.Property} {{ get; set; }}").AppendLine();
-            }
-
-            var content = sb.ToString();
+            var content = GetTextBlock(properties, (p) => 
+            { 
+                return $"        public {p.SystemType} {p.Property} {{ get; set; }}"; 
+            }, 
+            separator: Environment.NewLine + Environment.NewLine);
 
             return content;
         }

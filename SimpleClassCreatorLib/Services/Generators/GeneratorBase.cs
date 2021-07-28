@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SimpleClassCreator.Services.Generators
 {
@@ -10,9 +10,10 @@ namespace SimpleClassCreator.Services.Generators
     {
         private readonly string _templatesPath;
 
-        protected StringBuilder Template { get; set; }
-
         protected ClassInstructions Instructions { get; set; }
+
+        protected readonly Regex ReBlankSpace = new Regex(@"^\s+$^[\r\n]", RegexOptions.Multiline);
+        protected readonly Regex ReBlankLines = new Regex(@"^\s+$[\r\n]*", RegexOptions.Multiline);
 
         public GeneratorBase(ClassInstructions instructions, string templateName)
         {
@@ -34,6 +35,43 @@ namespace SimpleClassCreator.Services.Generators
             return str;
         }
 
-        public abstract StringBuilder FillTemplate();
+        protected virtual string GetTextBlock<T>(IList<T> items, Func<T, string> formatting, string separator = null)
+        {
+            if (items.Count == 0) return string.Empty;
+
+            var lst = new List<string>(items.Count);
+
+            foreach (var item in items)
+            {
+                var formatted = formatting(item);
+
+                lst.Add(formatted);
+            }
+
+            if (separator == null)
+            {
+                separator = Environment.NewLine;
+            }
+
+            var content = string.Join(separator, lst);
+
+            return content;
+        }
+
+        protected virtual string RemoveBlankLines(string content)
+        {
+            var replacement = ReBlankLines.Replace(content, string.Empty);
+
+            return replacement;
+        }
+
+        protected virtual string RemoveExcessBlankSpace(string content)
+        {
+            var replacement = ReBlankSpace.Replace(content, string.Empty);
+
+            return replacement;
+        }
+
+        public abstract string FillTemplate();
     }
 }

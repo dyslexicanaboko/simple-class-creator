@@ -59,19 +59,31 @@ namespace SimpleClassCreator.Services.CodeFactory
         }
 
         public string ColumnName { get; private set; }
+        
+        public bool InSystemNamespace { get; private set; }
+        
         public bool IsDbNullable { get; private set; }
+        
         public bool IsImplicitlyNullable { get; private set; }
+        
         public string Field { get; private set; }
+        
         public string Property { get; private set; }
+        
         public string SystemType { get; private set; }
+        
         public string ConvertTo { get; private set; }
+        
         public string StringValue { get; private set; }
 
-        public string GetTypeAsString(Type target)
+        private string GetTypeAsString(Type target)
         {
             var str = _provider.GetTypeOutput(new CodeTypeReference(target));
 
             if (!str.StartsWith("System.")) return str;
+
+            //This is a side-effect, but for now I will let it pass
+            InSystemNamespace = true;
 
             str = str.Replace("System.", string.Empty);
 
