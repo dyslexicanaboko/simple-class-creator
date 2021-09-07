@@ -74,9 +74,9 @@
     <None Include="ReadMe.md" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SimpleClassCreatorLib\SimpleClassCreator.csproj">
+    <ProjectReference Include="..\SimpleClassCreatorLib\SimpleClassCreator.Lib.csproj">
       <Project>{df909277-02b4-4487-bf48-defe87eff808}</Project>
-      <Name>SimpleClassCreator</Name>
+      <Name>SimpleClassCreator.Lib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

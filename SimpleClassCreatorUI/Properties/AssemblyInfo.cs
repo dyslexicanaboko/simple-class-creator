@@ -1,14 +1,12 @@
-﻿using System.Reflection;
-using System.Resources;
-using System.Runtime.CompilerServices;
+﻿using SimpleClassCreator.Ui;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
-using SimpleClassCreatorUI;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SimpleClassCreatorUI")]
+[assembly: AssemblyTitle("SimpleClassCreator.Ui")]
 [assembly: AssemblyDescription("If you found this application to be useful or just enjoyed it then please consider giving me a tip. There is a link located below. This application is free to use and distribute always. " + AboutSimpleClassCreator.DyslexicAppsUrl)]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Dyslexic Apps")]
@@ -34,11 +32,11 @@ using SimpleClassCreatorUI;
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
-    //(used if a resource is not found in the page, 
-    // or application resource dictionaries)
+                                     //(used if a resource is not found in the page, 
+                                     // or application resource dictionaries)
     ResourceDictionaryLocation.SourceAssembly //where the generic resource dictionary is located
-    //(used if a resource is not found in the page, 
-    // app, or any theme specific resource dictionaries)
+                                              //(used if a resource is not found in the page, 
+                                              // app, or any theme specific resource dictionaries)
 )]
 
 
@@ -52,5 +50,5 @@ using SimpleClassCreatorUI;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.3.0.0")]
-[assembly: AssemblyFileVersion("1.3.0.0")]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]

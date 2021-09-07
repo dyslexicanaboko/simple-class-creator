@@ -8,8 +8,8 @@
     <ProjectGuid>{DF909277-02B4-4487-BF48-DEFE87EFF808}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SimpleClassCreator</RootNamespace>
-    <AssemblyName>SimpleClassCreator</AssemblyName>
+    <RootNamespace>SimpleClassCreator.Lib</RootNamespace>
+    <AssemblyName>SimpleClassCreator.Lib</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

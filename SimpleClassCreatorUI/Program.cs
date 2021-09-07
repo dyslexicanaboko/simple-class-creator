@@ -3,7 +3,7 @@ using SimpleClassCreator.DataAccess;
 using SimpleClassCreator.Services;
 using SimpleInjector;
 
-namespace SimpleClassCreatorUI
+namespace SimpleClassCreator.Ui
 {    
     static class Program
     {

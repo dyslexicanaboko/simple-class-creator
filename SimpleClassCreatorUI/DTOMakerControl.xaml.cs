@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace SimpleClassCreatorUI
+namespace SimpleClassCreator.Ui
 {
     /// <summary>
     /// Interaction logic for DTOMakerControl.xaml

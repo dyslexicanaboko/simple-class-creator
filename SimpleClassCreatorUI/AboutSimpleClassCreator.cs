@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace SimpleClassCreatorUI
+namespace SimpleClassCreator.Ui
 {
     partial class AboutSimpleClassCreator : Form
     {

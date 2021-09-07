@@ -1,4 +1,4 @@
-﻿<Application x:Class="SimpleClassCreatorUI.App"
+﻿<Application x:Class="SimpleClassCreator.Ui.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!-- 

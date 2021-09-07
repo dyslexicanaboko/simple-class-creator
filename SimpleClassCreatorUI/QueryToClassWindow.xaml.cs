@@ -1,5 +1,4 @@
-﻿using SimpleClassCreator;
-using SimpleClassCreator.DataAccess;
+﻿using SimpleClassCreator.DataAccess;
 using SimpleClassCreator.Models;
 using SimpleClassCreator.Services;
 using System;
@@ -9,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace SimpleClassCreatorUI
+namespace SimpleClassCreator.Ui
 {
     /// <summary>
     /// Interaction logic for QueryToClassWindow.xaml

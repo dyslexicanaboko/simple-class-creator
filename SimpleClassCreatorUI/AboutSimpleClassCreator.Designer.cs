@@ -1,4 +1,4 @@
-﻿namespace SimpleClassCreatorUI
+﻿namespace SimpleClassCreator.Ui
 {
     partial class AboutSimpleClassCreator
     {
