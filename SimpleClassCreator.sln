@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleClassCreator.Ui", "SimpleClassCreatorUI\SimpleClassCreator.Ui.csproj", "{F40F3792-A229-4252-A106-DA6D6E08E793}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleClassCreator.Ui", "SimpleClassCreator.Ui\SimpleClassCreator.Ui.csproj", "{F40F3792-A229-4252-A106-DA6D6E08E793}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleClassCreator.Lib", "SimpleClassCreatorLib\SimpleClassCreator.Lib.csproj", "{DF909277-02B4-4487-BF48-DEFE87EFF808}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleClassCreator.Lib", "SimpleClassCreator.Lib\SimpleClassCreator.Lib.csproj", "{DF909277-02B4-4487-BF48-DEFE87EFF808}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleClassCreator.Tests", "SimpleClassCreator.Tests\SimpleClassCreator.Tests.csproj", "{C0E03C1F-BFD8-4BD5-B2CE-95C9827713DD}"
 EndProject

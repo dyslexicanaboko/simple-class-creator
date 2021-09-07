@@ -15,7 +15,7 @@ namespace SimpleClassCreator.Tests.Lib.Services
         /*
         3. Need to create templates for whatever code it is that I am trying to create
         A. Let's create a dummy object that is easy to understand and work off of that 
-            like your rudamentary person object 
+            like your rudimentary person object 
         B. I want templates to be plug and play meaning the user can provide whatever 
             templates they want so long as they use the appropriate tags
         4. I don't like the if (tableName != null) clauses, need to abstract this, let's 

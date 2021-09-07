@@ -77,7 +77,7 @@
     <Content Include="sql-server-data-type-mappings.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SimpleClassCreatorLib\SimpleClassCreator.Lib.csproj">
+    <ProjectReference Include="..\SimpleClassCreator.Lib\SimpleClassCreator.Lib.csproj">
       <Project>{df909277-02b4-4487-bf48-defe87eff808}</Project>
       <Name>SimpleClassCreator.Lib</Name>
     </ProjectReference>

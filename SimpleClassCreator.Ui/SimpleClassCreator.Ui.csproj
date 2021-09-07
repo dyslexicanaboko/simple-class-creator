@@ -170,7 +170,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SimpleClassCreatorLib\SimpleClassCreator.Lib.csproj">
+    <ProjectReference Include="..\SimpleClassCreator.Lib\SimpleClassCreator.Lib.csproj">
       <Project>{DF909277-02B4-4487-BF48-DEFE87EFF808}</Project>
       <Name>SimpleClassCreator.Lib</Name>
     </ProjectReference>
