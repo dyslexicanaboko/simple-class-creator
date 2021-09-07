@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
-using SimpleClassCreator.Services.CodeFactory;
+using SimpleClassCreator.Lib;
+using SimpleClassCreator.Lib.Services.CodeFactory;
 using System;
 using System.Data;
 

@@ -1,9 +1,10 @@
 ﻿using NUnit.Framework;
-using SimpleClassCreator.Models;
-using SimpleClassCreator.Services.Generators;
+using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Services.CodeFactory;
+using SimpleClassCreator.Lib.Services.Generators;
 using System.Collections.Generic;
 using System.Data;
-using SimpleClassCreator.Services.CodeFactory;
+using SimpleClassCreator.Lib;
 
 namespace SimpleClassCreator.Tests.Lib.Services.Generator
 {

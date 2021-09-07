@@ -1,6 +1,7 @@
-﻿using System;
-using NUnit.Framework;
-using SimpleClassCreator.Services;
+﻿using NUnit.Framework;
+using SimpleClassCreator.Lib.Services;
+using System;
+using SimpleClassCreator.Lib;
 
 namespace SimpleClassCreator.Tests.Lib.Services
 {

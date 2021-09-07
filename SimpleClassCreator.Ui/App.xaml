@@ -1,0 +1,12 @@
+﻿<Application x:Class="SimpleClassCreator.Ui.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- 
+        Removed the StartupUri so I can use Dependency Injection instead. 
+        https://docs.simpleinjector.org/en/latest/wpfintegration.html
+    -->
+    <!-- StartupUri="QueryToClassWindow.xaml" -->
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
