@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="DummyObjects\Person.cs" />
     <Compile Include="Lib\Services\CodeFactory\ClassMemberStringsTests.cs" />
+    <Compile Include="Lib\Services\Generator\ModelGeneratorTests.cs" />
     <Compile Include="Lib\Services\NameFormatServiceTests.cs" />
     <Compile Include="Lib\Services\QueryToClassServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

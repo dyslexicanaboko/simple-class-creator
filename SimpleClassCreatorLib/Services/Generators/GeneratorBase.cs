@@ -12,10 +12,10 @@ namespace SimpleClassCreator.Services.Generators
 
         protected ClassInstructions Instructions { get; set; }
 
-        protected readonly Regex ReBlankSpace = new Regex(@"^\s+$^[\r\n]", RegexOptions.Multiline);
-        protected readonly Regex ReBlankLines = new Regex(@"^\s+$[\r\n]*", RegexOptions.Multiline);
+        protected readonly Regex _reBlankSpace = new Regex(@"^\s+$^[\r\n]", RegexOptions.Multiline);
+        protected readonly Regex _reBlankLines = new Regex(@"^\s+$[\r\n]*", RegexOptions.Multiline);
 
-        public GeneratorBase(ClassInstructions instructions, string templateName)
+        protected GeneratorBase(ClassInstructions instructions, string templateName)
         {
             _templatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates");
 
@@ -60,14 +60,14 @@ namespace SimpleClassCreator.Services.Generators
 
         protected virtual string RemoveBlankLines(string content)
         {
-            var replacement = ReBlankLines.Replace(content, string.Empty);
+            var replacement = _reBlankLines.Replace(content, string.Empty);
 
             return replacement;
         }
 
         protected virtual string RemoveExcessBlankSpace(string content)
         {
-            var replacement = ReBlankSpace.Replace(content, string.Empty);
+            var replacement = _reBlankSpace.Replace(content, string.Empty);
 
             return replacement;
         }

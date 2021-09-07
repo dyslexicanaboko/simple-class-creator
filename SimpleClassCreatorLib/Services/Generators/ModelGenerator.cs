@@ -43,25 +43,23 @@ namespace SimpleClassCreator.Services.Generators
          */
         private string FormatClassAttributes(IList<string> classAttributes)
         {
-            var content = GetTextBlock(classAttributes, (ca) => { return $"[{ca}]"; });
+            var content = GetTextBlock(classAttributes, (ca) => $"[{ca}]" );
 
             return content;
         }
 
         private string FormatNamespaces(IList<string> namespaces)
         {
-            var content = GetTextBlock(namespaces, (ns) => { return $"using {ns};"; });
+            var content = GetTextBlock(namespaces, (ns) => $"using {ns};");
 
             return content;
         }
 
         private string FormatProperties(IList<ClassMemberStrings> properties)
         {
-            var content = GetTextBlock(properties, (p) => 
-            { 
-                return $"        public {p.SystemType} {p.Property} {{ get; set; }}"; 
-            }, 
-            separator: Environment.NewLine + Environment.NewLine);
+            var content = GetTextBlock(properties, 
+                (p) => $"        public {p.SystemType} {p.Property} {{ get; set; }}", 
+                separator: Environment.NewLine + Environment.NewLine);
 
             return content;
         }
