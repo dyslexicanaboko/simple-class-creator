@@ -377,7 +377,7 @@ namespace SimpleClassCreatorUI
 
             if (obj.IncludeNamespace)
             {
-                if (IsTextInvalid(txtNamespace, "If including a namespace, it cannot be empty."))
+                if (IsTextInvalid(txtNamespace, "If specifying a namespace, it cannot be empty."))
                     return null;
             }
 

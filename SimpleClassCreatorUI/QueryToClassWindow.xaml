@@ -29,12 +29,12 @@
                             <TextBox Height="23" HorizontalAlignment="Left" Margin="329,46,0,0" Name="txtFieldPrefix" VerticalAlignment="Top" Width="120" IsEnabled="False" />
                             <CheckBox Content="Include Serializable attribute" Height="16" HorizontalAlignment="Left" Margin="16,28,0,0" Name="cbIncludeSerializableAttribute" VerticalAlignment="Top" Width="173" />
                             <CheckBox Content="Build out class properties" Height="16" HorizontalAlignment="Left" Margin="16,50,0,0" Name="cbBuildClassProperties" VerticalAlignment="Top" Width="158" Checked="cbBuildClassProperties_Checked" Unchecked="cbBuildClassProperties_Checked" />
-                            <CheckBox Content="Include namespace" Height="16" HorizontalAlignment="Left" Margin="16,76,0,0" Name="cbIncludeNamespace" VerticalAlignment="Top" Width="127" Checked="cbIncludeNamespace_Checked" Unchecked="cbIncludeNamespace_Checked" />
+                            <CheckBox Content="Specify namespace" Height="16" HorizontalAlignment="Left" Margin="16,76,0,0" Name="cbIncludeNamespace" VerticalAlignment="Top" Width="127" Checked="cbIncludeNamespace_Checked" Unchecked="cbIncludeNamespace_Checked" />
                             <TextBox Height="23" HorizontalAlignment="Left" Margin="141,73,0,0" Name="txtNamespace" VerticalAlignment="Top" Width="120" IsEnabled="False" />
                             <Label Content="Class name" Height="28" HorizontalAlignment="Left" Margin="12,98,0,0" Name="lblClassName" VerticalAlignment="Top" />
                             <TextBox Height="23" HorizontalAlignment="Left" Margin="83,101,0,0" Name="txtClassName" VerticalAlignment="Top" Width="120" TextChanged="txtClassName_TextChanged" MouseDown="txtClassName_MouseDown" />
                             <Button Content="Default" Height="23" HorizontalAlignment="Left" Margin="209,101,0,0" Name="btnClassNameDefault" VerticalAlignment="Top" Width="75" Click="btnClassNameDefault_Click" />
-                            <Button Content="Default" Height="23" HorizontalAlignment="Left" Margin="267,73,0,0" Name="btnNamespaceDefault" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="btnNamespaceDefault_Click" />
+                            <Button Content="Default" Height="23" HorizontalAlignment="Left" Margin="267,73,0,0" Name="btnNamespaceDefault" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="btnNamespaceDefault_Click" RenderTransformOrigin="-0.267,0.478" />
                             <Button Content="Default" Height="23" HorizontalAlignment="Left" Margin="455,46,0,0" Name="btnMemberPrefixDefault" VerticalAlignment="Top" Width="75" Click="btnMemberPrefixDefault_Click" IsEnabled="False" />
                         </Grid>
                     </GroupBox>
