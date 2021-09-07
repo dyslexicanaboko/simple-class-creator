@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SimpleClassCreator.Tests.DummyObjects
 {
-    /*
-        This is not used by anything directly.
-        I am hand crafting an object here to copy and paste it as a string for unit testing output comparison.
-     */
     public class Person
     {
         public int PersonId { get; set; }
@@ -85,6 +77,10 @@ namespace SimpleClassCreator.Tests.DummyObjects
 ";
     }
 
+    /*
+        This is not used by anything directly.
+        I am hand crafting an object here to copy and paste it as a string for unit testing output comparison.
+     */
     public class PersonService
     {
         
