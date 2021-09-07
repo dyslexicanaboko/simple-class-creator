@@ -51,16 +51,16 @@ namespace SimpleClassCreator.Services.CodeFactory
             return base.CreateRegion(WrapInQuotes(regionName));
         }
 
-        public override void CreateProperty(StringBuilder sb, DotNetLanguage.MemberInfo info)
+        public override void CreateProperty(StringBuilder sb, ClassMemberStrings info)
         {
             //Private Member
-            sb.AppendFormat("Private {0} As {1}{2}", info.Member, info.SystemType, LineTerminator);
+            sb.AppendFormat("Private {0} As {1}{2}", info.Field, info.SystemType, LineTerminator);
 
             if (IncludeSerializableAttribute)
                 sb.Append(DataMember);
 
             //Public Property
-            sb.AppendFormat("Public Property {0} As {1}{3}Get{3}Return {2}{3}End Get{3}Set(value As {1}){3}{2} = value{3}End Get{3}End Property", info.Property, info.SystemType, info.Member, Environment.NewLine);
+            sb.AppendFormat("Public Property {0} As {1}{3}Get{3}Return {2}{3}End Get{3}Set(value As {1}){3}{2} = value{3}End Get{3}End Property", info.Property, info.SystemType, info.Field, Environment.NewLine);
             sb.AppendLine().AppendLine();
         }
 
@@ -81,7 +81,7 @@ namespace SimpleClassCreator.Services.CodeFactory
             sb.AppendFormat("For Each {0} In {1}{3} {2}{3} Next", GetParameter(name, dataType), collection, body, Environment.NewLine);
         }
 
-        public override void CreateUpdateMethod(StringBuilder sb, string updateStatement, DotNetLanguage.MemberInfo primaryKey)
+        public override void CreateUpdateMethod(StringBuilder sb, string updateStatement, ClassMemberStrings primaryKey)
         {
             sb.AppendFormat("Public Sub Update{0}(){4}Dim sb As New StringBuilder(){4}{4}sb.Append(\"UPDATE {0} SET \"){4}{1}{4}sb.Append(\" WHERE {2} = \").Append(obj.{3}).Append(\";\"){4}End Sub{4}{4}",
                 ClassName, //0
@@ -98,20 +98,6 @@ namespace SimpleClassCreator.Services.CodeFactory
                 columns, //1
                 insertStatement, //2
                 Environment.NewLine); //3
-        }
-
-        public override void CreateAddStringMethods(StringBuilder sb)
-        {
-            sb.AppendFormat("Public Function AddString(target As String) As String{0}Return \"'\" + target + \"'\"{0}End Function",
-                Environment.NewLine);
-
-            sb.AppendLine();
-            sb.AppendLine();
-
-            sb.AppendFormat("Public Function AddString(target As String) As String{0}Return AddString(target.ToString(\"u\")){0}End Function",
-                Environment.NewLine);
-
-            sb.AppendLine();
         }
 
         protected override string GetParameter(string name, string dataType)

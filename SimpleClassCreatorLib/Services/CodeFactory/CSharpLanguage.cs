@@ -45,18 +45,18 @@ namespace SimpleClassCreator.Services.CodeFactory
             DataMember = "[DataMember]" + Environment.NewLine;
         }
 
-        public override void CreateProperty(StringBuilder sb, DotNetLanguage.MemberInfo info)
+        public override void CreateProperty(StringBuilder sb, ClassMemberStrings info)
         {
             if (_buildOutProperties)
             {
                 //Private Member
-                sb.AppendFormat("private {0} {1}{2}", info.SystemType, info.Member, LineTerminator);
+                sb.AppendFormat("private {0} {1}{2}", info.SystemType, info.Field, LineTerminator);
 
                 if (IncludeSerializableAttribute)
                     sb.Append(DataMember);
 
                 //Public Property
-                sb.AppendFormat("public {0} {1}{3}{{{3} get {{ return {2}; }}{3} set {{ {2} = value; }}{3}}} ", info.SystemType, info.Property, info.Member, Environment.NewLine);
+                sb.AppendFormat("public {0} {1}{3}{{{3} get {{ return {2}; }}{3} set {{ {2} = value; }}{3}}} ", info.SystemType, info.Property, info.Field, Environment.NewLine);
             }
             else
             {
@@ -87,7 +87,7 @@ namespace SimpleClassCreator.Services.CodeFactory
             sb.AppendFormat("foreach({0} in {1}){3}{{ {2}{3} }}{3}", GetParameter(name, dataType), collection, body, Environment.NewLine);
         }
 
-        public override void CreateUpdateMethod(StringBuilder sb, string updateStatement, DotNetLanguage.MemberInfo primaryKey)
+        public override void CreateUpdateMethod(StringBuilder sb, string updateStatement, ClassMemberStrings primaryKey)
         {
             sb.AppendFormat("public void Update{0}(){4}{{{4}StringBuilder sb = new StringBuilder();{4}{4}sb.Append(\"UPDATE {0} SET \");{4}{1};{4}sb.Append(\" WHERE {2} = \").Append(obj.{3}).Append(\";\");{4}}}{4}{4}", 
                 ClassName, //0
@@ -104,15 +104,6 @@ namespace SimpleClassCreator.Services.CodeFactory
                 columns, //1
                 insertStatement, //2
                 Environment.NewLine); //3
-        }
-
-        public override void CreateAddStringMethods(StringBuilder sb)
-        {
-            sb.AppendFormat("public string AddString(string target){0}{{{0}return \"'\" + target + \"'\";{0}}}{0}{0}", 
-                Environment.NewLine);
-
-            sb.AppendFormat("public string AddString(DateTime target){0}{{{0}return AddString(target.ToString(\"u\"));{0}}}{0}{0}", 
-                Environment.NewLine);
         }
 
         protected override string GetParameter(string name, string dataType)

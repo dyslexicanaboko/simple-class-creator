@@ -1,6 +1,7 @@
 ﻿using SimpleClassCreator.DataAccess;
 using SimpleClassCreator.Models;
 using SimpleClassCreator.Services.CodeFactory;
+using SimpleClassCreator.Services.Generators;
 using System;
 using System.Data;
 using System.IO;
@@ -18,7 +19,7 @@ namespace SimpleClassCreator.Services
             _repository = repository;
         }
 
-        public StringBuilder GenerateClass(ClassParameters parameters)
+        public string GenerateClass(ClassParameters parameters)
         {
             var p = parameters;
 
@@ -36,21 +37,21 @@ namespace SimpleClassCreator.Services
 
             motif.InitializeMotifValues();
 
-            StringBuilder sb = GenerateClass(motif, p);
+            var content = GenerateClass(motif, p);
 
             if (p.SaveAsFile)
-                WriteClassToFile(p, sb);
+                WriteClassToFile(p, content);
 
-            return sb;
+            return content;
         }
 
-        public StringBuilder GenerateGridViewColumns(ClassParameters parameters)
+        public string GenerateGridViewColumns(ClassParameters parameters)
         {
             var p = parameters;
             
             _repository.ChangeConnectionString(p.ConnectionString);
 
-            var sql = p.SourceType == SourceTypeEnum.TableName ? ("SELECT TOP 1 * FROM " + p.ClassSource) : p.ClassSource;
+            var sql = p.SourceType == SourceTypeEnum.TableName ? ("SELECT TOP 0 * FROM " + p.ClassSource) : p.ClassSource;
 
             var dt = _repository.GetSchema(sql);
 
@@ -67,7 +68,9 @@ namespace SimpleClassCreator.Services
                   .AppendLine("</asp:BoundField>");
             }
 
-            return sb;
+            var content = sb.ToString();
+
+            return content;
         }
 
         private bool IsNumber(Type targetType)
@@ -83,133 +86,42 @@ namespace SimpleClassCreator.Services
         /// The main internal method that orchestrates the code generation for the provided parameters
         /// </summary>
         /// <returns>The generated class code as a StringBuilder</returns>
-        private StringBuilder GenerateClass(DotNetLanguage motif, ClassParameters parameters)
+        private string GenerateClass(DotNetLanguage language, ClassParameters parameters)
         {
             var p = parameters;
 
-            StringBuilder sb = new StringBuilder(),
-                          sbColumns = new StringBuilder(),
-                          sbProperties = new StringBuilder(),
-                          sbObjectGen = new StringBuilder(),
-                          sbUpdate = new StringBuilder(),
-                          sbInsert = new StringBuilder();
-
-            string tableName, primaryKey, sqlQuery;
-
-            if (p.SourceType == SourceTypeEnum.TableName)
-            {
-                tableName = p.ClassSource;
-                primaryKey = GetPrimaryKeyColumn(p.TableQuery);
-                sqlQuery = "SELECT TOP 1 * FROM " + p.ClassSource;
-            }
-            else
-            {
-                tableName = null;
-                primaryKey = null;
-                sqlQuery = p.ClassSource;
-            }
+            //primaryKey = GetPrimaryKeyColumn(p.TableQuery);
+            var sqlQuery = p.SourceType == SourceTypeEnum.TableName ? ("SELECT TOP 0 * FROM " + p.ClassSource) : p.ClassSource;
 
             var dt = _repository.GetSchema(sqlQuery);
 
-            //Using Statements
-            sb.Append(motif.Using).Append(" System").Append(motif.LineTerminator);
-            sb.Append(motif.Using).Append(" System.Collections.Generic").Append(motif.LineTerminator);
-            sb.Append(motif.Using).Append(" System.Data").Append(motif.LineTerminator);
-            sb.Append(motif.Using).Append(" System.Text").Append(motif.LineTerminator);
+            var ins = new ClassInstructions();
 
-            if (motif.IncludeSerializableAttribute)
-                sb.Append(motif.Using).Append(" System.Runtime.Serialization").Append(motif.LineTerminator);
+            ins.ClassName = p.ClassName;
+            ins.Namespace = p.Namespace;
 
-            sb.Append(Environment.NewLine);
+            if (language.IncludeSerializableAttribute)
+            {
+                ins.Namespaces.Add("System.Runtime.Serialization");
+                ins.ClassAttributes.Add(language.DataContract);
+            }
 
-            //Open the Namespace
-            if (parameters.IncludeNamespace)
-                sb.Append(motif.OpenNamespace);
-
-            //Add the [DataContract] attribute
-            if (motif.IncludeSerializableAttribute)
-                sb.Append(motif.DataContract);
-
-            //Open the Class
-            sb.Append(motif.OpenClass);
-            sb.Append(motif.EmptyConstructor);
-            sb.Append(motif.CreateRegion("Properties"));
-
-            //Data Collection and Property Generation
             foreach (DataColumn dc in dt.Columns)
             {
-                var info = new DotNetLanguage.MemberInfo(dc, p.LanguageType, p.MemberPrefix);
+                var prop = new ClassMemberStrings(dc, p.LanguageType, p.MemberPrefix);
 
-                //DataColumn as Property
-                motif.CreateProperty(sbProperties, info);
+                //Add the system namespace if any of the properties require it
+                if (prop.InSystemNamespace) ins.AddNamespace("System");
 
-                //Object Generation Code
-                sbObjectGen.Append("obj.").Append(info.Property).Append(" = ");
-
-                var dr = motif.DataRowGet("dr", dc.ColumnName);
-                var conv = info.ConvertTo + dr + ")";
-
-                if (info.IsNullable)
-                {
-                    sbObjectGen.Append(dr).Append(" == DBNull.Value ? null : new ").Append(info.SystemType).Append("(").Append(conv).Append(")");
-                }
-                else
-                {
-                    sbObjectGen.Append(conv);
-                }
-
-                sbObjectGen.Append(motif.LineTerminator);
-
-                //I don't remember why I did any of this:
-                if (tableName != null && info.ColumnName != primaryKey)
-                {
-                    //Column CSV
-                    sbColumns.Append(dc.ColumnName).Append(", ");
-
-                    //Update Statement Code
-                    sbUpdate.Append("sb.Append(\"").Append(dc.ColumnName).Append("\").Append(\" = \").Append(").Append(info.StringValue).Append(").Append(\",\")").Append(motif.LineTerminator);
-
-                    //Insert Statement Code
-                    sbInsert.Append("sb.Append(").Append(info.StringValue).Append(").Append(\",\")").Append(motif.LineTerminator);
-                }
+                ins.Properties.Add(prop);
             }
 
-            //This section can only be performed if this is a single table that this code is being generated from.
-            //Virtual Tables do not qualify because they won't have primary keys
-            if (tableName != null)
-            {
-                //Trim the trailing patterns from these 
-                TrimEnd(sbColumns, "\",\" ");
-                TrimEnd(sbUpdate, ".Append(\",\")" + motif.LineTerminator);
-                TrimEnd(sbInsert, ".Append(\",\")" + motif.LineTerminator);
-            }
+            //How to inject this without having to do away with the constructor access?
+            var svc = new ModelGenerator(ins);
 
-            //Append the Class Private Members and Public Properties
-            sb.Append(sbProperties);
-            sb.Append(motif.EndRegion);
+            var content = svc.FillTemplate();
 
-            //Object Generation Method
-            motif.CreateObjectGenerationMethod(sb, sbObjectGen.ToString());
-
-            if (tableName != null)
-            {
-                //Update Method
-                if (dt.Columns[primaryKey] != null)
-                    motif.CreateUpdateMethod(sb, sbUpdate.ToString(), new DotNetLanguage.MemberInfo(dt.Columns[primaryKey], p.LanguageType, p.MemberPrefix));
-
-                //Insert Method
-                motif.CreateInsertMethod(sb, sbColumns.ToString(), sbInsert.ToString());
-
-                //AddString Methods
-                motif.CreateAddStringMethods(sb);
-            }
-
-            sb.Append(motif.CloseClass);
-
-            if (parameters.IncludeNamespace)
-                sb.Append(motif.CloseNamespace);
-
-            return sb;
+            return content;
         }
 
         /// <summary>
@@ -217,16 +129,13 @@ namespace SimpleClassCreator.Services
         /// </summary>
         /// <param name="fileName">The name of the file, including the file extension</param>
         /// <param name="sb">The StringBuilder that contains the generated code</param>
-        private void WriteClassToFile(ClassParameters p, StringBuilder sb)
+        private void WriteClassToFile(ClassParameters p, string content)
         {
-            string fullFilePath = Path.Combine(p.Filepath, p.Filename);
+            var fullFilePath = Path.Combine(p.Filepath, p.Filename);
 
-            using (StreamWriter sw = new StreamWriter(fullFilePath, false))
-            {
-                sw.Write(sb.ToString());
-            }
+            File.WriteAllText(fullFilePath, content);
 
-            Console.WriteLine("{0} Characters Written to {1}", sb.Length, fullFilePath);
+            Console.WriteLine($"{content.Length} Characters Written to {fullFilePath}");
         }
 
         /// <summary>
@@ -239,11 +148,6 @@ namespace SimpleClassCreator.Services
             if (string.IsNullOrEmpty(tableQuery.Schema) || string.IsNullOrEmpty(tableQuery.Table)) return "PK";
 
             return _repository.GetPrimaryKeyColumn(tableQuery);
-        }
-
-        private StringBuilder TrimEnd(StringBuilder sb, string pattern)
-        {
-            return sb.Remove(sb.Length - pattern.Length, pattern.Length);
         }
     }
 }

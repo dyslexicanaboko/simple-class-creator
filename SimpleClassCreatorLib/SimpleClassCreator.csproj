@@ -49,8 +49,11 @@
   <ItemGroup>
     <Compile Include="Models\AssemblyInfo.cs" />
     <Compile Include="Models\ClassInfo.cs" />
+    <Compile Include="Models\ClassInstructions.cs" />
+    <Compile Include="Services\CodeFactory\ClassMemberStrings.cs" />
+    <Compile Include="Services\Generators\GeneratorBase.cs" />
+    <Compile Include="Services\Generators\ModelGenerator.cs" />
     <Compile Include="Services\NameFormatService.cs" />
-    <Compile Include="Services\CodeFactory\DotNetLanguage.MemberInfo.cs" />
     <Compile Include="Services\DtoGenerator.cs" />
     <Compile Include="Models\PropertyInfo.cs" />
     <Compile Include="DataAccess\GeneralDatabaseQueries.cs" />
@@ -72,6 +75,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CodeFactory\VbDotNetLanguage.cs" />
     <Content Include="Templates\IEquatableOfT.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Model.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="Utils.cs" />
