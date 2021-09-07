@@ -1,5 +1,5 @@
 ﻿using Microsoft.CSharp;
-using SimpleClassCreator.Models;
+using SimpleClassCreator.Lib.Models;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace SimpleClassCreator.Services
+namespace SimpleClassCreator.Lib.Services
 {
     public class DtoGenerator 
         : IDtoGenerator

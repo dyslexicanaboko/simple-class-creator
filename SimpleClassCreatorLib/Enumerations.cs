@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimpleClassCreator
+namespace SimpleClassCreator.Lib
 {
     public enum SourceTypeEnum
     {

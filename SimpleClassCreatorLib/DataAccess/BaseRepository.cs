@@ -1,10 +1,10 @@
-﻿using SimpleClassCreator.Models;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using SimpleClassCreator.Lib.Models;
 
-namespace SimpleClassCreator.DataAccess
+namespace SimpleClassCreator.Lib.DataAccess
 {
 	/// <summary>
 	/// The base Data Access Layer

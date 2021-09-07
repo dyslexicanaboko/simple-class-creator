@@ -1,7 +1,7 @@
-﻿using SimpleClassCreator.Services.CodeFactory;
+﻿using SimpleClassCreator.Lib.Services.CodeFactory;
 using System.Collections.Generic;
 
-namespace SimpleClassCreator.Models
+namespace SimpleClassCreator.Lib.Models
 {
     public class ClassInstructions
     {

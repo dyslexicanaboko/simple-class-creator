@@ -1,4 +1,4 @@
-﻿namespace SimpleClassCreator.Models
+﻿namespace SimpleClassCreator.Lib.Models
 {
     public class PropertyInfo
     {

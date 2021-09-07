@@ -1,6 +1,7 @@
-﻿using SimpleClassCreator.Models;
+﻿using SimpleClassCreator.Lib.DataAccess;
+using SimpleClassCreator.Lib.Models;
 
-namespace SimpleClassCreator.DataAccess
+namespace SimpleClassCreator.Lib.DataAccess
 {
     public class GeneralDatabaseQueries
         : BaseRepository, IGeneralDatabaseQueries

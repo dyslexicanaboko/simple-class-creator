@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace SimpleClassCreator.Services.CodeFactory
+namespace SimpleClassCreator.Lib.Services.CodeFactory
 {
     public class CSharpLanguage : DotNetLanguage
     {

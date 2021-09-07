@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using SimpleClassCreator.Models;
+using SimpleClassCreator.Lib;
+using SimpleClassCreator.Lib.DataAccess;
+using SimpleClassCreator.Lib.Models;
 
-namespace SimpleClassCreator.DataAccess
+namespace SimpleClassCreator.Lib.DataAccess
 {
     /// <summary>
     /// The Data Access layer for the Code Generator

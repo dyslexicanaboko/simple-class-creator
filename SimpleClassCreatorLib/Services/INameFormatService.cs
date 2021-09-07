@@ -1,6 +1,6 @@
-﻿using SimpleClassCreator.Models;
+﻿using SimpleClassCreator.Lib.Models;
 
-namespace SimpleClassCreator.Services
+namespace SimpleClassCreator.Lib.Services
 {
     public interface INameFormatService
     {

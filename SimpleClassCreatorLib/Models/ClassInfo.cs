@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SimpleClassCreator.Models
+namespace SimpleClassCreator.Lib.Models
 {
     public class ClassInfo
     {

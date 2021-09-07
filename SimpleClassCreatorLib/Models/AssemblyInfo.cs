@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using SimpleClassCreator.Lib.Models;
 
-namespace SimpleClassCreator.Models
+namespace SimpleClassCreator.Lib.Models
 {
     public class AssemblyInfo
     {

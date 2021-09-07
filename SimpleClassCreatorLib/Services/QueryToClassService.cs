@@ -1,13 +1,13 @@
-﻿using SimpleClassCreator.DataAccess;
-using SimpleClassCreator.Models;
-using SimpleClassCreator.Services.CodeFactory;
-using SimpleClassCreator.Services.Generators;
+﻿using SimpleClassCreator.Lib.DataAccess;
+using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Services.CodeFactory;
+using SimpleClassCreator.Lib.Services.Generators;
 using System;
 using System.Data;
 using System.IO;
 using System.Text;
 
-namespace SimpleClassCreator.Services
+namespace SimpleClassCreator.Lib.Services
 {
     public class QueryToClassService 
         : IQueryToClassService

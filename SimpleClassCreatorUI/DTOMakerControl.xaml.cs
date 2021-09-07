@@ -1,5 +1,5 @@
-﻿using SimpleClassCreator.Models;
-using SimpleClassCreator.Services;
+﻿using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Services;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;

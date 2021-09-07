@@ -74,13 +74,13 @@
     <None Include="ReadMe.md" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="sql-server-data-type-mappings.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\SimpleClassCreatorLib\SimpleClassCreator.Lib.csproj">
       <Project>{df909277-02b4-4487-bf48-defe87eff808}</Project>
       <Name>SimpleClassCreator.Lib</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="sql-server-data-type-mappings.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

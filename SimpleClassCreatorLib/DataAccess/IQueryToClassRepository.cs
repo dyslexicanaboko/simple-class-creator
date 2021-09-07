@@ -1,7 +1,7 @@
-﻿using SimpleClassCreator.Models;
-using System.Data;
+﻿using System.Data;
+using SimpleClassCreator.Lib.Models;
 
-namespace SimpleClassCreator.DataAccess
+namespace SimpleClassCreator.Lib.DataAccess
 {
     public interface IQueryToClassRepository
     {

@@ -1,10 +1,10 @@
-﻿using SimpleClassCreator.Models;
+﻿using SimpleClassCreator.Lib.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace SimpleClassCreator.Services.Generators
+namespace SimpleClassCreator.Lib.Services.Generators
 {
     public abstract class GeneratorBase
     {

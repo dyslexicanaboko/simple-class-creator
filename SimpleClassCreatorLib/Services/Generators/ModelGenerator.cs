@@ -1,10 +1,10 @@
-﻿using SimpleClassCreator.Models;
-using SimpleClassCreator.Services.CodeFactory;
+﻿using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Services.CodeFactory;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SimpleClassCreator.Services.Generators
+namespace SimpleClassCreator.Lib.Services.Generators
 {
     public class ModelGenerator
         : GeneratorBase

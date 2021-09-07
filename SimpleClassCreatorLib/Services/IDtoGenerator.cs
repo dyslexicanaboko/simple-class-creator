@@ -1,7 +1,7 @@
-﻿using SimpleClassCreator.Models;
+﻿using SimpleClassCreator.Lib.Models;
 using System;
 
-namespace SimpleClassCreator.Services
+namespace SimpleClassCreator.Lib.Services
 {
     public interface IDtoGenerator
     {

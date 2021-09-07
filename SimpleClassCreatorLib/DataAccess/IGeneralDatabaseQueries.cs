@@ -1,6 +1,6 @@
-﻿using SimpleClassCreator.Models;
+﻿using SimpleClassCreator.Lib.Models;
 
-namespace SimpleClassCreator.DataAccess
+namespace SimpleClassCreator.Lib.DataAccess
 {
     public interface IGeneralDatabaseQueries
     {

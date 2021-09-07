@@ -1,10 +1,10 @@
-﻿using System;
-using SimpleClassCreator.DataAccess;
-using SimpleClassCreator.Services;
+﻿using SimpleClassCreator.Lib.DataAccess;
+using SimpleClassCreator.Lib.Services;
 using SimpleInjector;
+using System;
 
 namespace SimpleClassCreator.Ui
-{    
+{
     static class Program
     {
         [STAThread]

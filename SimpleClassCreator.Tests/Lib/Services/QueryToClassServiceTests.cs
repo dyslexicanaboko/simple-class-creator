@@ -1,8 +1,9 @@
 ﻿using Moq;
 using NUnit.Framework;
-using SimpleClassCreator.DataAccess;
-using SimpleClassCreator.Models;
-using SimpleClassCreator.Services;
+using SimpleClassCreator.Lib;
+using SimpleClassCreator.Lib.DataAccess;
+using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Services;
 using SimpleClassCreator.Tests.DummyObjects;
 using System.Text.RegularExpressions;
 

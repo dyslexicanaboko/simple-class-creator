@@ -5,7 +5,7 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Data;
 
-namespace SimpleClassCreator.Services.CodeFactory
+namespace SimpleClassCreator.Lib.Services.CodeFactory
 {
     public class ClassMemberStrings
     {

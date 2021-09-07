@@ -1,9 +1,9 @@
-﻿using SimpleClassCreator.Models;
+﻿using SimpleClassCreator.Lib.Models;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace SimpleClassCreator.Services
+namespace SimpleClassCreator.Lib.Services
 {
     public class NameFormatService
         : INameFormatService
