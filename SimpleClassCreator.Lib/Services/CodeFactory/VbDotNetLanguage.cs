@@ -5,11 +5,9 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
 {
     public class VbDotNetLanguage : DotNetLanguage
     {
-        public VbDotNetLanguage(string className, bool includeSerializableAttribute)
+        public VbDotNetLanguage(string className)
         {
             ClassName = CapitalizeFirstLetter(className);
-
-            IncludeSerializableAttribute = includeSerializableAttribute;
         }
 
         public override void InitializeMotifValues()

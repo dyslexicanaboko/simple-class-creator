@@ -7,12 +7,9 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
     {
         private bool _buildOutProperties = false;
 
-        public CSharpLanguage(string className, bool includeSerializableAttribute, bool buildOutProperties = false)
+        public CSharpLanguage(string className)
         {
             ClassName = CapitalizeFirstLetter(className);
-
-            _buildOutProperties = buildOutProperties;
-            IncludeSerializableAttribute = includeSerializableAttribute;
         }
 
         public override void InitializeMotifValues()

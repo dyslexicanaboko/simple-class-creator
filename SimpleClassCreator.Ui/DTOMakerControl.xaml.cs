@@ -112,8 +112,6 @@ Please keep in mind casing matters.";
             var p = new ClassParameters
             {
                 IncludeCloneMethod = GetValue(cbxIncludeCloneMethod),
-                IncludeSerializeablePropertiesOnly = GetValue(cbxSerializableOnly),
-                IncludeSerializableAttribute = GetValue(cbxWcfEnabled),
                 ExcludeCollections = GetValue(cbxExcludeCollections),
                 IncludeTranslateMethod = GetValue(cbxIncludeTranslateMethod),
                 IncludeIEquatableOfTMethods = GetValue(cbxIncludeIEquatableOfTMethod)

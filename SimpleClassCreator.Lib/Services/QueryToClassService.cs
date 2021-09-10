@@ -28,9 +28,9 @@ namespace SimpleClassCreator.Lib.Services
             DotNetLanguage motif;
 
             if (p.LanguageType == CodeType.CSharp)
-                motif = new CSharpLanguage(p.ClassName, p.IncludeSerializableAttribute, p.BuildOutClassProperties);
+                motif = new CSharpLanguage(p.ClassName);
             else
-                motif = new VbDotNetLanguage(p.ClassName, p.IncludeSerializableAttribute);
+                motif = new VbDotNetLanguage(p.ClassName);
 
             if (parameters.IncludeNamespace)
                 motif.NamespaceName = parameters.Namespace;
@@ -108,7 +108,7 @@ namespace SimpleClassCreator.Lib.Services
 
             foreach (DataColumn dc in dt.Columns)
             {
-                var prop = new ClassMemberStrings(dc, p.LanguageType, p.MemberPrefix);
+                var prop = new ClassMemberStrings(dc, p.LanguageType);
 
                 //Add the system namespace if any of the properties require it
                 if (prop.InSystemNamespace) ins.AddNamespace("System");

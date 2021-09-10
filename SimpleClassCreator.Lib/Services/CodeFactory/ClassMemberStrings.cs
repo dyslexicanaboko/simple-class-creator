@@ -11,7 +11,7 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
     {
         private readonly CodeDomProvider _provider;
 
-        public ClassMemberStrings(DataColumn dc, CodeType type, string fieldPrefix)
+        public ClassMemberStrings(DataColumn dc, CodeType type)
         {
             var _type = type;
 
@@ -42,7 +42,7 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             Property = firstChar.ToUpper() + remainder;
 
             //Camel case the field name
-            Field = fieldPrefix + "_" + firstChar.ToLower() + remainder;
+            Field = "_" + firstChar.ToLower() + remainder;
 
             //Getting the base type
             SystemType = GetTypeAsString(dc.DataType);

@@ -30,6 +30,8 @@ namespace SimpleClassCreator.Ui
             container.Register<IQueryToClassService, QueryToClassService>();
 
             // Register your windows and view models:
+            //container.Register<DtoMakerControl>();
+            //container.Register<QueryToClassControl>();
             container.Register<QueryToClassWindow>();
 
             container.Verify();
