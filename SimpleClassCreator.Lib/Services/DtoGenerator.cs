@@ -260,7 +260,7 @@ namespace SimpleClassCreator.Lib.Services
 
         public void PrintClasses()
         {
-            if (true) ;
+            //if (true) ;
 
             var i = 0;
 

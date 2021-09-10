@@ -1,13 +1,13 @@
 ﻿<UserControl Name="QueryToClass"
+             xmlns:my="clr-namespace:SimpleClassCreator.Ui"
              x:Class="SimpleClassCreator.Ui.QueryToClassControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SimpleClassCreator.Ui"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="White" Margin="0,0,-55,-382">
+             mc:Ignorable="d" Height="613" Width="696">
+    <Grid Background="White" Margin="0,0,10,10">
         <GroupBox Header="Step 1: Connection String" Height="100" HorizontalAlignment="Left" Margin="12,12,0,0" Name="groupBox1" VerticalAlignment="Top" Width="625">
             <Grid>
                 <Button Content="Test" Height="65" HorizontalAlignment="Left" Margin="567,6,0,0" Name="btnConnectionStringTest" VerticalAlignment="Top" Width="40" Click="btnConnectionStringTest_Click" />
@@ -22,14 +22,35 @@
                 <TextBox Height="89" HorizontalAlignment="Left" Margin="6,28,0,0" Name="txtSource" VerticalAlignment="Top" Width="596" LostKeyboardFocus="txtSource_LostKeyboardFocus" AcceptsReturn="True" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="Step 3: Options" Height="275" HorizontalAlignment="Left" Margin="12,270,0,0" Name="groupBox3" VerticalAlignment="Top" Width="625">
-            <Grid>
-                <CheckBox Content="Specify namespace" Height="16" HorizontalAlignment="Left" Margin="8,13,0,0" Name="cbIncludeNamespace" VerticalAlignment="Top" Width="127" Checked="cbIncludeNamespace_Checked" Unchecked="cbIncludeNamespace_Checked" />
-                <TextBox Height="23" HorizontalAlignment="Left" Margin="135,10,0,0" Name="txtNamespace" VerticalAlignment="Top" Width="120" IsEnabled="False" />
-                <Label Content="Class name" Height="28" HorizontalAlignment="Left" Margin="12,162,0,0" Name="lblClassName" VerticalAlignment="Top" />
-                <TextBox Height="23" HorizontalAlignment="Left" Margin="83,165,0,0" Name="txtClassName" VerticalAlignment="Top" Width="120" TextChanged="txtClassName_TextChanged" MouseDown="txtClassName_MouseDown" />
-                <Button Content="Default" Height="23" HorizontalAlignment="Left" Margin="209,165,0,0" Name="btnClassNameDefault" VerticalAlignment="Top" Width="75" Click="btnClassNameDefault_Click" />
-                <Button Content="Default" Height="23" HorizontalAlignment="Left" Margin="260,10,0,0" Name="btnNamespaceDefault" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="btnNamespaceDefault_Click" RenderTransformOrigin="-0.267,0.478" />
+        <GroupBox Header="Step 3: Options" Height="275" HorizontalAlignment="Left" Margin="12,270,0,0" Name="groupBox3" VerticalAlignment="Top" Width="652">
+            <Grid Margin="0,0,-12,0">
+                <Label Content="Namespace" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.722,0.571" />
+                <my:TextBoxWithDefaultControl Margin="77,3,332,224"></my:TextBoxWithDefaultControl>
+                <Label Content="Classes" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.722,0.571" Margin="0,30,0,0" />
+                <CheckBox x:Name="checkBox" Content="Entity" HorizontalAlignment="Left" Margin="30,63,0,0" VerticalAlignment="Top"/>
+                <local:TextBoxWithDefaultControl Margin="98,60,350,167"/>
+                <CheckBox x:Name="checkBox_Copy" Content="Model" HorizontalAlignment="Left" Margin="30,113,0,0" VerticalAlignment="Top"/>
+                <local:TextBoxWithDefaultControl Margin="98,111,350,116"/>
+                <CheckBox x:Name="checkBox_Copy1" Content="Interface" HorizontalAlignment="Left" Margin="30,143,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="checkBox_Copy2" Content="Equality" HorizontalAlignment="Left" Margin="101,91,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="checkBox_Copy3" Content="Comparison" HorizontalAlignment="Left" Margin="168,91,0,0" VerticalAlignment="Top"/>
+                <Label Content="Clone Services" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.208,2.893" Margin="324,4,0,0" />
+                <CheckBox x:Name="checkBox_Copy6" Content="Entity to Model" HorizontalAlignment="Left" Margin="353,36,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="checkBox_Copy7" Content="Model to Entity" HorizontalAlignment="Left" Margin="353,54,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="checkBox_Copy8" Content="Interface to Entity" HorizontalAlignment="Left" Margin="353,71,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="checkBox_Copy9" Content="Interface to Model" HorizontalAlignment="Left" Margin="353,89,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="checkBox_Copy10" Content="To CSV" HorizontalAlignment="Left" Margin="353,134,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="checkBox_Copy11" Content="From CSV" HorizontalAlignment="Left" Margin="353,152,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="checkBox_Copy12" Content="To JSON" HorizontalAlignment="Left" Margin="353,169,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="checkBox_Copy13" Content="From JSON" HorizontalAlignment="Left" Margin="353,187,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="checkBox_Copy15" Content="Static statements" HorizontalAlignment="Left" Margin="505,31,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="checkBox_Copy16" Content="Dynamic statements" HorizontalAlignment="Left" Margin="505,49,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="checkBox_Copy17" Content="Bulk copy" HorizontalAlignment="Left" Margin="505,66,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="checkBox_Copy18" Content="Dapper" HorizontalAlignment="Left" Margin="505,84,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="checkBox_Copy19" Content="EF Fluent API" HorizontalAlignment="Left" Margin="505,101,0,0" VerticalAlignment="Top"/>
+                <Label Content="Repository" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.208,2.893" Margin="478,3,0,0" />
+                <Label Content="Serialization Services" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.208,2.893" Margin="324,108,0,0" />
+
             </Grid>
         </GroupBox>
         <Button Content="Generate Code" Height="39" HorizontalAlignment="Left" Margin="49,762,0,0" Name="btnGenerate" VerticalAlignment="Top" Width="186" Click="btnGenerate_Click" />

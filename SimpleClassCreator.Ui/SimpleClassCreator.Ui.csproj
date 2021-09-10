@@ -125,6 +125,9 @@
     </Compile>
     <Compile Include="ConnectionManager.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="TextBoxWithDefaultControl.xaml.cs">
+      <DependentUpon>TextBoxWithDefaultControl.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="QueryToClassWindow.xaml.cs">
@@ -172,6 +175,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ResultWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TextBoxWithDefaultControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
