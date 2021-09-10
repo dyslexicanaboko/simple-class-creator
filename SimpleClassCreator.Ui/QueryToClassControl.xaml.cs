@@ -1,38 +1,39 @@
-﻿using SimpleClassCreator.Lib;
-using SimpleClassCreator.Lib.DataAccess;
-using SimpleClassCreator.Lib.Models;
-using SimpleClassCreator.Lib.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using SimpleClassCreator.Lib;
+using SimpleClassCreator.Lib.DataAccess;
+using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Services;
 
 namespace SimpleClassCreator.Ui
 {
     /// <summary>
-    /// Interaction logic for QueryToClassControl.xaml
+    ///     Interaction logic for QueryToClassControl.xaml
     /// </summary>
     public partial class QueryToClassControl : UserControl
     {
-        private const string DEFAULT_NAMESPACE = "Namespace1";
+        private const string DefaultNamespace = "Namespace1";
 
         private readonly INameFormatService _svcClass;
         private readonly IQueryToClassService _svcQueryToClass;
         private readonly IGeneralDatabaseQueries _generalRepo;
 
-        private string DefaultPath => AppDomain.CurrentDomain.BaseDirectory;
+        private static string DefaultPath => AppDomain.CurrentDomain.BaseDirectory;
 
-        private List<ResultWindow> ResultWindows { get; set; }
-        private ConnectionManager VerifiedConnections { get; set; }
+        private List<ResultWindow> ResultWindows { get; }
+        private ConnectionManager VerifiedConnections { get; }
 
         private ConnectionManager.Connection CurrentConnection
         {
             get
             {
                 if (cbConnectionString.SelectedIndex > -1)
-                    return (ConnectionManager.Connection)cbConnectionString.SelectedItem;
+                    return (ConnectionManager.Connection) cbConnectionString.SelectedItem;
 
                 var obj = new ConnectionManager.Connection();
                 obj.Verified = false;
@@ -42,13 +43,16 @@ namespace SimpleClassCreator.Ui
             }
         }
 
-        // constructor Required by WPF
+        // Empty constructor Required by WPF
         public QueryToClassControl()
         {
             InitializeComponent();
         }
 
-        public QueryToClassControl(INameFormatService classService, IQueryToClassService queryToClassService, IGeneralDatabaseQueries repository)
+        public QueryToClassControl(
+            INameFormatService classService, 
+            IQueryToClassService queryToClassService,
+            IGeneralDatabaseQueries repository)
         {
             InitializeComponent();
 
@@ -67,7 +71,8 @@ namespace SimpleClassCreator.Ui
 
         private void cbConnectionString_Refresh()
         {
-            cbConnectionString.ItemsSource = new ObservableCollection<ConnectionManager.Connection>(VerifiedConnections.Connections);
+            cbConnectionString.ItemsSource =
+                new ObservableCollection<ConnectionManager.Connection>(VerifiedConnections.Connections);
         }
 
         private void btnConnectionStringTest_Click(object sender, RoutedEventArgs e)
@@ -87,7 +92,7 @@ namespace SimpleClassCreator.Ui
 
             cbConnectionString_Refresh();
 
-            bool showMessage = true;
+            var showMessage = true;
 
             if (showMessageOnFailureOnly)
                 showMessage = !obj.Success;
@@ -110,7 +115,7 @@ namespace SimpleClassCreator.Ui
 
         private void FormatTableName(TextBox target)
         {
-            string strName = target.Text;
+            var strName = target.Text;
 
             if (string.IsNullOrWhiteSpace(strName))
                 return;
@@ -125,7 +130,7 @@ namespace SimpleClassCreator.Ui
 
         private void cbIncludeNamespace_Checked(object sender, RoutedEventArgs e)
         {
-            ToggleNamespaceDependentControls((bool)cbIncludeNamespace.IsChecked);
+            ToggleNamespaceDependentControls(cbIncludeNamespace.IsChecked.GetValueOrDefault());
         }
 
         private void ToggleNamespaceDependentControls(bool isEnabled)
@@ -137,7 +142,7 @@ namespace SimpleClassCreator.Ui
 
         private void btnNamespaceDefault_Click(object sender, RoutedEventArgs e)
         {
-            txtNamespace.Text = DEFAULT_NAMESPACE;
+            txtNamespace.Text = DefaultNamespace;
         }
 
         private void btnClassNameDefault_Click(object sender, RoutedEventArgs e)
@@ -160,10 +165,10 @@ namespace SimpleClassCreator.Ui
             }
             else
             {
-                int i = 0;
+                var i = 0;
 
-                string strDir = GetPath();
-                string strExt = includeExtension ? ".cs" : string.Empty;
+                var strDir = GetPath();
+                var strExt = includeExtension ? ".cs" : string.Empty;
 
                 strName = "Class_" + i + strExt; //Must prime the string
 
@@ -180,14 +185,14 @@ namespace SimpleClassCreator.Ui
 
         private bool FileExist(string path, string fileName)
         {
-            return System.IO.File.Exists(System.IO.Path.Combine(path, fileName));
+            return File.Exists(Path.Combine(path, fileName));
         }
 
         private string GetPath()
         {
-            string strPath = txtPath.Text;
+            var strPath = txtPath.Text;
 
-            if (!System.IO.Directory.Exists(strPath))
+            if (!Directory.Exists(strPath))
                 strPath = SetPathAsDefault();
 
             return strPath;
@@ -202,7 +207,7 @@ namespace SimpleClassCreator.Ui
 
         private void cbSaveFileOnGeneration_Checked(object sender, RoutedEventArgs e)
         {
-            ToggleSaveFileOnGenerationDependentControls((bool)cbSaveFileOnGeneration.IsChecked);
+            ToggleSaveFileOnGenerationDependentControls((bool) cbSaveFileOnGeneration.IsChecked);
         }
 
         private void ToggleSaveFileOnGenerationDependentControls(bool isEnabled)
@@ -266,7 +271,7 @@ namespace SimpleClassCreator.Ui
 
                 if (obj == null) return;
 
-                var win = new ResultWindow(_svcQueryToClass.GenerateClass(obj).ToString());
+                var win = new ResultWindow(_svcQueryToClass.GenerateClass(obj));
 
                 win.Show();
 
@@ -280,7 +285,7 @@ namespace SimpleClassCreator.Ui
 
         private SourceTypeEnum GetSourceType()
         {
-            return (rbSourceTypeQuery.IsChecked == true) ? SourceTypeEnum.Query : SourceTypeEnum.TableName;
+            return rbSourceTypeQuery.IsChecked == true ? SourceTypeEnum.Query : SourceTypeEnum.TableName;
         }
 
         private ClassParameters CommonValidation()
@@ -296,7 +301,7 @@ namespace SimpleClassCreator.Ui
 
             obj.SourceType = GetSourceType();
 
-            if (IsTextInvalid(txtSource, obj.SourceType.ToString() + " cannot be empty."))
+            if (IsTextInvalid(txtSource, obj.SourceType + " cannot be empty."))
                 return null;
 
             obj.ClassSource = txtSource.Text;
@@ -304,7 +309,7 @@ namespace SimpleClassCreator.Ui
 
             if (obj.SaveAsFile)
             {
-                string s = "If saving file on generation, then {0} cannot be empty.";
+                var s = "If saving file on generation, then {0} cannot be empty.";
 
                 if (IsTextInvalid(txtPath, string.Format(s, "Path")))
                     return null;
@@ -331,10 +336,8 @@ namespace SimpleClassCreator.Ui
             obj.ReplaceExisting = GetCheckBoxState(cbReplaceExistingFiles);
 
             if (obj.IncludeNamespace)
-            {
                 if (IsTextInvalid(txtNamespace, "If specifying a namespace, it cannot be empty."))
                     return null;
-            }
 
             obj.Namespace = txtNamespace.Text;
 
@@ -349,7 +352,7 @@ namespace SimpleClassCreator.Ui
 
         private bool IsTextInvalid(TextBox target, string message)
         {
-            bool invalid = string.IsNullOrWhiteSpace(target.Text);
+            var invalid = string.IsNullOrWhiteSpace(target.Text);
 
             if (invalid)
                 Warning(message);
@@ -359,7 +362,7 @@ namespace SimpleClassCreator.Ui
 
         private bool GetCheckBoxState(CheckBox target)
         {
-            return target.IsEnabled ? (bool)target.IsChecked : false;
+            return target.IsEnabled && target.IsChecked.GetValueOrDefault();
         }
 
         private void Error(Exception ex)
@@ -408,7 +411,7 @@ namespace SimpleClassCreator.Ui
 
                 if (obj == null) return;
 
-                var win = new ResultWindow(_svcQueryToClass.GenerateGridViewColumns(obj).ToString());
+                var win = new ResultWindow(_svcQueryToClass.GenerateGridViewColumns(obj));
 
                 win.Show();
 
