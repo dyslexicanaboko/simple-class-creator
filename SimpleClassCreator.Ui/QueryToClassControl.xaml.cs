@@ -159,6 +159,9 @@ namespace SimpleClassCreator.Ui
                 }
             }
 
+            if (string.IsNullOrWhiteSpace(strName))
+                strName = TxtClassEntityName.DefaultText;
+
             return strName;
         }
 
@@ -203,12 +206,12 @@ namespace SimpleClassCreator.Ui
             LblPath.IsEnabled = isEnabled;
         }
 
-        private void btnPathDefault_Click(object sender, RoutedEventArgs e)
+        private void BtnPathDefault_Click(object sender, RoutedEventArgs e)
         {
             SetPathAsDefault();
         }
 
-        private void btnFileNameDefault_Click(object sender, RoutedEventArgs e)
+        private void BtnFileNameDefault_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TxtPath.Text))
                 SetPathAsDefault();
@@ -229,7 +232,7 @@ namespace SimpleClassCreator.Ui
             TxtFileName.Text = TxtClassEntityName.Text + ".cs";
         }
 
-        private void txtFileName_TextChanged(object sender, TextChangedEventArgs e)
+        private void TxtFileName_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
