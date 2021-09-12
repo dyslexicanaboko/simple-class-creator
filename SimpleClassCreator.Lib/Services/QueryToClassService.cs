@@ -32,8 +32,7 @@ namespace SimpleClassCreator.Lib.Services
             else
                 motif = new VbDotNetLanguage(p.ClassName);
 
-            if (parameters.IncludeNamespace)
-                motif.NamespaceName = parameters.Namespace;
+            motif.NamespaceName = parameters.Namespace;
 
             motif.InitializeMotifValues();
 

@@ -24,33 +24,32 @@
         </GroupBox>
         <GroupBox Header="Step 3: Options" Height="275" HorizontalAlignment="Left" Margin="12,270,0,0" Name="groupBox3" VerticalAlignment="Top" Width="652">
             <Grid Margin="0,0,-12,0">
-                <Label Content="Namespace" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.722,0.571" />
-                <my:TextBoxWithDefaultControl Margin="77,3,332,224"></my:TextBoxWithDefaultControl>
-                <Label Content="Classes" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.722,0.571" Margin="0,30,0,0" />
-                <CheckBox x:Name="checkBox" Content="Entity" HorizontalAlignment="Left" Margin="30,63,0,0" VerticalAlignment="Top"/>
-                <local:TextBoxWithDefaultControl Margin="98,60,350,167"/>
-                <CheckBox x:Name="checkBox_Copy" Content="Model" HorizontalAlignment="Left" Margin="30,113,0,0" VerticalAlignment="Top"/>
-                <local:TextBoxWithDefaultControl Margin="98,111,350,116"/>
-                <CheckBox x:Name="checkBox_Copy1" Content="Interface" HorizontalAlignment="Left" Margin="30,143,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="checkBox_Copy2" Content="Equality" HorizontalAlignment="Left" Margin="101,91,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="checkBox_Copy3" Content="Comparison" HorizontalAlignment="Left" Margin="168,91,0,0" VerticalAlignment="Top"/>
-                <Label Content="Clone Services" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.208,2.893" Margin="324,4,0,0" />
-                <CheckBox x:Name="checkBox_Copy6" Content="Entity to Model" HorizontalAlignment="Left" Margin="353,36,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="checkBox_Copy7" Content="Model to Entity" HorizontalAlignment="Left" Margin="353,54,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="checkBox_Copy8" Content="Interface to Entity" HorizontalAlignment="Left" Margin="353,71,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="checkBox_Copy9" Content="Interface to Model" HorizontalAlignment="Left" Margin="353,89,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="checkBox_Copy10" Content="To CSV" HorizontalAlignment="Left" Margin="353,134,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="checkBox_Copy11" Content="From CSV" HorizontalAlignment="Left" Margin="353,152,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="checkBox_Copy12" Content="To JSON" HorizontalAlignment="Left" Margin="353,169,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="checkBox_Copy13" Content="From JSON" HorizontalAlignment="Left" Margin="353,187,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="checkBox_Copy15" Content="Static statements" HorizontalAlignment="Left" Margin="505,31,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="checkBox_Copy16" Content="Dynamic statements" HorizontalAlignment="Left" Margin="505,49,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="checkBox_Copy17" Content="Bulk copy" HorizontalAlignment="Left" Margin="505,66,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="checkBox_Copy18" Content="Dapper" HorizontalAlignment="Left" Margin="505,84,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="checkBox_Copy19" Content="EF Fluent API" HorizontalAlignment="Left" Margin="505,101,0,0" VerticalAlignment="Top"/>
-                <Label Content="Repository" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.208,2.893" Margin="478,3,0,0" />
-                <Label Content="Serialization Services" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.208,2.893" Margin="324,108,0,0" />
-
+                <Label Content="Namespace" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.722,0.571" FontWeight="Bold" FontSize="14" />
+                <my:TextBoxWithDefaultControl x:Name="TxtNamespaceName" Margin="77,3,332,224" DefaultText="Namespace1"></my:TextBoxWithDefaultControl>
+                <Label Content="Classes" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.722,0.571" Margin="0,30,0,0" FontWeight="Bold" FontSize="14" />
+                <CheckBox x:Name="CbClassEntity" Content="Entity" HorizontalAlignment="Left" Margin="30,63,0,0" VerticalAlignment="Top"/>
+                <my:TextBoxWithDefaultControl x:Name="TxtClassEntityName" DefaultText="Entity1" Margin="98,60,350,167"/>
+                <CheckBox x:Name="CbClassCopyModel" Content="Model" HorizontalAlignment="Left" Margin="30,113,0,0" VerticalAlignment="Top"/>
+                <my:TextBoxWithDefaultControl x:Name="TxtClassModelName" DefaultText="Model1" Margin="98,111,350,116"/>
+                <CheckBox x:Name="CbClassInterface" Content="Interface" HorizontalAlignment="Left" Margin="30,143,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="CbEntityEquality" Content="Equality" HorizontalAlignment="Left" Margin="101,91,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="CbEntityComparison" Content="Comparison" HorizontalAlignment="Left" Margin="168,91,0,0" VerticalAlignment="Top"/>
+                <Label Content="Clone Services" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.208,2.893" Margin="324,4,0,0" FontWeight="Bold" FontSize="14" />
+                <CheckBox x:Name="CbCloneEntityToModel" Content="Entity to Model" HorizontalAlignment="Left" Margin="353,36,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="CbCloneModelToEntity" Content="Model to Entity" HorizontalAlignment="Left" Margin="353,54,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="CbCloneInterfaceToEntity" Content="Interface to Entity" HorizontalAlignment="Left" Margin="353,71,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="CbCloneInterfaceToModel" Content="Interface to Model" HorizontalAlignment="Left" Margin="353,89,0,0" VerticalAlignment="Top"/>
+                <Label Content="Serialization Services" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.208,2.893" Margin="324,108,0,0" FontWeight="Bold" FontSize="14" />
+                <CheckBox x:Name="CbSerialToCsv" Content="To CSV" HorizontalAlignment="Left" Margin="353,134,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="CbSerialFromCsv" Content="From CSV" HorizontalAlignment="Left" Margin="353,152,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="CbSerialToJson" Content="To JSON" HorizontalAlignment="Left" Margin="353,169,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="CbSerialFromJson" Content="From JSON" HorizontalAlignment="Left" Margin="353,187,0,0" VerticalAlignment="Top"/>
+                <Label Content="Repository" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.208,2.893" Margin="478,3,0,0" FontWeight="Bold" FontSize="14" />
+                <CheckBox x:Name="CbRepoStatic" Content="Static statements" HorizontalAlignment="Left" Margin="505,31,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="CbRepoDynamic" Content="Dynamic statements" HorizontalAlignment="Left" Margin="505,49,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="CbRepoBulkCopy" Content="Bulk copy" HorizontalAlignment="Left" Margin="505,66,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="CbRepoDapper" Content="Dapper" HorizontalAlignment="Left" Margin="505,84,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="CbRepoEfFluentApi" Content="EF Fluent API" HorizontalAlignment="Left" Margin="505,101,0,0" VerticalAlignment="Top"/>
             </Grid>
         </GroupBox>
         <Button Content="Generate Code" Height="39" HorizontalAlignment="Left" Margin="49,762,0,0" Name="btnGenerate" VerticalAlignment="Top" Width="186" Click="btnGenerate_Click" />

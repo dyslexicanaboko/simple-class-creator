@@ -15,13 +15,14 @@ namespace SimpleClassCreator.Ui
 
         public string Text
         {
-            get => TxtValue.Text;
-            set => TxtValue.Text = value;
+            get => TextBox.Text;
+            set => TextBox.Text = value;
         }
-
+        
         public string DefaultText { get; set; }
 
-        private void BtnDefault_Click(object sender, RoutedEventArgs e)
+        //Default behavior of the Default Button is to just set Text to whatever the DefaultText string is set to
+        private void DefaultButton_Click(object sender, RoutedEventArgs e)
         {
             Text = DefaultText;
         }

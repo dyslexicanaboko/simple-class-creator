@@ -7,7 +7,6 @@
         public bool ExcludeCollections { get; set; }
         public bool IncludeCloneMethod { get; set; }
         public bool IncludeIEquatableOfTMethods { get; set; }
-        public bool IncludeNamespace { get; set; }
         public bool IncludeTranslateMethod { get; set; }
         public bool ReplaceExisting { get; set; }
         public bool SaveAsFile { get; set; }

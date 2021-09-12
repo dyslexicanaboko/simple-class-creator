@@ -17,8 +17,6 @@ namespace SimpleClassCreator.Ui
     /// </summary>
     public partial class QueryToClassControl : UserControl
     {
-        private const string DefaultNamespace = "Namespace1";
-
         private readonly INameFormatService _svcClass;
         private readonly IQueryToClassService _svcQueryToClass;
         private readonly IGeneralDatabaseQueries _generalRepo;
@@ -67,6 +65,10 @@ namespace SimpleClassCreator.Ui
             VerifiedConnections = new ConnectionManager();
 
             cbConnectionString_Refresh();
+
+            TxtClassEntityName.TextBox.TextChanged += TxtClassEntityName_TextChanged;
+            //TODO: I don't know if I need to un-register the existing event (I probably do...)
+            TxtClassEntityName.DefaultButton.Click += BtnClassEntityNameDefault_Click;
         }
 
         private void cbConnectionString_Refresh()
@@ -105,12 +107,11 @@ namespace SimpleClassCreator.Ui
 
         private void txtSource_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if (rbSourceTypeTableName.IsChecked == true)
-            {
-                FormatTableName(txtSource);
+            if (rbSourceTypeTableName.IsChecked != true) return;
 
-                SetClassNameToDefault();
-            }
+            FormatTableName(txtSource);
+
+            TxtClassEntityName.Text = GetDefaultClassName();
         }
 
         private void FormatTableName(TextBox target)
@@ -123,34 +124,12 @@ namespace SimpleClassCreator.Ui
             target.Text = _svcClass.FormatTableQuery(strName);
         }
 
-        private void SetClassNameToDefault()
+        private void BtnClassEntityNameDefault_Click(object sender, RoutedEventArgs e)
         {
-            txtClassName.Text = GetDefaultClassName();
-        }
-
-        private void cbIncludeNamespace_Checked(object sender, RoutedEventArgs e)
-        {
-            ToggleNamespaceDependentControls(cbIncludeNamespace.IsChecked.GetValueOrDefault());
-        }
-
-        private void ToggleNamespaceDependentControls(bool isEnabled)
-        {
-            txtNamespace.IsEnabled = isEnabled;
-
-            btnNamespaceDefault.IsEnabled = isEnabled;
-        }
-
-        private void btnNamespaceDefault_Click(object sender, RoutedEventArgs e)
-        {
-            txtNamespace.Text = DefaultNamespace;
-        }
-
-        private void btnClassNameDefault_Click(object sender, RoutedEventArgs e)
-        {
-            txtClassName.Text = GetDefaultClassName();
+            TxtClassEntityName.Text = GetDefaultClassName();
 
             if (string.IsNullOrWhiteSpace(txtFileName.Text))
-                txtFileName.Text = txtClassName.Text + ".cs";
+                txtFileName.Text = TxtClassEntityName.Text + ".cs";
         }
 
         private string GetDefaultClassName(bool includeExtension = false)
@@ -237,7 +216,7 @@ namespace SimpleClassCreator.Ui
             txtFileName.Text = GetDefaultClassName(true);
         }
 
-        private void txtClassName_TextChanged(object sender, TextChangedEventArgs e)
+        private void TxtClassEntityName_TextChanged(object sender, TextChangedEventArgs e)
         {
             SetFileName();
         }
@@ -247,7 +226,7 @@ namespace SimpleClassCreator.Ui
             //On startup this control is null and so it throws an exception
             if (txtFileName == null) return;
 
-            txtFileName.Text = txtClassName.Text + ".cs";
+            txtFileName.Text = TxtClassEntityName.Text + ".cs";
         }
 
         private void txtFileName_TextChanged(object sender, TextChangedEventArgs e)
@@ -332,22 +311,21 @@ namespace SimpleClassCreator.Ui
             if (obj == null) return null;
 
             obj.LanguageType = CodeType.CSharp;
-            obj.IncludeNamespace = GetCheckBoxState(cbIncludeNamespace);
             obj.ReplaceExisting = GetCheckBoxState(cbReplaceExistingFiles);
+            obj.Namespace = TxtNamespaceName.Text;
 
-            if (obj.IncludeNamespace)
-                if (IsTextInvalid(txtNamespace, "If specifying a namespace, it cannot be empty."))
-                    return null;
-
-            obj.Namespace = txtNamespace.Text;
-
-            if (IsTextInvalid(txtClassName, "Class name cannot be empty."))
+            if (IsTextInvalid(TxtClassEntityName, "Class name cannot be empty."))
                 return null;
 
             obj.TableQuery = _svcClass.ParseTableName(txtSource.Text);
-            obj.ClassName = txtClassName.Text;
+            obj.ClassName = TxtClassEntityName.Text;
 
             return obj;
+        }
+
+        private bool IsTextInvalid(TextBoxWithDefaultControl target, string message)
+        {
+            return IsTextInvalid(target.TextBox, message);
         }
 
         private bool IsTextInvalid(TextBox target, string message)
@@ -398,9 +376,10 @@ namespace SimpleClassCreator.Ui
                 TestConnectionString();
         }
 
-        private void txtClassName_MouseDown(object sender, MouseButtonEventArgs e)
+        //TODO: What is this for again? I can't remember.
+        private void TxtClassEntityName_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            txtClassName.SelectAll();
+            TxtClassEntityName.TextBox.SelectAll();
         }
 
         private void btnGenerateGridViewColumns_Click(object sender, RoutedEventArgs e)

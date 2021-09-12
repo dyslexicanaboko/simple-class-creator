@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:SimpleClassCreator.Ui"
              mc:Ignorable="d" Width="204" Height="25">
     <Grid Background="White">
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="1,0,0,0" Name="TxtValue" VerticalAlignment="Top" Width="120" />
-        <Button Content="Default" Height="23" HorizontalAlignment="Left" Margin="127,0,0,0" Name="BtnDefault" VerticalAlignment="Top" Width="75" Click="BtnDefault_Click" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="1,0,0,0" Name="TextBox" VerticalAlignment="Top" Width="120" />
+        <Button Content="Default" Height="23" HorizontalAlignment="Left" Margin="127,0,0,0" Name="DefaultButton" VerticalAlignment="Top" Width="75" Click="DefaultButton_Click" />
     </Grid>
 </UserControl>
