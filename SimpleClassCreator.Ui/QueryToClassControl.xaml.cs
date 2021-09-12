@@ -9,6 +9,7 @@ using SimpleClassCreator.Lib;
 using SimpleClassCreator.Lib.DataAccess;
 using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services;
+using B = SimpleClassCreator.Ui.UserControlBase;
 
 namespace SimpleClassCreator.Ui
 {
@@ -17,9 +18,9 @@ namespace SimpleClassCreator.Ui
     /// </summary>
     public partial class QueryToClassControl : UserControl
     {
-        private readonly INameFormatService _svcClass;
-        private readonly IQueryToClassService _svcQueryToClass;
-        private readonly IGeneralDatabaseQueries _generalRepo;
+        private INameFormatService _svcClass;
+        private IQueryToClassService _svcQueryToClass;
+        private IGeneralDatabaseQueries _generalRepo;
 
         private static string DefaultPath => AppDomain.CurrentDomain.BaseDirectory;
 
@@ -30,12 +31,12 @@ namespace SimpleClassCreator.Ui
         {
             get
             {
-                if (cbConnectionString.SelectedIndex > -1)
-                    return (ConnectionManager.Connection) cbConnectionString.SelectedItem;
+                if (CbConnectionString.SelectedIndex > -1)
+                    return (ConnectionManager.Connection) CbConnectionString.SelectedItem;
 
                 var obj = new ConnectionManager.Connection();
                 obj.Verified = false;
-                obj.ConnectionString = cbConnectionString.Text;
+                obj.ConnectionString = CbConnectionString.Text;
 
                 return obj;
             }
@@ -45,18 +46,6 @@ namespace SimpleClassCreator.Ui
         public QueryToClassControl()
         {
             InitializeComponent();
-        }
-
-        public QueryToClassControl(
-            INameFormatService classService, 
-            IQueryToClassService queryToClassService,
-            IGeneralDatabaseQueries repository)
-        {
-            InitializeComponent();
-
-            _svcClass = classService;
-            _svcQueryToClass = queryToClassService;
-            _generalRepo = repository;
 
             SetPathAsDefault();
 
@@ -64,20 +53,31 @@ namespace SimpleClassCreator.Ui
 
             VerifiedConnections = new ConnectionManager();
 
-            cbConnectionString_Refresh();
+            CbConnectionString_Refresh();
 
             TxtClassEntityName.TextBox.TextChanged += TxtClassEntityName_TextChanged;
-            //TODO: I don't know if I need to un-register the existing event (I probably do...)
+            TxtClassEntityName.TextBox.MouseDown += TxtClassEntityName_MouseDown;
+            TxtClassEntityName.DefaultButton_UnregisterDefaultEvent();
             TxtClassEntityName.DefaultButton.Click += BtnClassEntityNameDefault_Click;
         }
 
-        private void cbConnectionString_Refresh()
+        public void Dependencies(
+            INameFormatService classService, 
+            IQueryToClassService queryToClassService,
+            IGeneralDatabaseQueries repository)
         {
-            cbConnectionString.ItemsSource =
+            _svcClass = classService;
+            _svcQueryToClass = queryToClassService;
+            _generalRepo = repository;
+        }
+
+        private void CbConnectionString_Refresh()
+        {
+            CbConnectionString.ItemsSource =
                 new ObservableCollection<ConnectionManager.Connection>(VerifiedConnections.Connections);
         }
 
-        private void btnConnectionStringTest_Click(object sender, RoutedEventArgs e)
+        private void BtnConnectionStringTest_Click(object sender, RoutedEventArgs e)
         {
             TestConnectionString();
         }
@@ -92,7 +92,7 @@ namespace SimpleClassCreator.Ui
 
             VerifiedConnections.UpdateConnection(con);
 
-            cbConnectionString_Refresh();
+            CbConnectionString_Refresh();
 
             var showMessage = true;
 
@@ -100,16 +100,16 @@ namespace SimpleClassCreator.Ui
                 showMessage = !obj.Success;
 
             if (showMessage)
-                Warning(obj.Success ? "Connected Successfully" : "Connection Failed. Returned error: " + obj.Message);
+                B.Warning(obj.Success ? "Connected Successfully" : "Connection Failed. Returned error: " + obj.Message);
 
             return obj.Success;
         }
 
-        private void txtSource_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        private void TxtSource_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if (rbSourceTypeTableName.IsChecked != true) return;
+            if (RbSourceTypeTableName.IsChecked != true) return;
 
-            FormatTableName(txtSource);
+            FormatTableName(TxtSource);
 
             TxtClassEntityName.Text = GetDefaultClassName();
         }
@@ -128,17 +128,17 @@ namespace SimpleClassCreator.Ui
         {
             TxtClassEntityName.Text = GetDefaultClassName();
 
-            if (string.IsNullOrWhiteSpace(txtFileName.Text))
-                txtFileName.Text = TxtClassEntityName.Text + ".cs";
+            if (string.IsNullOrWhiteSpace(TxtFileName.Text))
+                TxtFileName.Text = TxtClassEntityName.Text + ".cs";
         }
 
         private string GetDefaultClassName(bool includeExtension = false)
         {
             string strName;
 
-            if (rbSourceTypeTableName.IsChecked == true)
+            if (RbSourceTypeTableName.IsChecked == true)
             {
-                var tbl = _svcClass.ParseTableName(txtSource.Text);
+                var tbl = _svcClass.ParseTableName(TxtSource.Text);
 
                 strName = _svcClass.GetClassName(tbl);
             }
@@ -169,7 +169,7 @@ namespace SimpleClassCreator.Ui
 
         private string GetPath()
         {
-            var strPath = txtPath.Text;
+            var strPath = TxtPath.Text;
 
             if (!Directory.Exists(strPath))
                 strPath = SetPathAsDefault();
@@ -179,28 +179,28 @@ namespace SimpleClassCreator.Ui
 
         private string SetPathAsDefault()
         {
-            txtPath.Text = DefaultPath;
+            TxtPath.Text = DefaultPath;
 
-            return txtPath.Text;
+            return TxtPath.Text;
         }
 
-        private void cbSaveFileOnGeneration_Checked(object sender, RoutedEventArgs e)
+        private void CbSaveFileOnGeneration_Checked(object sender, RoutedEventArgs e)
         {
-            ToggleSaveFileOnGenerationDependentControls((bool) cbSaveFileOnGeneration.IsChecked);
+            ToggleSaveFileOnGenerationDependentControls(CbSaveFileOnGeneration.IsChecked.GetValueOrDefault());
         }
 
         private void ToggleSaveFileOnGenerationDependentControls(bool isEnabled)
         {
-            cbReplaceExistingFiles.IsEnabled = isEnabled;
+            CbReplaceExistingFiles.IsEnabled = isEnabled;
 
-            btnPathDefault.IsEnabled = isEnabled;
-            btnFileNameDefault.IsEnabled = isEnabled;
+            BtnPathDefault.IsEnabled = isEnabled;
+            BtnFileNameDefault.IsEnabled = isEnabled;
 
-            txtFileName.IsEnabled = isEnabled;
-            txtPath.IsEnabled = isEnabled;
+            TxtFileName.IsEnabled = isEnabled;
+            TxtPath.IsEnabled = isEnabled;
 
-            lblFileName.IsEnabled = isEnabled;
-            lblPath.IsEnabled = isEnabled;
+            LblFileName.IsEnabled = isEnabled;
+            LblPath.IsEnabled = isEnabled;
         }
 
         private void btnPathDefault_Click(object sender, RoutedEventArgs e)
@@ -210,10 +210,10 @@ namespace SimpleClassCreator.Ui
 
         private void btnFileNameDefault_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtPath.Text))
+            if (string.IsNullOrWhiteSpace(TxtPath.Text))
                 SetPathAsDefault();
 
-            txtFileName.Text = GetDefaultClassName(true);
+            TxtFileName.Text = GetDefaultClassName(true);
         }
 
         private void TxtClassEntityName_TextChanged(object sender, TextChangedEventArgs e)
@@ -224,17 +224,17 @@ namespace SimpleClassCreator.Ui
         private void SetFileName()
         {
             //On startup this control is null and so it throws an exception
-            if (txtFileName == null) return;
+            if (TxtFileName == null) return;
 
-            txtFileName.Text = TxtClassEntityName.Text + ".cs";
+            TxtFileName.Text = TxtClassEntityName.Text + ".cs";
         }
 
         private void txtFileName_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                if (FileExist(GetPath(), txtFileName.Text))
-                    txtFileName.Text = GetDefaultClassName(true) + ".cs";
+                if (FileExist(GetPath(), TxtFileName.Text))
+                    TxtFileName.Text = GetDefaultClassName(true) + ".cs";
             }
             catch
             {
@@ -242,7 +242,7 @@ namespace SimpleClassCreator.Ui
             }
         }
 
-        private void btnGenerate_Click(object sender, RoutedEventArgs e)
+        private void BtnGenerate_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -258,13 +258,13 @@ namespace SimpleClassCreator.Ui
             }
             catch (Exception ex)
             {
-                Error(ex);
+                B.Error(ex);
             }
         }
 
         private SourceTypeEnum GetSourceType()
         {
-            return rbSourceTypeQuery.IsChecked == true ? SourceTypeEnum.Query : SourceTypeEnum.TableName;
+            return RbSourceTypeQuery.IsChecked == true ? SourceTypeEnum.Query : SourceTypeEnum.TableName;
         }
 
         private ClassParameters CommonValidation()
@@ -280,25 +280,25 @@ namespace SimpleClassCreator.Ui
 
             obj.SourceType = GetSourceType();
 
-            if (IsTextInvalid(txtSource, obj.SourceType + " cannot be empty."))
+            if (IsTextInvalid(TxtSource, obj.SourceType + " cannot be empty."))
                 return null;
 
-            obj.ClassSource = txtSource.Text;
-            obj.SaveAsFile = cbSaveFileOnGeneration.IsChecked.Value;
+            obj.ClassSource = TxtSource.Text;
+            obj.SaveAsFile = CbSaveFileOnGeneration.IsChecked.GetValueOrDefault();
 
             if (obj.SaveAsFile)
             {
                 var s = "If saving file on generation, then {0} cannot be empty.";
 
-                if (IsTextInvalid(txtPath, string.Format(s, "Path")))
+                if (IsTextInvalid(TxtPath, string.Format(s, "Path")))
                     return null;
 
-                if (IsTextInvalid(txtFileName, string.Format(s, "File name")))
+                if (IsTextInvalid(TxtFileName, string.Format(s, "File name")))
                     return null;
             }
 
-            obj.Filepath = txtPath.Text;
-            obj.Filename = txtFileName.Text;
+            obj.Filepath = TxtPath.Text;
+            obj.Filename = TxtFileName.Text;
 
             return obj;
         }
@@ -311,13 +311,13 @@ namespace SimpleClassCreator.Ui
             if (obj == null) return null;
 
             obj.LanguageType = CodeType.CSharp;
-            obj.ReplaceExisting = GetCheckBoxState(cbReplaceExistingFiles);
+            obj.ReplaceExisting = GetCheckBoxState(CbReplaceExistingFiles);
             obj.Namespace = TxtNamespaceName.Text;
 
             if (IsTextInvalid(TxtClassEntityName, "Class name cannot be empty."))
                 return null;
 
-            obj.TableQuery = _svcClass.ParseTableName(txtSource.Text);
+            obj.TableQuery = _svcClass.ParseTableName(TxtSource.Text);
             obj.ClassName = TxtClassEntityName.Text;
 
             return obj;
@@ -333,7 +333,7 @@ namespace SimpleClassCreator.Ui
             var invalid = string.IsNullOrWhiteSpace(target.Text);
 
             if (invalid)
-                Warning(message);
+                B.Warning(message);
 
             return invalid;
         }
@@ -341,16 +341,6 @@ namespace SimpleClassCreator.Ui
         private bool GetCheckBoxState(CheckBox target)
         {
             return target.IsEnabled && target.IsChecked.GetValueOrDefault();
-        }
-
-        private void Error(Exception ex)
-        {
-            Warning(ex.Message);
-        }
-
-        private void Warning(string message)
-        {
-            MessageBox.Show(message);
         }
 
         public void CloseResultWindows()
@@ -370,19 +360,18 @@ namespace SimpleClassCreator.Ui
             }
         }
 
-        private void cbConnectionString_KeyDown(object sender, KeyEventArgs e)
+        private void CbConnectionString_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
                 TestConnectionString();
         }
 
-        //TODO: What is this for again? I can't remember.
         private void TxtClassEntityName_MouseDown(object sender, MouseButtonEventArgs e)
         {
             TxtClassEntityName.TextBox.SelectAll();
         }
 
-        private void btnGenerateGridViewColumns_Click(object sender, RoutedEventArgs e)
+        private void BtnGenerateGridViewColumns_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -398,7 +387,7 @@ namespace SimpleClassCreator.Ui
             }
             catch (Exception ex)
             {
-                Error(ex);
+                B.Error(ex);
             }
         }
     }

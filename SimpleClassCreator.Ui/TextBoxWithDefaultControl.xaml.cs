@@ -26,5 +26,13 @@ namespace SimpleClassCreator.Ui
         {
             Text = DefaultText;
         }
+
+        /// <summary>
+        /// To change the default behavior of the DefaultButton's Click event, call this method before registering an additional event.
+        /// </summary>
+        public void DefaultButton_UnregisterDefaultEvent()
+        {
+            DefaultButton.Click -= DefaultButton_Click;
+        }
     }
 }

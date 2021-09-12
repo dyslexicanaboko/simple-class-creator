@@ -128,10 +128,11 @@
     <Compile Include="TextBoxWithDefaultControl.xaml.cs">
       <DependentUpon>TextBoxWithDefaultControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControlBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="QueryToClassWindow.xaml.cs">
-      <DependentUpon>QueryToClassWindow.xaml</DependentUpon>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -170,7 +171,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="QueryToClassWindow.xaml">
+    <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

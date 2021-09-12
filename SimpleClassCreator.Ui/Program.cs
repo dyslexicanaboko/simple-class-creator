@@ -32,7 +32,7 @@ namespace SimpleClassCreator.Ui
             // Register your windows and view models:
             //container.Register<DtoMakerControl>();
             //container.Register<QueryToClassControl>();
-            container.Register<QueryToClassWindow>();
+            container.Register<MainWindow>();
 
             container.Verify();
 
@@ -46,7 +46,7 @@ namespace SimpleClassCreator.Ui
                 var app = new App();
                 //app.InitializeComponent();
                 
-                var mainWindow = container.GetInstance<QueryToClassWindow>();
+                var mainWindow = container.GetInstance<MainWindow>();
                 
                 app.Run(mainWindow);
             }
