@@ -267,12 +267,12 @@ namespace SimpleClassCreator.Ui
 
         private SourceTypeEnum GetSourceType()
         {
-            return RbSourceTypeQuery.IsChecked == true ? SourceTypeEnum.Query : SourceTypeEnum.TableName;
+            return RbSourceTypeQuery.IsChecked.GetValueOrDefault() ? SourceTypeEnum.Query : SourceTypeEnum.TableName;
         }
 
-        private ClassParameters CommonValidation()
+        private QueryToClassParameters CommonValidation()
         {
-            var obj = new ClassParameters();
+            var obj = new QueryToClassParameters();
 
             var con = CurrentConnection;
 
@@ -291,7 +291,7 @@ namespace SimpleClassCreator.Ui
 
             if (obj.SaveAsFile)
             {
-                var s = "If saving file on generation, then {0} cannot be empty.";
+                const string s = "If saving file on generation, then {0} cannot be empty.";
 
                 if (IsTextInvalid(TxtPath, string.Format(s, "Path")))
                     return null;
@@ -306,7 +306,7 @@ namespace SimpleClassCreator.Ui
             return obj;
         }
 
-        private ClassParameters GetCodeGeneratorParameters()
+        private QueryToClassParameters GetCodeGeneratorParameters()
         {
             var obj = CommonValidation();
 
@@ -372,26 +372,6 @@ namespace SimpleClassCreator.Ui
         private void TxtClassEntityName_MouseDown(object sender, MouseButtonEventArgs e)
         {
             TxtClassEntityName.TextBox.SelectAll();
-        }
-
-        private void BtnGenerateGridViewColumns_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var obj = CommonValidation();
-
-                if (obj == null) return;
-
-                var win = new ResultWindow(_svcQueryToClass.GenerateGridViewColumns(obj));
-
-                win.Show();
-
-                ResultWindows.Add(win);
-            }
-            catch (Exception ex)
-            {
-                B.Error(ex);
-            }
         }
     }
 }

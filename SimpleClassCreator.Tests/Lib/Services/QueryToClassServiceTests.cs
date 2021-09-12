@@ -28,7 +28,7 @@ namespace SimpleClassCreator.Tests.Lib.Services
 
             var dt = PersonUtil.GetPersonAsDataTable();
 
-            var p = new ClassParameters
+            var p = new QueryToClassParameters
             {
                 ClassName = dt.TableName,
                 SourceType = SourceTypeEnum.TableName,

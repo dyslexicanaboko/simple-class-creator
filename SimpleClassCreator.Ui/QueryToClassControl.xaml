@@ -53,7 +53,7 @@
         </GroupBox>
         <GroupBox Header="Step 4: Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,500,0,0" Width="652">
             <Grid>
-                <Button Content="Generate Code" Height="39" HorizontalAlignment="Left" Margin="0,60,0,0" Name="BtnGenerate" VerticalAlignment="Top" Width="186" Click="BtnGenerate_Click" />
+                <Button Content="Generate Code" Height="89" HorizontalAlignment="Left" Margin="6,10,0,0" Name="BtnGenerate" VerticalAlignment="Top" Width="186" Click="BtnGenerate_Click" FontSize="20" Background="#FFD62A2A" Foreground="White" />
                 <CheckBox Content="Save as file on generation" Height="16" HorizontalAlignment="Left" Margin="197,10,0,0" Name="CbSaveFileOnGeneration" VerticalAlignment="Top" Checked="CbSaveFileOnGeneration_Checked" Unchecked="CbSaveFileOnGeneration_Checked" />
                 <TextBox Height="23" HorizontalAlignment="Left" Margin="276,76,0,0" Name="TxtFileName" VerticalAlignment="Top" Width="120" IsEnabled="False" TextChanged="TxtFileName_TextChanged" />
                 <CheckBox Content="Replace existing files" Height="16" HorizontalAlignment="Left" Margin="217,32,0,0" Name="CbReplaceExistingFiles" VerticalAlignment="Top" IsEnabled="False" />
@@ -62,7 +62,6 @@
                 <Label Content="Path" Height="28" HorizontalAlignment="Left" Margin="213,50,0,0" Name="LblPath" VerticalAlignment="Top" IsEnabled="False" />
                 <Button Content="Default" Height="23" HorizontalAlignment="Left" Margin="402,76,0,0" Name="BtnFileNameDefault" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="BtnFileNameDefault_Click" />
                 <Button Content="Default" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="402,49,0,0" Name="BtnPathDefault" VerticalAlignment="Top" Width="75" Click="BtnPathDefault_Click" />
-                <Button Content="Generate Columns" Height="38" HorizontalAlignment="Left" Margin="0,10,0,0" Name="BtnGenerateGridViewColumns" VerticalAlignment="Top" Width="186" Click="BtnGenerateGridViewColumns_Click" />
             </Grid>
         </GroupBox>
     </Grid>

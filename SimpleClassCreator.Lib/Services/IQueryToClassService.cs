@@ -4,8 +4,8 @@ namespace SimpleClassCreator.Lib.Services
 {
     public interface IQueryToClassService
     {
-        string GenerateClass(ClassParameters parameters);
+        string GenerateClass(QueryToClassParameters parameters);
      
-        string GenerateGridViewColumns(ClassParameters parameters);
+        string GenerateGridViewColumns(QueryToClassParameters parameters);
     }
 }

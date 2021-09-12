@@ -19,7 +19,7 @@ namespace SimpleClassCreator.Lib.Services
             _repository = repository;
         }
 
-        public string GenerateClass(ClassParameters parameters)
+        public string GenerateClass(QueryToClassParameters parameters)
         {
             var p = parameters;
 
@@ -44,7 +44,7 @@ namespace SimpleClassCreator.Lib.Services
             return content;
         }
 
-        public string GenerateGridViewColumns(ClassParameters parameters)
+        public string GenerateGridViewColumns(QueryToClassParameters parameters)
         {
             var p = parameters;
             
@@ -85,7 +85,7 @@ namespace SimpleClassCreator.Lib.Services
         /// The main internal method that orchestrates the code generation for the provided parameters
         /// </summary>
         /// <returns>The generated class code as a StringBuilder</returns>
-        private string GenerateClass(DotNetLanguage language, ClassParameters parameters)
+        private string GenerateClass(DotNetLanguage language, QueryToClassParameters parameters)
         {
             var p = parameters;
 
@@ -128,7 +128,7 @@ namespace SimpleClassCreator.Lib.Services
         /// </summary>
         /// <param name="fileName">The name of the file, including the file extension</param>
         /// <param name="sb">The StringBuilder that contains the generated code</param>
-        private void WriteClassToFile(ClassParameters p, string content)
+        private void WriteClassToFile(QueryToClassParameters p, string content)
         {
             var fullFilePath = Path.Combine(p.Filepath, p.Filename);
 

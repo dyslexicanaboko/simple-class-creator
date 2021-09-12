@@ -106,10 +106,10 @@ Please keep in mind casing matters.";
             return sp;
         }
 
-        private ClassParameters GetParametersFromUi()
+        private DtoMakerParameters GetParametersFromUi()
         {
             //Not every parameter will be in use yet
-            var p = new ClassParameters
+            var p = new DtoMakerParameters
             {
                 IncludeCloneMethod = GetValue(cbxIncludeCloneMethod),
                 ExcludeCollections = GetValue(cbxExcludeCollections),

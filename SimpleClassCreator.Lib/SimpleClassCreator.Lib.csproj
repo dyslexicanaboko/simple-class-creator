@@ -50,6 +50,7 @@
     <Compile Include="Models\AssemblyInfo.cs" />
     <Compile Include="Models\ClassInfo.cs" />
     <Compile Include="Models\ClassInstructions.cs" />
+    <Compile Include="Models\DtoMakerParameters.cs" />
     <Compile Include="Services\CodeFactory\ClassMemberStrings.cs" />
     <Compile Include="Services\Generators\GeneratorBase.cs" />
     <Compile Include="Services\Generators\ModelGenerator.cs" />
@@ -60,7 +61,7 @@
     <Compile Include="DataAccess\IGeneralDatabaseQueries.cs" />
     <Compile Include="DataAccess\IQueryToClassRepository.cs" />
     <Compile Include="Enumerations.cs" />
-    <Compile Include="Models\ClassParameters.cs" />
+    <Compile Include="Models\QueryToClassParameters.cs" />
     <Compile Include="Services\CodeFactory\CSharpLanguage.cs" />
     <Compile Include="DataAccess\BaseRepository.cs" />
     <Compile Include="Services\CodeFactory\DotNetLanguage.cs" />

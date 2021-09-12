@@ -83,7 +83,7 @@ namespace SimpleClassCreator.Lib.Services
             return asm;
         }
 
-        public string MakeDto(string className, ClassParameters parameters)
+        public string MakeDto(string className, DtoMakerParameters parameters)
         {
             var p = parameters;
 
