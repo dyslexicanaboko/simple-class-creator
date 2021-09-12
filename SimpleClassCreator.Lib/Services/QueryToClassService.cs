@@ -28,9 +28,9 @@ namespace SimpleClassCreator.Lib.Services
             DotNetLanguage motif;
 
             if (p.LanguageType == CodeType.CSharp)
-                motif = new CSharpLanguage(p.ClassName);
+                motif = new CSharpLanguage(p.ClassOptions.EntityName);
             else
-                motif = new VbDotNetLanguage(p.ClassName);
+                motif = new VbDotNetLanguage(p.ClassOptions.EntityName);
 
             motif.NamespaceName = parameters.Namespace;
 
@@ -50,7 +50,7 @@ namespace SimpleClassCreator.Lib.Services
             
             _repository.ChangeConnectionString(p.ConnectionString);
 
-            var sql = p.SourceType == SourceTypeEnum.TableName ? ("SELECT TOP 0 * FROM " + p.ClassSource) : p.ClassSource;
+            var sql = p.SourceSqlType == SourceSqlType.TableName ? ("SELECT TOP 0 * FROM " + p.SourceSqlText) : p.SourceSqlText;
 
             var dt = _repository.GetSchema(sql);
 
@@ -90,13 +90,13 @@ namespace SimpleClassCreator.Lib.Services
             var p = parameters;
 
             //primaryKey = GetPrimaryKeyColumn(p.TableQuery);
-            var sqlQuery = p.SourceType == SourceTypeEnum.TableName ? ("SELECT TOP 0 * FROM " + p.ClassSource) : p.ClassSource;
+            var sqlQuery = p.SourceSqlType == SourceSqlType.TableName ? ("SELECT TOP 0 * FROM " + p.SourceSqlText) : p.SourceSqlText;
 
             var dt = _repository.GetSchema(sqlQuery);
 
             var ins = new ClassInstructions();
 
-            ins.ClassName = p.ClassName;
+            ins.ClassName = p.ClassOptions.EntityName;
             ins.Namespace = p.Namespace;
 
             if (language.IncludeSerializableAttribute)
@@ -130,7 +130,7 @@ namespace SimpleClassCreator.Lib.Services
         /// <param name="sb">The StringBuilder that contains the generated code</param>
         private void WriteClassToFile(QueryToClassParameters p, string content)
         {
-            var fullFilePath = Path.Combine(p.Filepath, p.Filename);
+            var fullFilePath = Path.Combine(p.FilePath, p.Filename);
 
             File.WriteAllText(fullFilePath, content);
 

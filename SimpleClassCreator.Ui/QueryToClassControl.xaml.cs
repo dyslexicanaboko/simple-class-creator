@@ -265,9 +265,9 @@ namespace SimpleClassCreator.Ui
             }
         }
 
-        private SourceTypeEnum GetSourceType()
+        private SourceSqlType GetSourceType()
         {
-            return RbSourceTypeQuery.IsChecked.GetValueOrDefault() ? SourceTypeEnum.Query : SourceTypeEnum.TableName;
+            return RbSourceTypeQuery.IsChecked.GetValueOrDefault() ? SourceSqlType.Query : SourceSqlType.TableName;
         }
 
         private QueryToClassParameters CommonValidation()
@@ -281,12 +281,12 @@ namespace SimpleClassCreator.Ui
 
             obj.ConnectionString = CurrentConnection.ConnectionString;
 
-            obj.SourceType = GetSourceType();
+            obj.SourceSqlType = GetSourceType();
 
-            if (IsTextInvalid(TxtSource, obj.SourceType + " cannot be empty."))
+            if (IsTextInvalid(TxtSource, obj.SourceSqlType + " cannot be empty."))
                 return null;
 
-            obj.ClassSource = TxtSource.Text;
+            obj.SourceSqlText = TxtSource.Text;
             obj.SaveAsFile = CbSaveFileOnGeneration.IsChecked.GetValueOrDefault();
 
             if (obj.SaveAsFile)
@@ -300,7 +300,7 @@ namespace SimpleClassCreator.Ui
                     return null;
             }
 
-            obj.Filepath = TxtPath.Text;
+            obj.FilePath = TxtPath.Text;
             obj.Filename = TxtFileName.Text;
 
             return obj;
@@ -314,14 +314,14 @@ namespace SimpleClassCreator.Ui
             if (obj == null) return null;
 
             obj.LanguageType = CodeType.CSharp;
-            obj.ReplaceExisting = GetCheckBoxState(CbReplaceExistingFiles);
+            obj.OverwriteExistingFiles = GetCheckBoxState(CbReplaceExistingFiles);
             obj.Namespace = TxtNamespaceName.Text;
 
             if (IsTextInvalid(TxtClassEntityName, "Class name cannot be empty."))
                 return null;
 
             obj.TableQuery = _svcClass.ParseTableName(TxtSource.Text);
-            obj.ClassName = TxtClassEntityName.Text;
+            obj.ClassOptions.EntityName = TxtClassEntityName.Text;
 
             return obj;
         }

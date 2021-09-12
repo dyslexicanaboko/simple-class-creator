@@ -50,6 +50,7 @@
     <Compile Include="Models\AssemblyInfo.cs" />
     <Compile Include="Models\ClassInfo.cs" />
     <Compile Include="Models\ClassInstructions.cs" />
+    <Compile Include="Models\ClassOptions.cs" />
     <Compile Include="Models\DtoMakerParameters.cs" />
     <Compile Include="Services\CodeFactory\ClassMemberStrings.cs" />
     <Compile Include="Services\Generators\GeneratorBase.cs" />

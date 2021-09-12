@@ -31,8 +31,8 @@ namespace SimpleClassCreator.Tests.Lib.Services
             var p = new QueryToClassParameters
             {
                 ClassName = dt.TableName,
-                SourceType = SourceTypeEnum.TableName,
-                ClassSource = dt.TableName,
+                SourceSqlType = SourceSqlType.TableName,
+                SourceSqlText = dt.TableName,
                 LanguageType = CodeType.CSharp,
                 Namespace = "SimpleClassCreator.Tests.DummyObjects",
                 TableQuery = new TableQuery() { Schema = "dbo", Table = dt.TableName }
