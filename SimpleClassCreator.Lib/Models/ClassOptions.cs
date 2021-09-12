@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SimpleClassCreator.Lib.Models
+﻿namespace SimpleClassCreator.Lib.Models
 {
     /// <summary>
     /// Generation options. Each property should be read as "Generate PropertyName".
@@ -13,6 +7,10 @@ namespace SimpleClassCreator.Lib.Models
     {
         public bool GenerateEntity { get; set; }
         
+        public bool GenerateEntityEquality { get; set; }
+        
+        public bool GenerateEntityComparison { get; set; }
+
         public string EntityName { get; set; }
 
         public bool GenerateModel { get; set; }

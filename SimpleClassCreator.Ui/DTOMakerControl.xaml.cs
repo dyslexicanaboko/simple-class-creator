@@ -133,7 +133,7 @@ Please keep in mind casing matters.";
 
             _generator.LoadAssembly(AssemblyFullPath);
 
-            var win = new ResultWindow(_generator.MakeDto(ClassFqdn, p));
+            var win = new ResultWindow("Dto", _generator.MakeDto(ClassFqdn, p));
             
             win.Show();
         }

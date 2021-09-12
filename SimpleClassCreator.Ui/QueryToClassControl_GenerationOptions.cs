@@ -65,7 +65,12 @@ namespace SimpleClassCreator.Ui
             obj.FilePath = TxtPath.Text;
             obj.Filename = TxtFileName.Text;
 
-            return obj;
+            if (_classCheckBoxGroup.HasTickedCheckBox())
+                return obj;
+            
+            B.Warning("You must select at least one construct for generation. None is not an option.");
+
+            return null;
         }
 
         private ClassOptions GetClassOptions()
@@ -74,6 +79,8 @@ namespace SimpleClassCreator.Ui
             {
                 EntityName = TxtClassEntityName.Text,
                 GenerateEntity = B.IsChecked(CbClassEntity),
+                GenerateEntityEquality = B.IsChecked(CbClassEntityEquality),
+                GenerateEntityComparison = B.IsChecked(CbClassEntityComparison),
                 GenerateInterface = B.IsChecked(CbClassInterface),
                 GenerateModel = B.IsChecked(CbClassModel),
                 ModelName = TxtClassModelName.Text
@@ -116,6 +123,16 @@ namespace SimpleClassCreator.Ui
             };
 
             return dict;
+        }
+
+        private CheckBoxGroup GetCheckBoxGroup()
+        {
+            var cbg = new CheckBoxGroup();
+            cbg.Add(CbClassEntity);
+            cbg.Add(CbClassModel);
+            cbg.Add(CbClassInterface);
+
+            return cbg;
         }
     }
 }

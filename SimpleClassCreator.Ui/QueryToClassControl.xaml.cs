@@ -20,27 +20,12 @@ namespace SimpleClassCreator.Ui
         private IQueryToClassService _svcQueryToClass;
         private IGeneralDatabaseQueries _generalRepo;
         private readonly Dictionary<ClassServices, CheckBox> _serviceToCheckBoxMap;
+        private readonly CheckBoxGroup _classCheckBoxGroup;
 
         private static string DefaultPath => AppDomain.CurrentDomain.BaseDirectory;
 
         private List<ResultWindow> ResultWindows { get; }
-        private ConnectionManager VerifiedConnections { get; }
-
-        private ConnectionManager.Connection CurrentConnection
-        {
-            get
-            {
-                if (CbConnectionString.SelectedIndex > -1)
-                    return (ConnectionManager.Connection) CbConnectionString.SelectedItem;
-
-                var obj = new ConnectionManager.Connection();
-                obj.Verified = false;
-                obj.ConnectionString = CbConnectionString.Text;
-
-                return obj;
-            }
-        }
-
+        
         // Empty constructor Required by WPF
         public QueryToClassControl()
         {
@@ -53,13 +38,19 @@ namespace SimpleClassCreator.Ui
             VerifiedConnections = new ConnectionManager();
 
             CbConnectionString_Refresh();
-
+            
+            TxtNamespaceName.ApplyDefault();
+            
             TxtClassEntityName.TextBox.TextChanged += TxtClassEntityName_TextChanged;
             TxtClassEntityName.TextBox.MouseDown += TxtClassEntityName_MouseDown;
             TxtClassEntityName.DefaultButton_UnregisterDefaultEvent();
             TxtClassEntityName.DefaultButton.Click += BtnClassEntityNameDefault_Click;
 
+            TxtClassModelName.DefaultButton_UnregisterDefaultEvent();
+            TxtClassModelName.DefaultButton.Click += (sender, args) => SetModelName();
+
             _serviceToCheckBoxMap = GetServiceToCheckBoxMap();
+            _classCheckBoxGroup = GetCheckBoxGroup();
         }
 
         public void Dependencies(
@@ -128,6 +119,8 @@ namespace SimpleClassCreator.Ui
 
             if (string.IsNullOrWhiteSpace(strName))
                 strName = TxtClassEntityName.DefaultText;
+            else
+                strName += "Entity";
 
             return strName;
         }
@@ -189,6 +182,20 @@ namespace SimpleClassCreator.Ui
         private void TxtClassEntityName_TextChanged(object sender, TextChangedEventArgs e)
         {
             SetFileName();
+
+            if (!string.IsNullOrWhiteSpace(TxtClassModelName.Text)) return;
+
+            SetModelName();
+        }
+
+        private void SetModelName()
+        {
+            var entity = TxtClassEntityName.Text;
+
+            if (entity.EndsWith("Entity", StringComparison.InvariantCultureIgnoreCase))
+                entity = entity.TrimEnd("Entity".ToCharArray());
+
+            TxtClassModelName.Text = entity + "Model";
         }
 
         private void SetFileName()
@@ -220,7 +227,7 @@ namespace SimpleClassCreator.Ui
 
                 if (obj == null) return;
 
-                var win = new ResultWindow(_svcQueryToClass.GenerateClass(obj));
+                var win = new ResultWindow(obj.ClassOptions.EntityName, _svcQueryToClass.GenerateClass(obj));
 
                 win.Show();
 

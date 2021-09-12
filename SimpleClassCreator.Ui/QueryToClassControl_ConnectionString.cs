@@ -12,6 +12,23 @@ namespace SimpleClassCreator.Ui
     /// </summary>
     public partial class QueryToClassControl
     {
+        private ConnectionManager VerifiedConnections { get; }
+
+        private ConnectionManager.Connection CurrentConnection
+        {
+            get
+            {
+                if (CbConnectionString.SelectedIndex > -1)
+                    return (ConnectionManager.Connection)CbConnectionString.SelectedItem;
+
+                var obj = new ConnectionManager.Connection();
+                obj.Verified = false;
+                obj.ConnectionString = CbConnectionString.Text;
+
+                return obj;
+            }
+        }
+
         private void CbConnectionString_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)

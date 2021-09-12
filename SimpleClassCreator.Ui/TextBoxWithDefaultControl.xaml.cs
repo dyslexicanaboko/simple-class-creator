@@ -24,7 +24,7 @@ namespace SimpleClassCreator.Ui
         //Default behavior of the Default Button is to just set Text to whatever the DefaultText string is set to
         private void DefaultButton_Click(object sender, RoutedEventArgs e)
         {
-            Text = DefaultText;
+            ApplyDefault();
         }
 
         /// <summary>
@@ -34,5 +34,7 @@ namespace SimpleClassCreator.Ui
         {
             DefaultButton.Click -= DefaultButton_Click;
         }
+
+        public void ApplyDefault() => TextBox.Text = DefaultText;
     }
 }
