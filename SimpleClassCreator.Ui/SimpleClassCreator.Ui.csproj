@@ -120,6 +120,8 @@
     <Compile Include="QueryToClassControl.xaml.cs">
       <DependentUpon>QueryToClassControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="QueryToClassControl_ConnectionString.cs" />
+    <Compile Include="QueryToClassControl_GenerationOptions.cs" />
     <Compile Include="ResultWindow.xaml.cs">
       <DependentUpon>ResultWindow.xaml</DependentUpon>
     </Compile>

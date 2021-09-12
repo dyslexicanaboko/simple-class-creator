@@ -11,14 +11,14 @@ namespace SimpleClassCreator.Lib.Models
     /// </summary>
     public class ClassOptions
     {
-        public bool Entity { get; set; }
+        public bool GenerateEntity { get; set; }
         
         public string EntityName { get; set; }
 
-        public bool Model { get; set; }
+        public bool GenerateModel { get; set; }
 
         public string ModelName { get; set; }
 
-        public bool Interface { get; set; }
+        public bool GenerateInterface { get; set; }
     }
 }

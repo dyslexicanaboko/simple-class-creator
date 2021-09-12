@@ -1,14 +1,12 @@
-﻿using System;
+﻿using SimpleClassCreator.Lib;
+using SimpleClassCreator.Lib.DataAccess;
+using SimpleClassCreator.Lib.Services;
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using SimpleClassCreator.Lib;
-using SimpleClassCreator.Lib.DataAccess;
-using SimpleClassCreator.Lib.Models;
-using SimpleClassCreator.Lib.Services;
 using B = SimpleClassCreator.Ui.UserControlBase;
 
 namespace SimpleClassCreator.Ui
@@ -21,6 +19,7 @@ namespace SimpleClassCreator.Ui
         private INameFormatService _svcClass;
         private IQueryToClassService _svcQueryToClass;
         private IGeneralDatabaseQueries _generalRepo;
+        private readonly Dictionary<ClassServices, CheckBox> _serviceToCheckBoxMap;
 
         private static string DefaultPath => AppDomain.CurrentDomain.BaseDirectory;
 
@@ -59,6 +58,8 @@ namespace SimpleClassCreator.Ui
             TxtClassEntityName.TextBox.MouseDown += TxtClassEntityName_MouseDown;
             TxtClassEntityName.DefaultButton_UnregisterDefaultEvent();
             TxtClassEntityName.DefaultButton.Click += BtnClassEntityNameDefault_Click;
+
+            _serviceToCheckBoxMap = GetServiceToCheckBoxMap();
         }
 
         public void Dependencies(
@@ -71,45 +72,11 @@ namespace SimpleClassCreator.Ui
             _generalRepo = repository;
         }
 
-        private void CbConnectionString_Refresh()
-        {
-            CbConnectionString.ItemsSource =
-                new ObservableCollection<ConnectionManager.Connection>(VerifiedConnections.Connections);
-        }
-
-        private void BtnConnectionStringTest_Click(object sender, RoutedEventArgs e)
-        {
-            TestConnectionString();
-        }
-
-        private bool TestConnectionString(bool showMessageOnFailureOnly = false)
-        {
-            var con = CurrentConnection;
-
-            var obj = _generalRepo.TestConnectionString(con.ConnectionString);
-
-            con.Verified = obj.Success;
-
-            VerifiedConnections.UpdateConnection(con);
-
-            CbConnectionString_Refresh();
-
-            var showMessage = true;
-
-            if (showMessageOnFailureOnly)
-                showMessage = !obj.Success;
-
-            if (showMessage)
-                B.Warning(obj.Success ? "Connected Successfully" : "Connection Failed. Returned error: " + obj.Message);
-
-            return obj.Success;
-        }
-
-        private void TxtSource_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        private void TxtSqlSourceText_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             if (RbSourceTypeTableName.IsChecked != true) return;
 
-            FormatTableName(TxtSource);
+            FormatTableName(TxtSourceSqlText);
 
             TxtClassEntityName.Text = GetDefaultClassName();
         }
@@ -138,7 +105,7 @@ namespace SimpleClassCreator.Ui
 
             if (RbSourceTypeTableName.IsChecked == true)
             {
-                var tbl = _svcClass.ParseTableName(TxtSource.Text);
+                var tbl = _svcClass.ParseTableName(TxtSourceSqlText.Text);
 
                 strName = _svcClass.GetClassName(tbl);
             }
@@ -249,7 +216,7 @@ namespace SimpleClassCreator.Ui
         {
             try
             {
-                var obj = GetCodeGeneratorParameters();
+                var obj = GetParameters();
 
                 if (obj == null) return;
 
@@ -270,82 +237,6 @@ namespace SimpleClassCreator.Ui
             return RbSourceTypeQuery.IsChecked.GetValueOrDefault() ? SourceSqlType.Query : SourceSqlType.TableName;
         }
 
-        private QueryToClassParameters CommonValidation()
-        {
-            var obj = new QueryToClassParameters();
-
-            var con = CurrentConnection;
-
-            if (!con.Verified && !TestConnectionString(true))
-                return null;
-
-            obj.ConnectionString = CurrentConnection.ConnectionString;
-
-            obj.SourceSqlType = GetSourceType();
-
-            if (IsTextInvalid(TxtSource, obj.SourceSqlType + " cannot be empty."))
-                return null;
-
-            obj.SourceSqlText = TxtSource.Text;
-            obj.SaveAsFile = CbSaveFileOnGeneration.IsChecked.GetValueOrDefault();
-
-            if (obj.SaveAsFile)
-            {
-                const string s = "If saving file on generation, then {0} cannot be empty.";
-
-                if (IsTextInvalid(TxtPath, string.Format(s, "Path")))
-                    return null;
-
-                if (IsTextInvalid(TxtFileName, string.Format(s, "File name")))
-                    return null;
-            }
-
-            obj.FilePath = TxtPath.Text;
-            obj.Filename = TxtFileName.Text;
-
-            return obj;
-        }
-
-        private QueryToClassParameters GetCodeGeneratorParameters()
-        {
-            var obj = CommonValidation();
-
-            //Check if the common validation failed
-            if (obj == null) return null;
-
-            obj.LanguageType = CodeType.CSharp;
-            obj.OverwriteExistingFiles = GetCheckBoxState(CbReplaceExistingFiles);
-            obj.Namespace = TxtNamespaceName.Text;
-
-            if (IsTextInvalid(TxtClassEntityName, "Class name cannot be empty."))
-                return null;
-
-            obj.TableQuery = _svcClass.ParseTableName(TxtSource.Text);
-            obj.ClassOptions.EntityName = TxtClassEntityName.Text;
-
-            return obj;
-        }
-
-        private bool IsTextInvalid(TextBoxWithDefaultControl target, string message)
-        {
-            return IsTextInvalid(target.TextBox, message);
-        }
-
-        private bool IsTextInvalid(TextBox target, string message)
-        {
-            var invalid = string.IsNullOrWhiteSpace(target.Text);
-
-            if (invalid)
-                B.Warning(message);
-
-            return invalid;
-        }
-
-        private bool GetCheckBoxState(CheckBox target)
-        {
-            return target.IsEnabled && target.IsChecked.GetValueOrDefault();
-        }
-
         public void CloseResultWindows()
         {
             if (ResultWindows == null) return;
@@ -361,12 +252,6 @@ namespace SimpleClassCreator.Ui
                     //Trap
                 }
             }
-        }
-
-        private void CbConnectionString_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-                TestConnectionString();
         }
 
         private void TxtClassEntityName_MouseDown(object sender, MouseButtonEventArgs e)
