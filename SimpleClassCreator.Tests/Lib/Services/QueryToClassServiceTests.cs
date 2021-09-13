@@ -30,14 +30,15 @@ namespace SimpleClassCreator.Tests.Lib.Services
 
             var p = new QueryToClassParameters
             {
-                ClassName = dt.TableName,
                 SourceSqlType = SourceSqlType.TableName,
                 SourceSqlText = dt.TableName,
                 LanguageType = CodeType.CSharp,
                 Namespace = "SimpleClassCreator.Tests.DummyObjects",
                 TableQuery = new TableQuery() { Schema = "dbo", Table = dt.TableName }
             };
-            
+
+            p.ClassOptions.EntityName = dt.TableName;
+
             var repo = new Mock<IQueryToClassRepository>();
             repo.Setup(x => x.GetSchema(It.IsAny<string>())).Returns(dt);
             repo.Setup(x => x.GetPrimaryKeyColumn(It.IsAny<TableQuery>())).Returns(nameof(Person.PersonId));

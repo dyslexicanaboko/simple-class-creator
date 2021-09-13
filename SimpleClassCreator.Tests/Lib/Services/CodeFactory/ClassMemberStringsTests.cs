@@ -30,7 +30,7 @@ namespace SimpleClassCreator.Tests.Lib.Services.CodeFactory
             c.AllowDBNull = false;
 
             //Act
-            var m = new ClassMemberStrings(c, CodeType.CSharp, string.Empty);
+            var m = new ClassMemberStrings(c, CodeType.CSharp);
 
             return m.SystemType;
         }
@@ -56,7 +56,7 @@ namespace SimpleClassCreator.Tests.Lib.Services.CodeFactory
             c.AllowDBNull = true;
 
             //Act
-            var m = new ClassMemberStrings(c, CodeType.CSharp, string.Empty);
+            var m = new ClassMemberStrings(c, CodeType.CSharp);
 
             return m.SystemType;
         }

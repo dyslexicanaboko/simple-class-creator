@@ -107,7 +107,7 @@ namespace SimpleClassCreator.Tests.Lib.Services.Generator
             var dc = new DataColumn("FakeColumn", typeof(int));
             dc.AllowDBNull = false;
             
-            var item = new ClassMemberStrings(dc, CodeType.CSharp, null);
+            var item = new ClassMemberStrings(dc, CodeType.CSharp);
 
             var lst = new List<ClassMemberStrings>
             {
