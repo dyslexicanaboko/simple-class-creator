@@ -1,10 +1,10 @@
 ﻿using NUnit.Framework;
+using SimpleClassCreator.Lib;
 using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services.CodeFactory;
 using SimpleClassCreator.Lib.Services.Generators;
 using System.Collections.Generic;
 using System.Data;
-using SimpleClassCreator.Lib;
 
 namespace SimpleClassCreator.Tests.Lib.Services.Generator
 {
@@ -12,13 +12,13 @@ namespace SimpleClassCreator.Tests.Lib.Services.Generator
     public class ModelGeneratorTests
         : TestBase
     {
-        private readonly ModelGenerator _generator;
+        private readonly ClassEntityGenerator _generator;
 
         public ModelGeneratorTests()
         {
             var instructions = new ClassInstructions();
 
-            _generator = new ModelGenerator(instructions);
+            _generator = new ClassEntityGenerator(instructions);
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace SimpleClassCreator.Tests.Lib.Services.Generator
             var lst = new List<string>();
 
             //Act
-            var actual = InvokePrivateMethod<ModelGenerator, string>(_generator, "FormatClassAttributes", lst);
+            var actual = InvokePrivateMethod<ClassEntityGenerator, string>(_generator, "FormatClassAttributes", lst);
 
             //Assert
             Assert.AreEqual(string.Empty, actual);
@@ -41,7 +41,7 @@ namespace SimpleClassCreator.Tests.Lib.Services.Generator
             var lst = new List<string>();
 
             //Act
-            var actual = InvokePrivateMethod<ModelGenerator, string>(_generator, "FormatNamespaces", lst);
+            var actual = InvokePrivateMethod<ClassEntityGenerator, string>(_generator, "FormatNamespaces", lst);
 
             //Assert
             Assert.AreEqual(string.Empty, actual);
@@ -54,7 +54,7 @@ namespace SimpleClassCreator.Tests.Lib.Services.Generator
             var lst = new List<ClassMemberStrings>();
 
             //Act
-            var actual = InvokePrivateMethod<ModelGenerator, string>(_generator, "FormatProperties", lst);
+            var actual = InvokePrivateMethod<ClassEntityGenerator, string>(_generator, "FormatProperties", lst);
 
             //Assert
             Assert.AreEqual(string.Empty, actual);
@@ -74,7 +74,7 @@ namespace SimpleClassCreator.Tests.Lib.Services.Generator
             var expected = "[" + item + "]";
 
             //Act
-            var actual = InvokePrivateMethod<ModelGenerator, string>(_generator, "FormatClassAttributes", lst);
+            var actual = InvokePrivateMethod<ClassEntityGenerator, string>(_generator, "FormatClassAttributes", lst);
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -94,7 +94,7 @@ namespace SimpleClassCreator.Tests.Lib.Services.Generator
             var expected = "using " + item + ";";
 
             //Act
-            var actual = InvokePrivateMethod<ModelGenerator, string>(_generator, "FormatNamespaces", lst);
+            var actual = InvokePrivateMethod<ClassEntityGenerator, string>(_generator, "FormatNamespaces", lst);
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -117,7 +117,7 @@ namespace SimpleClassCreator.Tests.Lib.Services.Generator
             var expected = "        public int FakeColumn { get; set; }";
 
             //Act
-            var actual = InvokePrivateMethod<ModelGenerator, string>(_generator, "FormatProperties", lst);
+            var actual = InvokePrivateMethod<ClassEntityGenerator, string>(_generator, "FormatProperties", lst);
 
             //Assert
             Assert.AreEqual(expected, actual);

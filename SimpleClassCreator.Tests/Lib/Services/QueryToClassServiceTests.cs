@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System.Linq;
+using Moq;
 using NUnit.Framework;
 using SimpleClassCreator.Lib;
 using SimpleClassCreator.Lib.DataAccess;
@@ -12,6 +13,28 @@ namespace SimpleClassCreator.Tests.Lib.Services
     [TestFixture]
     public class QueryToClassServiceTests
     {
+        [Test]
+        public void Providing_no_generation_elections_produces_null()
+        {
+            //Arrange
+            var p = new QueryToClassParameters
+            {
+                SourceSqlType = SourceSqlType.TableName,
+                LanguageType = CodeType.CSharp,
+                Namespace = "SimpleClassCreator.Tests.DummyObjects"
+            };
+
+            var repo = new Mock<IQueryToClassRepository>();
+
+            var svc = new QueryToClassService(repo.Object);
+
+            //Act
+            var actual = svc.Generate(p);
+
+            //Assert
+            Assert.IsNull(actual);
+        }
+
         /*
         3. Need to create templates for whatever code it is that I am trying to create
         A. Let's create a dummy object that is easy to understand and work off of that 
@@ -20,7 +43,7 @@ namespace SimpleClassCreator.Tests.Lib.Services
             templates they want so long as they use the appropriate tags
         4. I don't like the if (tableName != null) clauses, need to abstract this, let's 
         pause and see what happens */
-        [Test]
+            [Test]
         public void Person_table_produces_person_class()
         {
             //Arrange
@@ -34,9 +57,10 @@ namespace SimpleClassCreator.Tests.Lib.Services
                 SourceSqlText = dt.TableName,
                 LanguageType = CodeType.CSharp,
                 Namespace = "SimpleClassCreator.Tests.DummyObjects",
-                TableQuery = new TableQuery() { Schema = "dbo", Table = dt.TableName }
+                TableQuery = new TableQuery { Schema = "dbo", Table = dt.TableName }
             };
 
+            p.ClassOptions.GenerateEntity = true;
             p.ClassOptions.EntityName = dt.TableName;
 
             var repo = new Mock<IQueryToClassRepository>();
@@ -46,7 +70,7 @@ namespace SimpleClassCreator.Tests.Lib.Services
             var svc = new QueryToClassService(repo.Object);
 
             //Act
-            var actual = svc.GenerateClass(p);
+            var actual = svc.Generate(p);
 
             //This is for debug only
             //DumpFile("Expected.cs", expected);
@@ -54,7 +78,7 @@ namespace SimpleClassCreator.Tests.Lib.Services
 
             //Assert
             //Spacing is still an issue, so going to give it a pass for now
-            AssertAreEqualIgnoreWhiteSpace(expected, actual);
+            AssertAreEqualIgnoreWhiteSpace(expected, actual.Single().Contents);
         }
 
         //This is for debug only

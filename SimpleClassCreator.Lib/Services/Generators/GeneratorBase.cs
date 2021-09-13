@@ -1,4 +1,5 @@
 ﻿using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Services.CodeFactory;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,6 +23,16 @@ namespace SimpleClassCreator.Lib.Services.Generators
             TemplateName = templateName;
 
             Instructions = instructions;
+        }
+
+        protected GeneratedResult GetResult()
+        {
+            var r = new GeneratedResult
+            {
+                Filename = Instructions.ClassName + ".cs"
+            };
+
+            return r;
         }
 
         public string TemplateName { get; protected set; }
@@ -72,6 +83,44 @@ namespace SimpleClassCreator.Lib.Services.Generators
             return replacement;
         }
 
-        public abstract string FillTemplate();
+        public abstract GeneratedResult FillTemplate();
+
+        /* Need to move what can be reused to the base class
+         * Need to make sure this is backwards compatible with VB or maybe not, I am not sure.
+         * Need to account for using clauses that need to be imported as a result of which properties are being generated.
+         * Create unit tests for each part of the ModelGenerator.
+         */
+        protected virtual string FormatClassAttributes(IList<string> classAttributes)
+        {
+            var content = GetTextBlock(classAttributes, (ca) => $"[{ca}]");
+
+            return content;
+        }
+
+        protected virtual string FormatNamespaces(IList<string> namespaces)
+        {
+            var content = GetTextBlock(namespaces, (ns) => $"using {ns};");
+
+            return content;
+        }
+
+        protected virtual string FormatInterface(string interfaceName)
+        {
+            if (string.IsNullOrWhiteSpace(interfaceName)) return string.Empty;
+
+            //This is showing on one line for now. In the future I might format it properly on the next line.
+            var content = " : " + interfaceName;
+
+            return content;
+        }
+
+        protected virtual string FormatProperties(IList<ClassMemberStrings> properties)
+        {
+            var content = GetTextBlock(properties,
+                (p) => $"        public {p.SystemType} {p.Property} {{ get; set; }}",
+                separator: Environment.NewLine + Environment.NewLine);
+
+            return content;
+        }
     }
 }

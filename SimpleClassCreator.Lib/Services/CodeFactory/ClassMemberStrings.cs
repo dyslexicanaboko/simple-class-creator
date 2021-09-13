@@ -13,9 +13,7 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
 
         public ClassMemberStrings(DataColumn dc, CodeType type)
         {
-            var _type = type;
-
-            if (_type == CodeType.CSharp)
+            if (type == CodeType.CSharp)
                 _provider = new CSharpCodeProvider();
             else
                 _provider = new VBCodeProvider();
@@ -57,6 +55,22 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             ConvertTo = "Convert.To" + (dc.DataType == typeof(byte) ? "Int32" : dc.DataType.Name) + "("; //A byte can fit inside of an Int32
         }
 
+        //For cloning only, bypasses all of the logic and is a straight copy
+        private ClassMemberStrings(ClassMemberStrings source, CodeDomProvider provider)
+        {
+            _provider = provider;
+
+            ColumnName = source.ColumnName;
+            InSystemNamespace = source.InSystemNamespace;
+            IsDbNullable = source.IsDbNullable;
+            IsImplicitlyNullable = source.IsImplicitlyNullable;
+            Field = source.Field;
+            Property = source.Property;
+            SystemType = source.SystemType;
+            ConvertTo = source.ConvertTo;
+            StringValue = source.StringValue;
+        }
+
         public string ColumnName { get; }
         
         public bool InSystemNamespace { get; private set; }
@@ -88,5 +102,7 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
 
             return str;
         }
+
+        public ClassMemberStrings Clone() => new ClassMemberStrings(this, _provider);
     }
 }

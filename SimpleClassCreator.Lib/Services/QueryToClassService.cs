@@ -3,9 +3,10 @@ using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services.CodeFactory;
 using SimpleClassCreator.Lib.Services.Generators;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Text;
 
 namespace SimpleClassCreator.Lib.Services
 {
@@ -19,77 +20,111 @@ namespace SimpleClassCreator.Lib.Services
             _repository = repository;
         }
 
-        public string GenerateClass(QueryToClassParameters parameters)
+        public IList<GeneratedResult> Generate(QueryToClassParameters parameters)
         {
             var p = parameters;
 
+            if (!p.HasElections) return null;
+
             _repository.ChangeConnectionString(p.ConnectionString);
 
-            DotNetLanguage motif;
+            var results = GenerateClasses(p);
 
-            if (p.LanguageType == CodeType.CSharp)
-                motif = new CSharpLanguage(p.ClassOptions.EntityName);
-            else
-                motif = new VbDotNetLanguage(p.ClassOptions.EntityName);
+            //Writing to files will be handled again later
+            //if (p.SaveAsFile)
+            //    WriteClassToFile(p, content);
 
-            motif.NamespaceName = parameters.Namespace;
-
-            motif.InitializeMotifValues();
-
-            var content = GenerateClass(motif, p);
-
-            if (p.SaveAsFile)
-                WriteClassToFile(p, content);
-
-            return content;
+            return results;
         }
 
-        public string GenerateGridViewColumns(QueryToClassParameters parameters)
-        {
-            var p = parameters;
-            
-            _repository.ChangeConnectionString(p.ConnectionString);
+        #region Generate GridView
+        //This is a relic of the past, not sure if I will continue to support this as it is just another template esssentially
+        //public string GenerateGridViewColumns(QueryToClassParameters parameters)
+        //{
+        //    var p = parameters;
 
-            var sql = p.SourceSqlType == SourceSqlType.TableName ? ("SELECT TOP 0 * FROM " + p.SourceSqlText) : p.SourceSqlText;
+        //    _repository.ChangeConnectionString(p.ConnectionString);
 
-            var dt = _repository.GetSchema(sql);
+        //    var sql = p.SourceSqlType == SourceSqlType.TableName ? ("SELECT TOP 0 * FROM " + p.SourceSqlText) : p.SourceSqlText;
 
-            var sb = new StringBuilder();
+        //    var dt = _repository.GetSchema(sql);
 
-            foreach (DataColumn dc in dt.Columns)
-            {
-                sb.Append("<asp:BoundField HeaderText=\"")
-                  .Append(dc.ColumnName)
-                  .Append("\" DataField=\"")
-                  .Append(dc.ColumnName)
-                  .AppendLine("\">")
-                  .AppendLine("<HeaderStyle HorizontalAlign=\"" + (IsNumber(dc.DataType) ? "Right" : "Left") + "\" />")
-                  .AppendLine("</asp:BoundField>");
-            }
+        //    var sb = new StringBuilder();
 
-            var content = sb.ToString();
+        //    foreach (DataColumn dc in dt.Columns)
+        //    {
+        //        sb.Append("<asp:BoundField HeaderText=\"")
+        //          .Append(dc.ColumnName)
+        //          .Append("\" DataField=\"")
+        //          .Append(dc.ColumnName)
+        //          .AppendLine("\">")
+        //          .AppendLine("<HeaderStyle HorizontalAlign=\"" + (IsNumber(dc.DataType) ? "Right" : "Left") + "\" />")
+        //          .AppendLine("</asp:BoundField>");
+        //    }
 
-            return content;
-        }
+        //    var content = sb.ToString();
 
-        private bool IsNumber(Type targetType)
-        {
-            return targetType.Equals(typeof(int)) ||
-                targetType.Equals(typeof(byte)) ||
-                targetType.Equals(typeof(short)) ||
-                targetType.Equals(typeof(double)) ||
-                targetType.Equals(typeof(decimal));
-        }
+        //    return content;
+        //}
+        #endregion
 
         /// <summary>
         /// The main internal method that orchestrates the code generation for the provided parameters
         /// </summary>
         /// <returns>The generated class code as a StringBuilder</returns>
-        private string GenerateClass(DotNetLanguage language, QueryToClassParameters parameters)
+        private IList<GeneratedResult> GenerateClasses(QueryToClassParameters parameters)
+        {
+            var co = parameters.ClassOptions;
+
+            var lst = new List<GeneratedResult>();
+
+            var baseInstructions = GetInstructions(parameters);
+
+            string interfaceName = null;
+
+            if (co.GenerateInterface)
+            {
+                //This is going to have a problem with the naming. I will have to deal with that later.
+                interfaceName = "I" + co.EntityName;
+
+                var ins = baseInstructions.Clone();
+                ins.ClassName = interfaceName;
+
+                var svc = new ClassInterfaceGenerator(ins);
+
+                lst.Add(svc.FillTemplate());
+            }
+
+            if (co.GenerateEntity)
+            {
+                var ins = baseInstructions.Clone();
+                ins.ClassName = co.EntityName;
+                ins.InterfaceName = interfaceName;
+
+                var svc = new ClassEntityGenerator(ins);
+
+                lst.Add(svc.FillTemplate());
+            }
+
+            if (co.GenerateModel)
+            {
+                var ins = baseInstructions.Clone();
+                ins.ClassName = co.ModelName;
+                ins.InterfaceName = interfaceName;
+
+                var svc = new ClassModelGenerator(ins);
+
+                lst.Add(svc.FillTemplate());
+            }
+
+            return lst;
+        }
+
+        private ClassInstructions GetInstructions(QueryToClassParameters parameters)
         {
             var p = parameters;
-
-            //primaryKey = GetPrimaryKeyColumn(p.TableQuery);
+         
+            //primaryKey = GetPrimaryKeyColumn(p.TableQuery); //This is specific to the repos
             var sqlQuery = p.SourceSqlType == SourceSqlType.TableName ? ("SELECT TOP 0 * FROM " + p.SourceSqlText) : p.SourceSqlText;
 
             var dt = _repository.GetSchema(sqlQuery);
@@ -98,12 +133,6 @@ namespace SimpleClassCreator.Lib.Services
 
             ins.ClassName = p.ClassOptions.EntityName;
             ins.Namespace = p.Namespace;
-
-            if (language.IncludeSerializableAttribute)
-            {
-                ins.Namespaces.Add("System.Runtime.Serialization");
-                ins.ClassAttributes.Add(language.DataContract);
-            }
 
             foreach (DataColumn dc in dt.Columns)
             {
@@ -115,19 +144,14 @@ namespace SimpleClassCreator.Lib.Services
                 ins.Properties.Add(prop);
             }
 
-            //How to inject this without having to do away with the constructor access?
-            var svc = new ModelGenerator(ins);
-
-            var content = svc.FillTemplate();
-
-            return content;
+            return ins;
         }
 
         /// <summary>
-        /// Manufacture the physical C# or VB.Net code file
+        /// Manufacture the physical code file
         /// </summary>
-        /// <param name="fileName">The name of the file, including the file extension</param>
-        /// <param name="sb">The StringBuilder that contains the generated code</param>
+        /// <param name="p">Generation parameters</param>
+        /// <param name="content">Class contents</param>
         private void WriteClassToFile(QueryToClassParameters p, string content)
         {
             var fullFilePath = Path.Combine(p.FilePath, p.Filename);
@@ -137,6 +161,7 @@ namespace SimpleClassCreator.Lib.Services
             Console.WriteLine($"{content.Length} Characters Written to {fullFilePath}");
         }
 
+        //This is specific to the repos
         /// <summary>
         /// Get the Primary Key Column Name from the provided table
         /// </summary>
@@ -147,6 +172,16 @@ namespace SimpleClassCreator.Lib.Services
             if (string.IsNullOrEmpty(tableQuery.Schema) || string.IsNullOrEmpty(tableQuery.Table)) return "PK";
 
             return _repository.GetPrimaryKeyColumn(tableQuery);
+        }
+
+        //I don't remember what this was for. Will keep it around until later.
+        private bool IsNumber(Type targetType)
+        {
+            return targetType == typeof(int) ||
+                   targetType == typeof(byte) ||
+                   targetType == typeof(short) ||
+                   targetType == typeof(double) ||
+                   targetType == typeof(decimal);
         }
     }
 }

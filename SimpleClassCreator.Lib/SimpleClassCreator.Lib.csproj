@@ -52,9 +52,12 @@
     <Compile Include="Models\ClassInstructions.cs" />
     <Compile Include="Models\ClassOptions.cs" />
     <Compile Include="Models\DtoMakerParameters.cs" />
+    <Compile Include="Models\GeneratedResult.cs" />
     <Compile Include="Services\CodeFactory\ClassMemberStrings.cs" />
+    <Compile Include="Services\Generators\ClassInterfaceGenerator.cs" />
+    <Compile Include="Services\Generators\ClassModelGenerator.cs" />
     <Compile Include="Services\Generators\GeneratorBase.cs" />
-    <Compile Include="Services\Generators\ModelGenerator.cs" />
+    <Compile Include="Services\Generators\ClassEntityGenerator.cs" />
     <Compile Include="Services\NameFormatService.cs" />
     <Compile Include="Services\DtoGenerator.cs" />
     <Compile Include="Models\PropertyInfo.cs" />
@@ -79,7 +82,13 @@
     <Content Include="Templates\IEquatableOfT.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Templates\Entity.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Templates\Model.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Interface.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="Utils.cs" />

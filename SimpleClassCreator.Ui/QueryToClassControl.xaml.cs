@@ -227,11 +227,17 @@ namespace SimpleClassCreator.Ui
 
                 if (obj == null) return;
 
-                var win = new ResultWindow(obj.ClassOptions.EntityName, _svcQueryToClass.GenerateClass(obj));
+                var results = _svcQueryToClass.Generate(obj);
 
-                win.Show();
+                foreach (var g in results)
+                {
+                    var win = new ResultWindow(g.Filename, g.Contents);
 
-                ResultWindows.Add(win);
+                    win.Show();
+
+                    ResultWindows.Add(win);
+                }
+                
             }
             catch (Exception ex)
             {
