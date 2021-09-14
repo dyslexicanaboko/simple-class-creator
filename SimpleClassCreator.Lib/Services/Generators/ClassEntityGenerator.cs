@@ -20,6 +20,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 
             template.Replace("{{Namespace}}", Instructions.Namespace);
             template.Replace("{{ClassName}}", Instructions.ClassName);
+            template.Replace("{{Partial}}", Instructions.IsPartial ? "partial " : string.Empty);
             template.Replace("{{Interface}}", FormatInterface(Instructions.InterfaceName));
             template.Replace("{{ClassAttributes}}", FormatClassAttributes(Instructions.ClassAttributes));
             template.Replace("{{Namespaces}}", FormatNamespaces(Instructions.Namespaces));

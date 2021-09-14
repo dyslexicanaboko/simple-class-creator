@@ -3,7 +3,7 @@
 namespace {{Namespace}}
 {
     {{ClassAttributes}}
-    public class {{ClassName}}{{Interface}}
+    public {{Partial}}class {{ClassName}}{{Interface}}
     {
 {{Properties}}
     }

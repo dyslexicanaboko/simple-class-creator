@@ -14,6 +14,8 @@ namespace SimpleClassCreator.Lib.Models
         /// but I can't think of a reason as to why that would be warranted right now.
         /// </summary>
         public string InterfaceName { get; set; }
+        
+        public bool IsPartial { get; set; }
 
         public IList<string> Namespaces { get; set; } = new List<string>();
         

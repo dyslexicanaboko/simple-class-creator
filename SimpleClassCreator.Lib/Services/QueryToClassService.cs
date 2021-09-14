@@ -100,6 +100,7 @@ namespace SimpleClassCreator.Lib.Services
                 var ins = baseInstructions.Clone();
                 ins.ClassName = co.EntityName;
                 ins.InterfaceName = interfaceName;
+                ins.IsPartial = co.GenerateEntityIEquatable || co.GenerateEntityIComparable;
 
                 var svc = new ClassEntityGenerator(ins);
 

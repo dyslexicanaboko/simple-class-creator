@@ -79,8 +79,8 @@ namespace SimpleClassCreator.Ui
             {
                 EntityName = TxtClassEntityName.Text,
                 GenerateEntity = B.IsChecked(CbClassEntity),
-                GenerateEntityEquality = B.IsChecked(CbClassEntityEquality),
-                GenerateEntityComparison = B.IsChecked(CbClassEntityComparison),
+                GenerateEntityIEquatable = B.IsChecked(CbClassEntityIEquatable),
+                GenerateEntityIComparable = B.IsChecked(CbClassEntityIComparable),
                 GenerateInterface = B.IsChecked(CbClassInterface),
                 GenerateModel = B.IsChecked(CbClassModel),
                 ModelName = TxtClassModelName.Text

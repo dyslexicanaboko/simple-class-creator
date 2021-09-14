@@ -7,9 +7,9 @@
     {
         public bool GenerateEntity { get; set; }
         
-        public bool GenerateEntityEquality { get; set; }
+        public bool GenerateEntityIEquatable { get; set; }
         
-        public bool GenerateEntityComparison { get; set; }
+        public bool GenerateEntityIComparable { get; set; }
 
         public string EntityName { get; set; }
 

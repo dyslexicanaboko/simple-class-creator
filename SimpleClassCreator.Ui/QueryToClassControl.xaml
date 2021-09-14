@@ -31,8 +31,8 @@
                 <CheckBox x:Name="CbClassModel" Content="Model" HorizontalAlignment="Left" Margin="29,139,0,0" VerticalAlignment="Top" Height="15" Width="54"/>
                 <my:TextBoxWithDefaultControl x:Name="TxtClassModelName" DefaultText="Model1" Margin="88,135,341,0" VerticalAlignment="Top" Width="Auto"/>
                 <CheckBox x:Name="CbClassInterface" Content="Interface" HorizontalAlignment="Left" Margin="29,169,0,0" VerticalAlignment="Top" Height="15" Width="66"/>
-                <CheckBox x:Name="CbClassEntityEquality" Content="Equality" HorizontalAlignment="Left" Margin="48,117,0,0" VerticalAlignment="Top" Height="15" Width="62"/>
-                <CheckBox x:Name="CbClassEntityComparison" Content="Comparison" HorizontalAlignment="Left" Margin="115,117,0,0" VerticalAlignment="Top" Height="15" Width="84"/>
+                <CheckBox x:Name="CbClassEntityIEquatable" Content="IEquatable" HorizontalAlignment="Left" Margin="48,117,0,0" VerticalAlignment="Top" Height="15" Width="78"/>
+                <CheckBox x:Name="CbClassEntityIComparable" Content="IComparable" HorizontalAlignment="Left" Margin="131,117,0,0" VerticalAlignment="Top" Height="15" Width="91"/>
                 <Label Content="Clone Services" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.208,2.893" Margin="304,4,0,0" FontWeight="Bold" FontSize="14" Width="105" />
                 <CheckBox x:Name="CbCloneEntityToModel" Content="Entity to Model" HorizontalAlignment="Left" Margin="333,36,0,0" VerticalAlignment="Top" Height="15" Width="101"/>
                 <CheckBox x:Name="CbCloneModelToEntity" Content="Model to Entity" HorizontalAlignment="Left" Margin="333,54,0,0" VerticalAlignment="Top" Height="15" Width="101"/>
