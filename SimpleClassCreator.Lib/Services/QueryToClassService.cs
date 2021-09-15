@@ -105,6 +105,26 @@ namespace SimpleClassCreator.Lib.Services
                 var svc = new ClassEntityGenerator(ins);
 
                 lst.Add(svc.FillTemplate());
+
+                if (co.GenerateEntityIEquatable)
+                {
+                    var insSub = baseInstructions.Clone();
+                    insSub.ClassName = co.EntityName;
+
+                    var svcSub = new ClassEntityIEquatableGenerator(insSub);
+
+                    lst.Add(svcSub.FillTemplate());
+                }
+
+                if (co.GenerateEntityIComparable)
+                {
+                    var insSub = baseInstructions.Clone();
+                    insSub.ClassName = co.EntityName;
+
+                    var svcSub = new ClassEntityIComparableGenerator(insSub);
+
+                    lst.Add(svcSub.FillTemplate());
+                }
             }
 
             if (co.GenerateModel)

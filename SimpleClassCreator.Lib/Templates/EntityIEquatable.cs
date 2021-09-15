@@ -26,10 +26,12 @@ namespace {{Namespace}}
 			}
 
 			return
-				{{PropertiesEquals}};
+{{PropertiesEquals}};
 		}
 
-		public override int GetHashCode() => ({{PropertiesHashCode}}).GetHashCode();
+		public override int GetHashCode() => (
+{{PropertiesHashCode}}
+        ).GetHashCode();
 
 		public static bool operator ==({{ClassName}} lhs, {{ClassName}} rhs)
 		{

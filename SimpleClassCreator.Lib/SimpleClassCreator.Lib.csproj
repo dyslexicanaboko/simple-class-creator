@@ -54,6 +54,8 @@
     <Compile Include="Models\DtoMakerParameters.cs" />
     <Compile Include="Models\GeneratedResult.cs" />
     <Compile Include="Services\CodeFactory\ClassMemberStrings.cs" />
+    <Compile Include="Services\Generators\ClassEntityIComparableGenerator.cs" />
+    <Compile Include="Services\Generators\ClassEntityIEquatableGenerator.cs" />
     <Compile Include="Services\Generators\ClassInterfaceGenerator.cs" />
     <Compile Include="Services\Generators\ClassModelGenerator.cs" />
     <Compile Include="Services\Generators\GeneratorBase.cs" />
