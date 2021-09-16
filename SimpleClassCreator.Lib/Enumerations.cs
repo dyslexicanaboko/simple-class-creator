@@ -33,14 +33,12 @@ namespace SimpleClassCreator.Lib
         CloneModelToEntity = 2,
         CloneInterfaceToEntity = 4,
         CloneInterfaceToModel = 8,
-        SerializeToCsv = 16,
-        SerializeFromCsv = 32,
-        SerializeToJson = 64,
-        SerializeFromJson = 128,
-        RepoStatic = 256,
-        RepoDynamic = 512,
-        RepoBulkCopy = 1024,
-        RepoDapper = 2048,
-        RepoEfFluentApi = 4096
+        SerializeCsv = 16,
+        SerializeJson = 32,
+        RepoStatic = 64,
+        RepoDynamic = 128,
+        RepoBulkCopy = 512,
+        RepoDapper = 1024,
+        RepoEfFluentApi = 2048
     }
 }

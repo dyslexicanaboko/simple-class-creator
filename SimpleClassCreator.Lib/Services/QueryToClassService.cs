@@ -27,13 +27,21 @@ namespace SimpleClassCreator.Lib.Services
 
             _repository.ChangeConnectionString(p.ConnectionString);
 
-            var results = GenerateClasses(p);
+            var baseInstructions = GetInstructions(parameters);
+
+            var rClasses = GenerateClasses(p, baseInstructions);
+
+            var rServices = GenerateServices(p, baseInstructions);
+
+            var lst = new List<GeneratedResult>(rClasses.Count + rServices.Count);
+            lst.AddRange(rClasses);
+            lst.AddRange(rServices);
 
             //Writing to files will be handled again later
             //if (p.SaveAsFile)
             //    WriteClassToFile(p, content);
 
-            return results;
+            return lst;
         }
 
         #region Generate GridView
@@ -71,13 +79,11 @@ namespace SimpleClassCreator.Lib.Services
         /// The main internal method that orchestrates the code generation for the provided parameters
         /// </summary>
         /// <returns>The generated class code as a StringBuilder</returns>
-        private IList<GeneratedResult> GenerateClasses(QueryToClassParameters parameters)
+        private IList<GeneratedResult> GenerateClasses(QueryToClassParameters parameters, ClassInstructions baseInstructions)
         {
             var co = parameters.ClassOptions;
 
             var lst = new List<GeneratedResult>();
-
-            var baseInstructions = GetInstructions(parameters);
 
             string interfaceName = null;
 
@@ -143,6 +149,31 @@ namespace SimpleClassCreator.Lib.Services
                 ins.InterfaceName = interfaceName;
 
                 var svc = new ClassModelGenerator(ins);
+
+                lst.Add(svc.FillTemplate());
+            }
+
+            return lst;
+        }
+
+        private IList<GeneratedResult> GenerateServices(QueryToClassParameters parameters, ClassInstructions baseInstructions)
+        {
+            if (parameters.ClassServices == ClassServices.None) return new List<GeneratedResult>(0);
+
+            var services = parameters.ClassServices;
+
+            var lst = new List<GeneratedResult>();
+
+            if (services.HasFlag(ClassServices.SerializeCsv))
+            {
+                var svc = new ServiceSerializationCsvGenerator(baseInstructions);
+
+                lst.Add(svc.FillTemplate());
+            }
+
+            if (services.HasFlag(ClassServices.SerializeJson))
+            {
+                var svc = new ServiceSerializationJsonGenerator(baseInstructions);
 
                 lst.Add(svc.FillTemplate());
             }

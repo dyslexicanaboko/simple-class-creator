@@ -278,6 +278,12 @@ namespace SimpleClassCreator.Ui
         private void CbClassEntity_OnUnchecked(object sender, RoutedEventArgs e)
             => CbClassEntity_ToggleDependents();
 
+        private void CbClassModel_Checked(object sender, RoutedEventArgs e)
+            => CbClassModel_ToggleDependents();
+
+        private void CbClassModel_Unchecked(object sender, RoutedEventArgs e)
+            => CbClassModel_ToggleDependents();
+
         private void CbClassEntity_ToggleDependents()
         {
             if (CbClassEntityEqualityComparer == null) return; //On Startup controls are still null
@@ -287,6 +293,28 @@ namespace SimpleClassCreator.Ui
             CbClassEntityEqualityComparer.IsEnabled = isChecked;
             CbClassEntityIEquatable.IsEnabled = isChecked;
             CbClassEntityIComparable.IsEnabled = isChecked;
+            CbCloneInterfaceToEntity.IsEnabled = isChecked;
+
+            CbClassModelAndEntity_ToggleJointDependents(isChecked, B.IsChecked(CbClassModel));
+        }
+
+        private void CbClassModel_ToggleDependents()
+        {
+            if (CbCloneEntityToModel == null) return; //On Startup controls are still null
+
+            var isChecked = B.IsChecked(CbClassModel);
+
+            CbCloneInterfaceToModel.IsEnabled = isChecked;
+         
+            CbClassModelAndEntity_ToggleJointDependents(B.IsChecked(CbClassEntity), isChecked);
+        }
+
+        private void CbClassModelAndEntity_ToggleJointDependents(bool isEntityChecked, bool isModelChecked)
+        {
+            var both = isEntityChecked && isModelChecked;
+
+            CbCloneEntityToModel.IsEnabled = both;
+            CbCloneModelToEntity.IsEnabled = both;
         }
     }
 }

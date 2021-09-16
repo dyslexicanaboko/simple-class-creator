@@ -6,7 +6,7 @@ namespace SimpleClassCreator.Lib.Models
     public class ClassInstructions
     {
         public string ClassName { get; set; }
-        
+
         public string Namespace { get; set; }
         
         /// <summary>

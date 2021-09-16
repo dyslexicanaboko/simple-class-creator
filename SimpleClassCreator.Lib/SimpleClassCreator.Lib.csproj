@@ -57,6 +57,8 @@
     <Compile Include="Services\Generators\ClassEntityIComparableGenerator.cs" />
     <Compile Include="Services\Generators\ClassEntityEqualityComparerGenerator.cs" />
     <Compile Include="Services\Generators\ClassEntityIEquatableGenerator.cs" />
+    <Compile Include="Services\Generators\ServiceSerializationJsonGenerator.cs" />
+    <Compile Include="Services\Generators\ServiceSerializationCsvGenerator.cs" />
     <Compile Include="Services\Generators\ClassInterfaceGenerator.cs" />
     <Compile Include="Services\Generators\ClassModelGenerator.cs" />
     <Compile Include="Services\Generators\GeneratorBase.cs" />
@@ -98,6 +100,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Templates\EntityIComparable.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\ServiceSerializationCsv.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\ServiceSerializationJson.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="Utils.cs" />
