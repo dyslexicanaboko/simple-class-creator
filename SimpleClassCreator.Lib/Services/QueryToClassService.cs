@@ -3,7 +3,6 @@ using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services.CodeFactory;
 using SimpleClassCreator.Lib.Services.Generators;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -122,6 +121,16 @@ namespace SimpleClassCreator.Lib.Services
                     insSub.ClassName = co.EntityName;
 
                     var svcSub = new ClassEntityIComparableGenerator(insSub);
+
+                    lst.Add(svcSub.FillTemplate());
+                }
+
+                if (co.GenerateEntityEqualityComparer)
+                {
+                    var insSub = baseInstructions.Clone();
+                    insSub.ClassName = co.EntityName;
+
+                    var svcSub = new ClassEntityEqualityComparerGenerator(insSub);
 
                     lst.Add(svcSub.FillTemplate());
                 }

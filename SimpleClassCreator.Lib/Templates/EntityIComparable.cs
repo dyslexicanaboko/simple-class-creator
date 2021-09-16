@@ -2,7 +2,8 @@
 
 namespace {{Namespace}}
 {
-	public partial class {{ClassName}} : IComparable
+	public partial class {{ClassName}}
+		: IComparable
 	{
 		public int CompareTo(object obj)
 		{

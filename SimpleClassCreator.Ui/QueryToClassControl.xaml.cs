@@ -149,7 +149,7 @@ namespace SimpleClassCreator.Ui
 
         private void CbSaveFileOnGeneration_Checked(object sender, RoutedEventArgs e)
         {
-            ToggleSaveFileOnGenerationDependentControls(CbSaveFileOnGeneration.IsChecked.GetValueOrDefault());
+            ToggleSaveFileOnGenerationDependentControls(B.IsChecked(CbSaveFileOnGeneration));
         }
 
         private void ToggleSaveFileOnGenerationDependentControls(bool isEnabled)
@@ -270,6 +270,23 @@ namespace SimpleClassCreator.Ui
         private void TxtClassEntityName_MouseDown(object sender, MouseButtonEventArgs e)
         {
             TxtClassEntityName.TextBox.SelectAll();
+        }
+
+        private void CbClassEntity_OnChecked(object sender, RoutedEventArgs e)
+            => CbClassEntity_ToggleDependents();
+        
+        private void CbClassEntity_OnUnchecked(object sender, RoutedEventArgs e)
+            => CbClassEntity_ToggleDependents();
+
+        private void CbClassEntity_ToggleDependents()
+        {
+            if (CbClassEntityEqualityComparer == null) return; //On Startup controls are still null
+
+            var isChecked = B.IsChecked(CbClassEntity);
+
+            CbClassEntityEqualityComparer.IsEnabled = isChecked;
+            CbClassEntityIEquatable.IsEnabled = isChecked;
+            CbClassEntityIComparable.IsEnabled = isChecked;
         }
     }
 }

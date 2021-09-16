@@ -2,7 +2,8 @@
 
 namespace {{Namespace}}
 {
-	public partial class {{ClassName}} : IEquatable <{{ClassName}}>
+	public partial class {{ClassName}} 
+		: IEquatable <{{ClassName}}>
 	{
 		public override bool Equals(object obj) => this.Equals(obj as {{ClassName}});
 

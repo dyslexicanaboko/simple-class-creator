@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Windows.Controls;
-using SimpleClassCreator.Lib;
+﻿using SimpleClassCreator.Lib;
 using SimpleClassCreator.Lib.Models;
+using System.Collections.Generic;
+using System.Windows.Controls;
 using B = SimpleClassCreator.Ui.UserControlBase;
 
 namespace SimpleClassCreator.Ui
@@ -81,6 +81,7 @@ namespace SimpleClassCreator.Ui
                 GenerateEntity = B.IsChecked(CbClassEntity),
                 GenerateEntityIEquatable = B.IsChecked(CbClassEntityIEquatable),
                 GenerateEntityIComparable = B.IsChecked(CbClassEntityIComparable),
+                GenerateEntityEqualityComparer = B.IsChecked(CbClassEntityEqualityComparer),
                 GenerateInterface = B.IsChecked(CbClassInterface),
                 GenerateModel = B.IsChecked(CbClassModel),
                 ModelName = TxtClassModelName.Text

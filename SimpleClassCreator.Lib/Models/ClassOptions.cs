@@ -11,6 +11,8 @@
         
         public bool GenerateEntityIComparable { get; set; }
 
+        public bool GenerateEntityEqualityComparer { get; set; }
+
         public string EntityName { get; set; }
 
         public bool GenerateModel { get; set; }
