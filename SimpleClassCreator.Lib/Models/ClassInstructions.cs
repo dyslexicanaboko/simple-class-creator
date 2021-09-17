@@ -22,6 +22,7 @@ namespace SimpleClassCreator.Lib.Models
         public IList<string> ClassAttributes { get; set; } = new List<string>();
 
         public IList<ClassMemberStrings> Properties { get; set; } = new List<ClassMemberStrings>();
+        public string ModelName { get; internal set; }
 
         public void AddNamespace(string nameSpace)
         {

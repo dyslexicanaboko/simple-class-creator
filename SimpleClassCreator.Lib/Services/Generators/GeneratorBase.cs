@@ -122,5 +122,15 @@ namespace SimpleClassCreator.Lib.Services.Generators
 
             return content;
         }
+
+        protected string GetNotImplementedException(string exceptionMessage = null)
+        {
+            if (exceptionMessage == null)
+                exceptionMessage = string.Empty;
+            else
+                exceptionMessage = $"\"{exceptionMessage}\""; 
+
+            return $"throw new NotImplementedException({exceptionMessage});";
+        }
     }
 }

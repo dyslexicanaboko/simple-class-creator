@@ -13,7 +13,7 @@ namespace SimpleClassCreator.Lib.Services
         : IQueryToClassService
     {
         private readonly IQueryToClassRepository _repository;
-
+        
         public QueryToClassService(IQueryToClassRepository repository)
         {
             _repository = repository;
@@ -85,15 +85,14 @@ namespace SimpleClassCreator.Lib.Services
 
             var lst = new List<GeneratedResult>();
 
-            string interfaceName = null;
+            var interfaceName = string.Empty;
 
             if (co.GenerateInterface)
             {
-                //This is going to have a problem with the naming. I will have to deal with that later.
-                interfaceName = "I" + co.EntityName;
+                interfaceName = baseInstructions.InterfaceName;
 
                 var ins = baseInstructions.Clone();
-                ins.ClassName = interfaceName;
+                ins.ClassName = ins.InterfaceName;
 
                 var svc = new ClassInterfaceGenerator(ins);
 
@@ -178,6 +177,16 @@ namespace SimpleClassCreator.Lib.Services
                 lst.Add(svc.FillTemplate());
             }
 
+            if (services.HasFlag(ClassServices.CloneModelToEntity) ||
+                services.HasFlag(ClassServices.CloneEntityToModel) ||
+                services.HasFlag(ClassServices.CloneInterfaceToEntity) ||
+                services.HasFlag(ClassServices.CloneInterfaceToModel))
+            {
+                var svc = new ServiceCloningGenerator(baseInstructions, services);
+
+                lst.Add(svc.FillTemplate());
+            }
+
             return lst;
         }
 
@@ -192,8 +201,10 @@ namespace SimpleClassCreator.Lib.Services
 
             var ins = new ClassInstructions();
 
-            ins.ClassName = p.ClassOptions.EntityName;
             ins.Namespace = p.Namespace;
+            ins.ClassName = p.ClassOptions.EntityName;
+            ins.ModelName = p.ClassOptions.ModelName;
+            ins.InterfaceName = "I" + (string.IsNullOrEmpty(p.ClassOptions.EntityName) ? p.ClassOptions.ModelName : p.ClassOptions.EntityName);
 
             foreach (DataColumn dc in dt.Columns)
             {

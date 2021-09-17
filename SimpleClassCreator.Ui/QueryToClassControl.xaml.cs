@@ -192,8 +192,12 @@ namespace SimpleClassCreator.Ui
         {
             var entity = TxtClassEntityName.Text;
 
-            if (entity.EndsWith("Entity", StringComparison.InvariantCultureIgnoreCase))
-                entity = entity.TrimEnd("Entity".ToCharArray());
+            //If it ends with "Entity" get the index
+            var i = entity.LastIndexOf("Entity", StringComparison.InvariantCultureIgnoreCase);
+
+            //If it is found, remove it
+            if (i > 0)
+                entity = entity.Remove(i);
 
             TxtClassModelName.Text = entity + "Model";
         }
