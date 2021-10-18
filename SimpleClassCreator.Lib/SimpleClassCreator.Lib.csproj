@@ -56,6 +56,7 @@
     <Compile Include="Services\CodeFactory\ClassMemberStrings.cs" />
     <Compile Include="Services\Generators\ClassEntityIComparableGenerator.cs" />
     <Compile Include="Services\Generators\ClassEntityEqualityComparerGenerator.cs" />
+    <Compile Include="Services\Generators\RepositoryStaticGenerator.cs" />
     <Compile Include="Services\Generators\ClassEntityIEquatableGenerator.cs" />
     <Compile Include="Services\Generators\ServiceSerializationJsonGenerator.cs" />
     <Compile Include="Services\Generators\ServiceCloningGenerator.cs" />
@@ -110,6 +111,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Templates\ServiceCloning.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\RepositoryStatic.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\RepositoryDapper.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="Utils.cs" />

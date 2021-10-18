@@ -18,6 +18,12 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             else
                 _provider = new VBCodeProvider();
 
+            //Best attempt at mapping data column to a SQL type
+            //DatabaseType = dc.
+
+            //Determine if this is the primary key for the type
+            //IsPrimaryKey = dc.
+
             IsDbNullable = dc.AllowDBNull;
 
             IsImplicitlyNullable = 
@@ -50,7 +56,7 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
                 SystemType = SystemType + "?";
 
             //These statements are a matter of preference
-            StringValue = dc.DataType == typeof(string) || dc.DataType == typeof(DateTime) ? "AddString(" + Property + ")" : Property; //it is important to filter strings for SQL Injection, hence the AddString method
+            //StringValue = dc.DataType == typeof(string) || dc.DataType == typeof(DateTime) ? "AddString(" + Property + ")" : Property; //it is important to filter strings for SQL Injection, hence the AddString method
             
             ConvertTo = "Convert.To" + (dc.DataType == typeof(byte) ? "Int32" : dc.DataType.Name) + "("; //A byte can fit inside of an Int32
         }
@@ -68,26 +74,45 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             Property = source.Property;
             SystemType = source.SystemType;
             ConvertTo = source.ConvertTo;
-            StringValue = source.StringValue;
+            //StringValue = source.StringValue;
         }
 
+        /// <summary>Qualified SQL Column name</summary>
         public string ColumnName { get; }
+
+        /// <summary>SQL Server database type</summary>
+        public string DatabaseType { get; }
+
+        public int? Size { get; set; }
         
-        public bool InSystemNamespace { get; private set; }
-        
+        public int? Scale { get; set; }
+
+        public int? Precision { get; set; }
+
+        public bool IsPrimaryKey { get; }
+
         public bool IsDbNullable { get; }
         
+        /// <summary>
+        /// Some code types are nullable without having to qualify it with a question mark
+        /// in front of the type. In other words don't add a question mark to types that
+        /// are already nullable such as strings.
+        /// </summary>
         public bool IsImplicitlyNullable { get; }
-        
+
+        public bool InSystemNamespace { get; private set; }
+
         public string Field { get; }
         
+        /// <summary>Property name in code</summary>
         public string Property { get; }
         
+        /// <summary>Property's System Type in code</summary>
         public string SystemType { get; }
-        
+
         public string ConvertTo { get; }
         
-        public string StringValue { get; }
+        //public string StringValue { get; }
 
         private string GetTypeAsString(Type target)
         {

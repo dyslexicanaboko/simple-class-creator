@@ -5,6 +5,8 @@ namespace SimpleClassCreator.Lib.Models
 {
     public class ClassInstructions
     {
+        public TableQuery TableMeta { get; set; }
+
         public string ClassName { get; set; }
 
         public string Namespace { get; set; }
