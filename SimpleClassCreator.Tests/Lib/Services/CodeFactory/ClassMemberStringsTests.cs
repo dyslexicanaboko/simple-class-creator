@@ -3,6 +3,7 @@ using SimpleClassCreator.Lib;
 using SimpleClassCreator.Lib.Services.CodeFactory;
 using System;
 using System.Data;
+using SimpleClassCreator.Lib.Models;
 
 namespace SimpleClassCreator.Tests.Lib.Services.CodeFactory
 {
@@ -26,8 +27,7 @@ namespace SimpleClassCreator.Tests.Lib.Services.CodeFactory
         public string Types_are_formatted_as_expected(Type type)
         {
             //Arrange
-            var c = new DataColumn("DoesNotMatter", type);
-            c.AllowDBNull = false;
+            var c = new SchemaColumn { ColumnName = "DoesNotMatter" ,SystemType = type, IsDbNullable = false};
 
             //Act
             var m = new ClassMemberStrings(c, CodeType.CSharp);
@@ -52,8 +52,7 @@ namespace SimpleClassCreator.Tests.Lib.Services.CodeFactory
         public string Nullable_types_are_formatted_as_expected(Type type)
         {
             //Arrange
-            var c = new DataColumn("DoesNotMatter", type);
-            c.AllowDBNull = true;
+            var c = new SchemaColumn { ColumnName = "DoesNotMatter" ,SystemType = type, IsDbNullable = true};
 
             //Act
             var m = new ClassMemberStrings(c, CodeType.CSharp);

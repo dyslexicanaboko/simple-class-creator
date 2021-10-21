@@ -1,5 +1,4 @@
-﻿using System.Data;
-using SimpleClassCreator.Lib.Models;
+﻿using SimpleClassCreator.Lib.Models;
 
 namespace SimpleClassCreator.Lib.DataAccess
 {
@@ -7,8 +6,6 @@ namespace SimpleClassCreator.Lib.DataAccess
     {
         void ChangeConnectionString(string connectionString);
 
-        string GetPrimaryKeyColumn(TableQuery tableQuery);
-        
-        DataTable GetSchema(string query);
+        SchemaQuery GetSchema(TableQuery tableQuery, string query);
     }
 }

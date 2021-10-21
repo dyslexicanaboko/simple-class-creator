@@ -1,9 +1,9 @@
 ﻿using Microsoft.CSharp;
 using Microsoft.VisualBasic;
+using SimpleClassCreator.Lib.Models;
 using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
-using System.Data;
 
 namespace SimpleClassCreator.Lib.Services.CodeFactory
 {
@@ -11,27 +11,25 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
     {
         private readonly CodeDomProvider _provider;
 
-        public ClassMemberStrings(DataColumn dc, CodeType type)
+        public ClassMemberStrings(SchemaColumn sc, CodeType type)
         {
             if (type == CodeType.CSharp)
                 _provider = new CSharpCodeProvider();
             else
                 _provider = new VBCodeProvider();
 
-            //Best attempt at mapping data column to a SQL type
-            //DatabaseType = dc.
+            DatabaseType = sc.SqlType;
 
-            //Determine if this is the primary key for the type
-            //IsPrimaryKey = dc.
+            IsPrimaryKey = sc.IsPrimaryKey;
 
-            IsDbNullable = dc.AllowDBNull;
+            IsDbNullable = sc.IsDbNullable;
 
             IsImplicitlyNullable = 
-                dc.DataType == typeof(string) || 
-                dc.DataType.BaseType == typeof(Array);
+                sc.SystemType == typeof(string) || 
+                sc.SystemType.BaseType == typeof(Array);
 
             //Remove unnecessary extra padding if it shows up
-            ColumnName = dc.ColumnName.Trim();
+            ColumnName = sc.ColumnName.Trim();
 
             //Qualifying the column name for SQL
             if(ColumnName.Contains(" ")) ColumnName = "[" + ColumnName + "]";
@@ -49,7 +47,7 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             Field = "_" + firstChar.ToLower() + remainder;
 
             //Getting the base type
-            SystemType = GetTypeAsString(dc.DataType);
+            SystemType = GetTypeAsString(sc.SystemType);
 
             //If this column is nullable then mark it with a question mark
             if (!IsImplicitlyNullable && IsDbNullable)
@@ -58,7 +56,7 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             //These statements are a matter of preference
             //StringValue = dc.DataType == typeof(string) || dc.DataType == typeof(DateTime) ? "AddString(" + Property + ")" : Property; //it is important to filter strings for SQL Injection, hence the AddString method
             
-            ConvertTo = "Convert.To" + (dc.DataType == typeof(byte) ? "Int32" : dc.DataType.Name) + "("; //A byte can fit inside of an Int32
+            ConvertTo = "Convert.To" + (sc.SystemType == typeof(byte) ? "Int32" : sc.SystemType.Name) + "("; //A byte can fit inside of an Int32
         }
 
         //For cloning only, bypasses all of the logic and is a straight copy
@@ -83,11 +81,14 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
         /// <summary>SQL Server database type</summary>
         public string DatabaseType { get; }
 
-        public int? Size { get; set; }
-        
-        public int? Scale { get; set; }
+        /// <summary>Column size for varchar, nvarchar, char, nchar etc...</summary>
+        public int Size { get; set; }
 
-        public int? Precision { get; set; }
+        /// <summary>Column precision for numeric types such as decimal(p,s)</summary>
+        public int Precision { get; set; }
+
+        /// <summary>Column scale for numeric types such as decimal(p,s) and for datetime2(s)</summary>
+        public int Scale { get; set; }
 
         public bool IsPrimaryKey { get; }
 
@@ -111,8 +112,6 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
         public string SystemType { get; }
 
         public string ConvertTo { get; }
-        
-        //public string StringValue { get; }
 
         private string GetTypeAsString(Type target)
         {

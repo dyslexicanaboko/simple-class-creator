@@ -1,9 +1,9 @@
-﻿using SimpleClassCreator.Lib.Models;
-using SimpleClassCreator.Lib.Services.CodeFactory;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Services.CodeFactory;
 
 namespace SimpleClassCreator.Lib.Services.Generators
 {
@@ -13,7 +13,6 @@ namespace SimpleClassCreator.Lib.Services.Generators
 		public RepositoryStaticGenerator(ClassInstructions instructions)
 			: base(instructions, "RepositoryStatic.cs")
 		{
-
 		}
 
 		public override GeneratedResult FillTemplate()
@@ -64,8 +63,8 @@ namespace SimpleClassCreator.Lib.Services.Generators
 		private string FormatSelectList(IList<ClassMemberStrings> properties, string prefix = null)
 		{
 			var content = GetTextBlock(properties,
-				(p) => $"                {prefix}{p.Property}",
-				separator: "," + Environment.NewLine);
+				p => $"                {prefix}{p.Property}",
+				"," + Environment.NewLine);
 
 			return content;
 		}
@@ -73,8 +72,8 @@ namespace SimpleClassCreator.Lib.Services.Generators
 		private string FormatUpdateList(IList<ClassMemberStrings> properties)
 		{
 			var content = GetTextBlock(properties,
-				(p) => $"                {p.Property} = @{p.Property}",
-				separator: "," + Environment.NewLine);
+				p => $"                {p.Property} = @{p.Property}",
+				"," + Environment.NewLine);
 
 			return content;
 		}
@@ -84,9 +83,13 @@ namespace SimpleClassCreator.Lib.Services.Generators
 			var content = $@"p = new SqlParameter();
 			p.ParameterName = ""@{properties.Property}"";
 			p.SqlDbType = SqlDbType.{properties.DatabaseType};
-			p.Value = entity.{properties.Property}; ";
+			p.Value = entity.{properties.Property};";
 
-			//TODO: Need to handle Scale, Precision and Size
+			//TODO: Take the SqlDbType list and dynamically convert it to a dictionary where the incoming sql types are formatted like the enum
+
+			/* Datetime2 -> Scale
+			 * Varchar, NVarchar -> Size
+			 * Decimal -> Precision and Scale */
 
 			return content;
 		}

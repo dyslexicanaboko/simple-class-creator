@@ -43,7 +43,7 @@ namespace SimpleClassCreator.Tests.Lib.Services
             templates they want so long as they use the appropriate tags
         4. I don't like the if (tableName != null) clauses, need to abstract this, let's 
         pause and see what happens */
-            [Test]
+        [Test]
         public void Person_table_produces_person_class()
         {
             //Arrange
@@ -64,8 +64,7 @@ namespace SimpleClassCreator.Tests.Lib.Services
             p.ClassOptions.EntityName = dt.TableName;
 
             var repo = new Mock<IQueryToClassRepository>();
-            repo.Setup(x => x.GetSchema(It.IsAny<string>())).Returns(dt);
-            repo.Setup(x => x.GetPrimaryKeyColumn(It.IsAny<TableQuery>())).Returns(nameof(Person.PersonId));
+            repo.Setup(x => x.GetSchema(p.TableQuery, It.IsAny<string>())).Returns(new SchemaQuery()); //TODO: Fix this later
 
             var svc = new QueryToClassService(repo.Object);
 

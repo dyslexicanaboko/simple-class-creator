@@ -6,121 +6,102 @@ using SimpleClassCreator.Lib.Models;
 
 namespace SimpleClassCreator.Lib.DataAccess
 {
-	/// <summary>
-	/// The base Data Access Layer
-	/// All Data Access Layers should inherit from this base class
-	/// </summary>
-	public abstract class BaseRepository
-	{
-		private string _connectionString;
+    /// <summary>
+    ///     The base Data Access Layer
+    ///     All Data Access Layers should inherit from this base class
+    /// </summary>
+    public abstract class BaseRepository
+    {
+        private string _connectionString;
 
-		public string ConnectionString { get; private set; }
+        public void ChangeConnectionString(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
 
-		public BaseRepository()
-		{
+        protected SchemaRaw GetFullSchemaInformation(string sql)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                using (var cmd = new SqlCommand(sql, con))
+                {
+                    con.Open();
 
-		}
+                    var rs = new SchemaRaw();
 
-		public BaseRepository(string connectionString)
-		{
-			_connectionString = connectionString;
-		}
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        var tblSqlServer = dr.GetSchemaTable();
 
-		public void ChangeConnectionString(string connectionString)
-		{
-			_connectionString = connectionString;
-		}
+                        var tblGeneric = new DataTable();
+                        tblGeneric.Load(dr);
+    
+                        rs.SqlServerSchema = tblSqlServer;
+                    }
 
-		protected DataTable ExecuteDataTable(string sql)
-		{
-			if (string.IsNullOrWhiteSpace(sql))
-				throw new Exception("SQL command cannot be null, blank or white space.");
+                    using (var da = new SqlDataAdapter(cmd))
+                    {
+                        var tblGeneric = new DataTable();
+                        
+                        da.FillSchema(tblGeneric, SchemaType.Source);
 
-			try
-			{
-				using (var con = new SqlConnection(_connectionString))
-				{
-					con.Open();
+                        rs.GenericSchema = tblGeneric;
+                    }
 
-					using (var cmd = new SqlCommand(sql, con))
-					{
-						cmd.CommandTimeout = 0;
+                    return rs;
+                }
+            }
+        }
 
-						var dt = new DataTable(); //Cannot be null
+        protected IDataReader ExecuteStoredProcedure(string storedProcedure, params SqlParameter[] parameters)
+        {
+            var con = new SqlConnection(_connectionString);
 
-						//If you don't use SQL Server then change this to your flavor of DB Driver
-						using (var a = new SqlDataAdapter())
-						{
-							a.SelectCommand = cmd;
-							a.FillSchema(dt, SchemaType.Source);
-							a.Fill(dt);
+            con.Open();
 
-							return dt;
-						}
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				ex.Data.Add("Query", sql);
+            var cmd = new SqlCommand(storedProcedure, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.CommandTimeout = 0;
 
-				throw;
-			}
+            if (parameters.Any()) cmd.Parameters.AddRange(parameters);
 
-		}
+            var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
-		protected IDataReader ExecuteStoredProcedure(string storedProcedure, params SqlParameter[] parameters)
-		{
-			var con = new SqlConnection(_connectionString);
+            return reader;
+        }
 
-			con.Open();
+        protected object ExecuteScalar(string sql)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                con.Open();
 
-			var cmd = new SqlCommand(storedProcedure, con);
-			cmd.CommandType = CommandType.StoredProcedure;
-			cmd.CommandTimeout = 0;
+                using (var cmd = new SqlCommand(sql, con))
+                {
+                    cmd.CommandTimeout = 0;
 
-			if (parameters.Any())
-			{
-				cmd.Parameters.AddRange(parameters);
-			}
+                    return cmd.ExecuteScalar();
+                }
+            }
+        }
 
-			var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        public ConnectionResult TestConnectionString()
+        {
+            var result = new ConnectionResult();
 
-			return reader;
-		}
+            try
+            {
+                var obj = ExecuteScalar("SELECT 1;");
 
-		protected object ExecuteScalar(string sql)
-		{
-			using (var con = new SqlConnection(_connectionString))
-			{
-				con.Open();
+                result.Success = Convert.ToInt32(obj) == 1;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.ReturnedException = ex;
+            }
 
-				using (var cmd = new SqlCommand(sql, con))
-				{
-					cmd.CommandTimeout = 0;
-
-					return cmd.ExecuteScalar();
-				}
-			}
-		}
-
-		public ConnectionResult TestConnectionString()
-		{
-			var result = new ConnectionResult();
-
-			try
-			{
-				var obj = ExecuteScalar("SELECT 1;");
-
-				result.Success = Convert.ToInt32(obj) == 1;
-			}
-			catch (Exception ex)
-			{
-				result.Success = false;
-				result.ReturnedException = ex;
-			}
-
-			return result;
-		}
-	}
+            return result;
+        }
+    }
 }

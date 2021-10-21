@@ -195,9 +195,9 @@ namespace SimpleClassCreator.Lib.Services
             var p = parameters;
          
             //primaryKey = GetPrimaryKeyColumn(p.TableQuery); //This is specific to the repos
-            var sqlQuery = p.SourceSqlType == SourceSqlType.TableName ? ("SELECT TOP 0 * FROM " + p.SourceSqlText) : p.SourceSqlText;
+            var sqlQuery = p.SourceSqlType == SourceSqlType.TableName ? ("SET FMTONLY ON; SELECT * FROM " + p.SourceSqlText + "; SET FMTONLY OFF;") : p.SourceSqlText;
 
-            var dt = _repository.GetSchema(sqlQuery);
+            var schema = _repository.GetSchema(p.TableQuery, sqlQuery);
 
             var ins = new ClassInstructions();
 
@@ -206,9 +206,9 @@ namespace SimpleClassCreator.Lib.Services
             ins.ModelName = p.ClassOptions.ModelName;
             ins.InterfaceName = "I" + (string.IsNullOrEmpty(p.ClassOptions.EntityName) ? p.ClassOptions.ModelName : p.ClassOptions.EntityName);
 
-            foreach (DataColumn dc in dt.Columns)
+            foreach (var sc in schema.ColumnsAll)
             {
-                var prop = new ClassMemberStrings(dc, p.LanguageType);
+                var prop = new ClassMemberStrings(sc, p.LanguageType);
 
                 //Add the system namespace if any of the properties require it
                 if (prop.InSystemNamespace) ins.AddNamespace("System");
@@ -231,19 +231,6 @@ namespace SimpleClassCreator.Lib.Services
             File.WriteAllText(fullFilePath, content);
 
             Console.WriteLine($"{content.Length} Characters Written to {fullFilePath}");
-        }
-
-        //This is specific to the repos
-        /// <summary>
-        /// Get the Primary Key Column Name from the provided table
-        /// </summary>
-        /// <param name="tableQuery">The name of the target table</param>
-        /// <returns>Primary Key Column Name</returns>
-        private string GetPrimaryKeyColumn(TableQuery tableQuery)
-        {
-            if (string.IsNullOrEmpty(tableQuery.Schema) || string.IsNullOrEmpty(tableQuery.Table)) return "PK";
-
-            return _repository.GetPrimaryKeyColumn(tableQuery);
         }
 
         //I don't remember what this was for. Will keep it around until later.

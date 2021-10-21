@@ -1,5 +1,4 @@
-﻿using SimpleClassCreator.Lib.DataAccess;
-using SimpleClassCreator.Lib.Models;
+﻿using SimpleClassCreator.Lib.Models;
 
 namespace SimpleClassCreator.Lib.DataAccess
 {

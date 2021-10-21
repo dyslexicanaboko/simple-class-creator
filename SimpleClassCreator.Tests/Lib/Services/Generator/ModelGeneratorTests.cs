@@ -104,9 +104,8 @@ namespace SimpleClassCreator.Tests.Lib.Services.Generator
         public void One_ClassMemberString_creates_expected_string()
         {
             //Arrange
-            var dc = new DataColumn("FakeColumn", typeof(int));
-            dc.AllowDBNull = false;
-            
+            var dc = new SchemaColumn { ColumnName = "DoesNotMatter" ,SystemType = typeof(int), IsDbNullable = false};
+
             var item = new ClassMemberStrings(dc, CodeType.CSharp);
 
             var lst = new List<ClassMemberStrings>
