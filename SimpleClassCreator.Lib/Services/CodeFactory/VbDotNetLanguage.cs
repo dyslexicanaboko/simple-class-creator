@@ -52,13 +52,13 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
         public override void CreateProperty(StringBuilder sb, ClassMemberStrings info)
         {
             //Private Member
-            sb.AppendFormat("Private {0} As {1}{2}", info.Field, info.SystemType, LineTerminator);
+            sb.AppendFormat("Private {0} As {1}{2}", info.Field, info.SystemTypeName, LineTerminator);
 
             if (IncludeSerializableAttribute)
                 sb.Append(DataMember);
 
             //Public Property
-            sb.AppendFormat("Public Property {0} As {1}{3}Get{3}Return {2}{3}End Get{3}Set(value As {1}){3}{2} = value{3}End Get{3}End Property", info.Property, info.SystemType, info.Field, Environment.NewLine);
+            sb.AppendFormat("Public Property {0} As {1}{3}Get{3}Return {2}{3}End Get{3}Set(value As {1}){3}{2} = value{3}End Get{3}End Property", info.Property, info.SystemTypeName, info.Field, Environment.NewLine);
             sb.AppendLine().AppendLine();
         }
 

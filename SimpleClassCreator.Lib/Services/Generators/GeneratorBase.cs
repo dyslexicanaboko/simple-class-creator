@@ -10,7 +10,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
     public abstract class GeneratorBase
     {
         private readonly string _templatesPath;
-
+        
         protected ClassInstructions Instructions { get; set; }
 
         protected readonly Regex _reBlankSpace = new Regex(@"^\s+$^[\r\n]", RegexOptions.Multiline);
@@ -19,7 +19,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
         protected GeneratorBase(ClassInstructions instructions, string templateName)
         {
             _templatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates");
-
+            
             TemplateName = templateName;
 
             Instructions = instructions;
@@ -117,7 +117,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
         protected virtual string FormatProperties(IList<ClassMemberStrings> properties)
         {
             var content = GetTextBlock(properties,
-                (p) => $"        public {p.SystemType} {p.Property} {{ get; set; }}",
+                (p) => $"        public {p.SystemTypeName} {p.Property} {{ get; set; }}",
                 separator: Environment.NewLine + Environment.NewLine);
 
             return content;

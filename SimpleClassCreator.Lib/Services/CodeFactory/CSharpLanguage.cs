@@ -47,20 +47,20 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             if (_buildOutProperties)
             {
                 //Private Member
-                sb.AppendFormat("private {0} {1}{2}", info.SystemType, info.Field, LineTerminator);
+                sb.AppendFormat("private {0} {1}{2}", info.SystemTypeName, info.Field, LineTerminator);
 
                 if (IncludeSerializableAttribute)
                     sb.Append(DataMember);
 
                 //Public Property
-                sb.AppendFormat("public {0} {1}{3}{{{3} get {{ return {2}; }}{3} set {{ {2} = value; }}{3}}} ", info.SystemType, info.Property, info.Field, Environment.NewLine);
+                sb.AppendFormat("public {0} {1}{3}{{{3} get {{ return {2}; }}{3} set {{ {2} = value; }}{3}}} ", info.SystemTypeName, info.Property, info.Field, Environment.NewLine);
             }
             else
             {
                 if (IncludeSerializableAttribute)
                     sb.Append(DataMember);
 
-                sb.AppendFormat("{0} {1} {2} {{ get; set; }}", Public, info.SystemType, info.Property);
+                sb.AppendFormat("{0} {1} {2} {{ get; set; }}", Public, info.SystemTypeName, info.Property);
             }
 
             sb.AppendLine().AppendLine();

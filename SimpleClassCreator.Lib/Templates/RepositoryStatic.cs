@@ -54,12 +54,13 @@ namespace {{Namespace}}
 {{InsertColumnList}}) VALUES (
 {{InsertValuesList}});
 
-			 SELECT SCOPE_IDENTITY() AS PK;";
+			 SELECT SCOPE_IDENTITY() AS PK;"; //This assumes int for now
 
 			var lst = GetParameters(entity);
 
 			using (var dr = ExecuteReaderText(sql, lst.ToArray()))
 			{
+				//This assumes int for now
 				return Convert.ToInt32(GetScalar(dr, "PK"));
 			}
 		}
@@ -81,7 +82,7 @@ namespace {{Namespace}}
 		
 		private SqlParameter GetPrimaryKeyParameter({{PrimaryKeyType}} {{PrimaryKey}})
 		{
-			var p = new SqlParameter();
+			SqlParameter p = null;
 			
 			{{PrimaryKeySqlParameter}}
 

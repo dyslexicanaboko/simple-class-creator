@@ -32,7 +32,7 @@ namespace SimpleClassCreator.Tests.Lib.Services.CodeFactory
             //Act
             var m = new ClassMemberStrings(c, CodeType.CSharp);
 
-            return m.SystemType;
+            return m.SystemTypeName;
         }
 
         [TestCase(typeof(DateTime), ExpectedResult = "DateTime?")]
@@ -57,7 +57,7 @@ namespace SimpleClassCreator.Tests.Lib.Services.CodeFactory
             //Act
             var m = new ClassMemberStrings(c, CodeType.CSharp);
 
-            return m.SystemType;
+            return m.SystemTypeName;
         }
     }
 }

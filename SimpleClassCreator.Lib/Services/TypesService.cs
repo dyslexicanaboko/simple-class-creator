@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+
+namespace SimpleClassCreator.Lib.Services
+{
+    public class TypesService
+    {
+        //FYI:The SqlDbType enum definition has a proper set of mappings going from System to SqlServer 
+
+        /// <summary>
+        /// Loose mapping going from System type to Sql Server database type.
+        /// </summary>
+        public static readonly Dictionary<Type, SqlDbType> MapSystemToSqlLoose = new Dictionary<Type, SqlDbType>
+        {
+            {typeof(string), SqlDbType.NVarChar}, //Could be Char, NChar or VarChar
+            {typeof(char[]), SqlDbType.NVarChar}, //Could be Char, NChar or VarChar
+            {typeof(bool), SqlDbType.Bit},
+            {typeof(byte), SqlDbType.TinyInt},
+            {typeof(short), SqlDbType.SmallInt},
+            {typeof(int), SqlDbType.Int},
+            {typeof(long), SqlDbType.BigInt},
+            {typeof(byte[]), SqlDbType.VarBinary}, //Could be Binary
+            {typeof(DateTime), SqlDbType.DateTime2},
+            {typeof(DateTimeOffset), SqlDbType.DateTimeOffset},
+            {typeof(decimal), SqlDbType.Decimal},
+            {typeof(double), SqlDbType.Float},
+            {typeof(TimeSpan), SqlDbType.Time},
+            {typeof(Guid), SqlDbType.UniqueIdentifier}
+        };
+
+        //I got the base of this list from here: https://stackoverflow.com/a/1362899/603807
+        /// <summary>
+        /// Strong mapping of System types and their aliases. List has been extended to include
+        /// structures that are not primitive types but are used as such.
+        /// </summary>
+        public static readonly Dictionary<Type, string> MapSystemToAliases = new Dictionary<Type, string>
+        {
+            { typeof(byte), "byte" },
+            { typeof(sbyte), "sbyte" },
+            { typeof(short), "short" },
+            { typeof(ushort), "ushort" },
+            { typeof(int), "int" },
+            { typeof(uint), "uint" },
+            { typeof(long), "long" },
+            { typeof(ulong), "ulong" },
+            { typeof(float), "float" },
+            { typeof(double), "double" },
+            { typeof(decimal), "decimal" },
+            { typeof(object), "object" },
+            { typeof(bool), "bool" },
+            { typeof(char), "char" },
+            { typeof(string), "string" },
+            { typeof(void), "void" },
+            //These don't have aliases because they are not primitives, however they are used as such
+            { typeof(DateTime), "DateTime" },
+            { typeof(DateTimeOffset), "DateTimeOffset" },
+            { typeof(Guid), "Guid" },
+        };
+
+        /// <summary>
+        /// Strong mapping of Sql Server Database type lower case names to their equivalent Enumeration.
+        /// </summary>
+        public static readonly Dictionary<string, SqlDbType> SqlTypes = Utils.GetEnumDictionary<SqlDbType>(true);
+    }
+}

@@ -40,7 +40,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
         protected override string FormatProperties(IList<ClassMemberStrings> properties)
         {
             var content = GetTextBlock(properties, 
-                (p) => $"        {p.SystemType} {p.Property} {{ get; set; }}", 
+                (p) => $"        {p.SystemTypeName} {p.Property} {{ get; set; }}", 
                 separator: Environment.NewLine + Environment.NewLine);
 
             return content;

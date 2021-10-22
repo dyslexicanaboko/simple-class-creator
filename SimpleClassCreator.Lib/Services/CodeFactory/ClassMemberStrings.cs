@@ -4,6 +4,7 @@ using SimpleClassCreator.Lib.Models;
 using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
+using System.Data;
 
 namespace SimpleClassCreator.Lib.Services.CodeFactory
 {
@@ -18,10 +19,18 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             else
                 _provider = new VBCodeProvider();
 
-            DatabaseType = sc.SqlType;
+            DatabaseTypeName = sc.SqlType.ToLower(); //Case is inconsistent, so making it lower on purpose
+
+            DatabaseType = TypesService.SqlTypes[DatabaseTypeName];
+
+            Size = sc.Size;
+
+            Precision = sc.Precision;
+
+            Scale = sc.Scale;
 
             IsPrimaryKey = sc.IsPrimaryKey;
-
+            
             IsDbNullable = sc.IsDbNullable;
 
             IsImplicitlyNullable = 
@@ -47,16 +56,16 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             Field = "_" + firstChar.ToLower() + remainder;
 
             //Getting the base type
-            SystemType = GetTypeAsString(sc.SystemType);
+            SystemTypeName = GetTypeAsString(sc.SystemType);
 
+            SystemTypeAlias = TypesService.MapSystemToAliases[sc.SystemType];
+
+            //TODO: Should I keep doing this? Not sure yet.
             //If this column is nullable then mark it with a question mark
             if (!IsImplicitlyNullable && IsDbNullable)
-                SystemType = SystemType + "?";
+                SystemTypeName = SystemTypeName + "?";
 
-            //These statements are a matter of preference
-            //StringValue = dc.DataType == typeof(string) || dc.DataType == typeof(DateTime) ? "AddString(" + Property + ")" : Property; //it is important to filter strings for SQL Injection, hence the AddString method
-            
-            ConvertTo = "Convert.To" + (sc.SystemType == typeof(byte) ? "Int32" : sc.SystemType.Name) + "("; //A byte can fit inside of an Int32
+            ConversionMethodSignature = GetConversionMethodSignature(sc.SystemType, SystemTypeName);
         }
 
         //For cloning only, bypasses all of the logic and is a straight copy
@@ -70,25 +79,28 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             IsImplicitlyNullable = source.IsImplicitlyNullable;
             Field = source.Field;
             Property = source.Property;
-            SystemType = source.SystemType;
-            ConvertTo = source.ConvertTo;
+            SystemTypeName = source.SystemTypeName;
+            ConversionMethodSignature = source.ConversionMethodSignature;
             //StringValue = source.StringValue;
         }
 
         /// <summary>Qualified SQL Column name</summary>
         public string ColumnName { get; }
 
-        /// <summary>SQL Server database type</summary>
-        public string DatabaseType { get; }
+        /// <summary>SQL Server database type name in lower case</summary>
+        public string DatabaseTypeName { get; }
+
+        /// <summary>SQL Server database type enumeration</summary>
+        public SqlDbType DatabaseType { get; }
 
         /// <summary>Column size for varchar, nvarchar, char, nchar etc...</summary>
-        public int Size { get; set; }
+        public int Size { get; }
 
         /// <summary>Column precision for numeric types such as decimal(p,s)</summary>
-        public int Precision { get; set; }
+        public int Precision { get; }
 
         /// <summary>Column scale for numeric types such as decimal(p,s) and for datetime2(s)</summary>
-        public int Scale { get; set; }
+        public int Scale { get; }
 
         public bool IsPrimaryKey { get; }
 
@@ -108,10 +120,16 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
         /// <summary>Property name in code</summary>
         public string Property { get; }
         
-        /// <summary>Property's System Type in code</summary>
-        public string SystemType { get; }
+        /// <summary>
+        /// Property's System Type in code from typeof(T). This is the full class name of the type, not the alias.
+        /// Does not include the "System." namespace as a prefix.
+        /// </summary>
+        public string SystemTypeName { get; }
 
-        public string ConvertTo { get; }
+        /// <summary>Property's System Type in code from typeof(T). This is the alias of the type.</summary>
+        public string SystemTypeAlias { get; }
+
+        public string ConversionMethodSignature { get; }
 
         private string GetTypeAsString(Type target)
         {
@@ -125,6 +143,29 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             str = str.Replace("System.", string.Empty);
 
             return str;
+        }
+
+        private string GetConversionMethodSignature(Type type, string systemTypeName)
+        {
+            //Guid does not have a method in the Convert class
+            if (type == typeof(Guid))
+            {
+                //DataReader column has to be converted to string first
+                return "Guid.Parse(Convert.ToString({0}))";
+            }
+
+            var typeString = systemTypeName;
+
+            //TODO: I don't know why I had this code, there is a valid Convert.ToByte() method
+            //A byte can fit inside of an Int32
+            //if (type == typeof(byte))
+            //{
+            //    typeString = "Int32";
+            //}
+
+            var c = "Convert.To" + typeString + "({0})";
+
+            return c;
         }
 
         public ClassMemberStrings Clone() => new ClassMemberStrings(this, _provider);
