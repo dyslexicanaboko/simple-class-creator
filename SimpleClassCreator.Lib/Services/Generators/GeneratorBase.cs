@@ -117,7 +117,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
         protected virtual string FormatProperties(IList<ClassMemberStrings> properties)
         {
             var content = GetTextBlock(properties,
-                (p) => $"        public {p.SystemTypeName} {p.Property} {{ get; set; }}",
+                (p) => $"        public {p.SystemTypeAlias} {p.Property} {{ get; set; }}",
                 separator: Environment.NewLine + Environment.NewLine);
 
             return content;

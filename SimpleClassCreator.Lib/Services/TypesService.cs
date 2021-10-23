@@ -6,26 +6,27 @@ namespace SimpleClassCreator.Lib.Services
 {
     public class TypesService
     {
-        //FYI:The SqlDbType enum definition has a proper set of mappings going from System to SqlServer 
+        //FYI:The SqlDbType enum definition has a proper set of mappings going from SqlServer to System
 
         /// <summary>
         /// Loose mapping going from System type to Sql Server database type.
         /// </summary>
         public static readonly Dictionary<Type, SqlDbType> MapSystemToSqlLoose = new Dictionary<Type, SqlDbType>
         {
-            {typeof(string), SqlDbType.NVarChar}, //Could be Char, NChar or VarChar
-            {typeof(char[]), SqlDbType.NVarChar}, //Could be Char, NChar or VarChar
             {typeof(bool), SqlDbType.Bit},
             {typeof(byte), SqlDbType.TinyInt},
             {typeof(short), SqlDbType.SmallInt},
             {typeof(int), SqlDbType.Int},
             {typeof(long), SqlDbType.BigInt},
+            {typeof(string), SqlDbType.NVarChar}, //Could be Char, NChar or VarChar
+            {typeof(char[]), SqlDbType.NVarChar}, //Could be Char, NChar or VarChar
             {typeof(byte[]), SqlDbType.VarBinary}, //Could be Binary
+            {typeof(decimal), SqlDbType.Decimal},
+            {typeof(float), SqlDbType.Real}, //System.Single -> float -> SqlDbType.Real
+            {typeof(double), SqlDbType.Float}, //Do not confuse with System.float
+            {typeof(TimeSpan), SqlDbType.Time},
             {typeof(DateTime), SqlDbType.DateTime2},
             {typeof(DateTimeOffset), SqlDbType.DateTimeOffset},
-            {typeof(decimal), SqlDbType.Decimal},
-            {typeof(double), SqlDbType.Float},
-            {typeof(TimeSpan), SqlDbType.Time},
             {typeof(Guid), SqlDbType.UniqueIdentifier}
         };
 
@@ -38,7 +39,7 @@ namespace SimpleClassCreator.Lib.Services
         {
             { typeof(byte), "byte" },
             { typeof(sbyte), "sbyte" },
-            { typeof(short), "short" },
+            { typeof(short), "short" }, //Single
             { typeof(ushort), "ushort" },
             { typeof(int), "int" },
             { typeof(uint), "uint" },
@@ -53,6 +54,7 @@ namespace SimpleClassCreator.Lib.Services
             { typeof(string), "string" },
             { typeof(void), "void" },
             //These don't have aliases because they are not primitives, however they are used as such
+            { typeof(TimeSpan), "TimeSpan" },
             { typeof(DateTime), "DateTime" },
             { typeof(DateTimeOffset), "DateTimeOffset" },
             { typeof(Guid), "Guid" },

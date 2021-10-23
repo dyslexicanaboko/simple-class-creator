@@ -1,5 +1,8 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using NUnit.Framework;
+using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Services;
 
 namespace SimpleClassCreator.Tests
 {
@@ -99,6 +102,19 @@ namespace SimpleClassCreator.Tests
             var result = (R) obj;
 
             return result;
+        }
+
+        protected SchemaColumn GetSchemaColumn(Type type, bool isNullable)
+        {
+            var c = new SchemaColumn
+            {
+                ColumnName = "DoesNotMatter",
+                SystemType = type,
+                IsDbNullable = isNullable,
+                SqlType = TypesService.MapSystemToSqlLoose[type].ToString()
+            };
+
+            return c;
         }
     }
 }

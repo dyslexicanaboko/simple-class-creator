@@ -6,7 +6,11 @@ namespace SimpleClassCreator.Lib.Models
     {
         public string Query { get; set; }
 
-        public bool IsSingleTableQuery { get; set; }
+        /// <summary>
+        /// Denotes whether or not the original query is for a solitary table or if the query
+        /// involves more than one table.
+        /// </summary>
+        public bool IsSolitaryTableQuery { get; set; }
 
         public TableQuery Table { get; set; }
 

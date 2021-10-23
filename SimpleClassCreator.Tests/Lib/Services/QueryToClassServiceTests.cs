@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using SimpleClassCreator.Lib;
@@ -12,6 +14,7 @@ namespace SimpleClassCreator.Tests.Lib.Services
 {
     [TestFixture]
     public class QueryToClassServiceTests
+        : TestBase
     {
         [Test]
         public void Providing_no_generation_elections_produces_null()
@@ -49,27 +52,27 @@ namespace SimpleClassCreator.Tests.Lib.Services
             //Arrange
             var expected = PersonUtil.PersonClass;
 
-            var dt = PersonUtil.GetPersonAsDataTable();
+            var sq = PersonUtil.GetPersonAsSchemaQuery();
 
             var p = new QueryToClassParameters
             {
                 SourceSqlType = SourceSqlType.TableName,
-                SourceSqlText = dt.TableName,
+                SourceSqlText = sq.Table.Table,
                 LanguageType = CodeType.CSharp,
                 Namespace = "SimpleClassCreator.Tests.DummyObjects",
-                TableQuery = new TableQuery { Schema = "dbo", Table = dt.TableName }
+                TableQuery = sq.Table
             };
 
             p.ClassOptions.GenerateEntity = true;
-            p.ClassOptions.EntityName = dt.TableName;
+            p.ClassOptions.EntityName = sq.Table.Table;
 
             var repo = new Mock<IQueryToClassRepository>();
-            repo.Setup(x => x.GetSchema(p.TableQuery, It.IsAny<string>())).Returns(new SchemaQuery()); //TODO: Fix this later
+            repo.Setup(x => x.GetSchema(p.TableQuery, It.IsAny<string>())).Returns(sq); //TODO: Fix this later
 
             var svc = new QueryToClassService(repo.Object);
 
             //Act
-            var actual = svc.Generate(p);
+            var actual = svc.Generate(p).Single().Contents;
 
             //This is for debug only
             //DumpFile("Expected.cs", expected);
@@ -77,7 +80,7 @@ namespace SimpleClassCreator.Tests.Lib.Services
 
             //Assert
             //Spacing is still an issue, so going to give it a pass for now
-            AssertAreEqualIgnoreWhiteSpace(expected, actual.Single().Contents);
+            AssertAreEqualIgnoreWhiteSpace(expected, actual);
         }
 
         //This is for debug only

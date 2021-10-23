@@ -38,7 +38,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 			if (pk != null)
 			{
 				t = t.Replace("{{PrimaryKey}}", pk.ColumnName);
-				t = t.Replace("{{PrimaryKeyType}}", pk.SystemTypeName);
+				t = t.Replace("{{PrimaryKeyType}}", pk.SystemTypeAlias);
 				t = t.Replace("{{PrimaryKeySqlParameter}}", FormatSqlParameter(pk));
 			}
 
@@ -135,7 +135,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 			//Examples
 			//r["IntValue"] = Convert.ToInt32(r["IntValue"];
 			//r["NullableIntValue"] == DBNull.Value ? null : (int?)Convert.ToInt32(r["NullableIntValue"]);
-			//r["GuidValue"] = Guid.Parse(r["GuidValue"];
+			//r["GuidValue"] = Guid.Parse(Convert.ToString(r["GuidValue")];
 			//r["NullableGuidValue"] == DBNull.Value ? null : (Guid?)Guid.Parse(Convert.ToString(r["NullableGuidValue"]));
 
 			var dr = $"r[\"{p.ColumnName}\"]";

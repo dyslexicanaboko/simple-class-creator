@@ -2,13 +2,12 @@
 using SimpleClassCreator.Lib;
 using SimpleClassCreator.Lib.Services.CodeFactory;
 using System;
-using System.Data;
-using SimpleClassCreator.Lib.Models;
 
 namespace SimpleClassCreator.Tests.Lib.Services.CodeFactory
 {
     [TestFixture]
     public class ClassMemberStringsTests
+        : TestBase
     {
         [TestCase(typeof(DateTime), ExpectedResult = "DateTime")]
         [TestCase(typeof(DateTimeOffset), ExpectedResult = "DateTimeOffset")]
@@ -27,12 +26,12 @@ namespace SimpleClassCreator.Tests.Lib.Services.CodeFactory
         public string Types_are_formatted_as_expected(Type type)
         {
             //Arrange
-            var c = new SchemaColumn { ColumnName = "DoesNotMatter" ,SystemType = type, IsDbNullable = false};
+            var c = GetSchemaColumn(type, false);
 
             //Act
             var m = new ClassMemberStrings(c, CodeType.CSharp);
 
-            return m.SystemTypeName;
+            return m.SystemTypeAlias;
         }
 
         [TestCase(typeof(DateTime), ExpectedResult = "DateTime?")]
@@ -52,12 +51,12 @@ namespace SimpleClassCreator.Tests.Lib.Services.CodeFactory
         public string Nullable_types_are_formatted_as_expected(Type type)
         {
             //Arrange
-            var c = new SchemaColumn { ColumnName = "DoesNotMatter" ,SystemType = type, IsDbNullable = true};
+            var c = GetSchemaColumn(type, true);
 
             //Act
             var m = new ClassMemberStrings(c, CodeType.CSharp);
 
-            return m.SystemTypeName;
+            return m.SystemTypeAlias;
         }
     }
 }

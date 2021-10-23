@@ -4,7 +4,6 @@ using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services.CodeFactory;
 using SimpleClassCreator.Lib.Services.Generators;
 using System.Collections.Generic;
-using System.Data;
 
 namespace SimpleClassCreator.Tests.Lib.Services.Generator
 {
@@ -104,7 +103,7 @@ namespace SimpleClassCreator.Tests.Lib.Services.Generator
         public void One_ClassMemberString_creates_expected_string()
         {
             //Arrange
-            var dc = new SchemaColumn { ColumnName = "DoesNotMatter" ,SystemType = typeof(int), IsDbNullable = false};
+            var dc = GetSchemaColumn(typeof(int), false);
 
             var item = new ClassMemberStrings(dc, CodeType.CSharp);
 
@@ -113,7 +112,7 @@ namespace SimpleClassCreator.Tests.Lib.Services.Generator
                 item
             };
 
-            var expected = "        public int FakeColumn { get; set; }";
+            var expected = "        public int DoesNotMatter { get; set; }";
 
             //Act
             var actual = InvokePrivateMethod<ClassEntityGenerator, string>(_generator, "FormatProperties", lst);
