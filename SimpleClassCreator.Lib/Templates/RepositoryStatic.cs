@@ -10,7 +10,7 @@ namespace {{Namespace}}
 	//Should include interface?
     public class {{ClassName}}Repository
     {
-		public {{ClassName}} Select({{PrimaryKeyType}} {{PrimaryKey}})
+		public {{EntityName}} Select({{PrimaryKeyType}} {{PrimaryKey}})
 		{
 			var sql = @"
 			SELECT
@@ -32,7 +32,7 @@ namespace {{Namespace}}
 			}
 		}
 
-		public IEnumerable<{{ClassName}}> SelectAll()
+		public IEnumerable<{{EntityName}}> SelectAll()
 		{
 			var sql = @"
 			SELECT
@@ -48,7 +48,7 @@ namespace {{Namespace}}
 		}
 
 		//Preference on whether or not insert method returns a value is up to the user and the object being inserted
-		public int Insert({{ClassName}} entity)
+		public int Insert({{EntityName}} entity)
 		{
 			var sql = @"INSERT INTO {{Schema}}.{{Table}} (
 {{InsertColumnList}}) VALUES (
@@ -65,7 +65,7 @@ namespace {{Namespace}}
 			}
 		}
 
-		public void Update({{ClassName}} entity)
+		public void Update({{EntityName}} entity)
 		{
 			var sql = @"UPDATE {{Schema}}.{{Table}} SET 
 {{UpdateParameters}}
@@ -80,7 +80,7 @@ namespace {{Namespace}}
 			ExecuteNonQuery(sql, lst.ToArray());
 		}
 		
-		private SqlParameter GetPrimaryKeyParameter({{PrimaryKeyType}} {{PrimaryKey}})
+		private SqlParameter GetPrimaryKeyParameter({{EntityName}} entity)
 		{
 			SqlParameter p = null;
 			
@@ -89,7 +89,7 @@ namespace {{Namespace}}
 			return p;
 		}
 
-		private List<SqlParameter> GetParameters({{ClassName}} entity)
+		private List<SqlParameter> GetParameters({{EntityName}} entity)
 		{
 			SqlParameter p = null;
 
@@ -100,11 +100,11 @@ namespace {{Namespace}}
 			return lst;
 		}
 		
-		private {{ClassName}} ToEntity(IDataReader reader)
+		private {{EntityName}} ToEntity(IDataReader reader)
 		{
 			var r = reader;
 
-			var e = new {{ClassName}}();
+			var e = new {{EntityName}}();
 {{SetProperties}}
 
 			return e;

@@ -18,13 +18,17 @@ namespace SimpleClassCreator.Lib.Services.Generators
 
 		public override GeneratedResult FillTemplate()
 		{
+			//This is a hack for now, I am not going to keep this like this. I just need the entity name.
+			var className = Instructions.TableQuery.Table.Replace("[", string.Empty).Replace("]", string.Empty);
+
 			var strTemplate = GetTemplate(TemplateName);
 
 			var template = new StringBuilder(strTemplate);
 
 			template.Replace("{{Namespace}}", Instructions.Namespace);
-			template.Replace("{{ClassName}}", Instructions.ClassName);
-			template.Replace("{{Namespaces}}", FormatNamespaces(Instructions.Namespaces));
+			template.Replace("{{ClassName}}", className); //Name of the repository class
+			template.Replace("{{EntityName}}", Instructions.ClassName); //Entity name
+            template.Replace("{{Namespaces}}", FormatNamespaces(Instructions.Namespaces));
 
 			var t = template.ToString();
 
@@ -52,7 +56,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 			t = t.Replace("{{SetProperties}}", FormatSetProperties(Instructions.Properties));
 
 			var r = GetResult();
-			r.Filename = Instructions.ClassName + "Repository.cs";
+			r.Filename = className + "Repository.cs";
 			r.Contents = t;
 
 			return r;
@@ -81,7 +85,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 			var content = GetTextBlock(properties,
 				p => $@"{FormatSqlParameter(p)}
 								  
-								 lst.Add(p);",
+            lst.Add(p);",
 				Environment.NewLine);
 
 			return content;
@@ -99,14 +103,14 @@ namespace SimpleClassCreator.Lib.Services.Generators
 			//TODO: Need to work through every type to see what the combinations are
 			if (t == SqlDbType.DateTime2)
 			{
-				content += Environment.NewLine + $"p.Scale = {properties.Scale};";
+				content += Environment.NewLine + $"            p.Scale = {properties.Scale};";
 			}
 
 			if (t == SqlDbType.Decimal)
 			{
 				content += Environment.NewLine +
-						   $@"p.Scale = {properties.Scale};
-					   p.Precision = {properties.Precision};";
+$@"            p.Scale = {properties.Scale};
+            p.Precision = {properties.Precision};";
 			}
 
 			if (t == SqlDbType.VarChar ||
@@ -114,7 +118,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 				t == SqlDbType.Char ||
 				t == SqlDbType.NChar)
 			{
-				content += Environment.NewLine + $"p.Size = {properties.Size}";
+				content += Environment.NewLine + $"            p.Size = {properties.Size}";
 			}
 
 			return content;
@@ -123,7 +127,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 		private string FormatSetProperties(IList<ClassMemberStrings> properties)
 		{
 			var content = GetTextBlock(properties,
-				p => $"                {FormatSetProperty(p)}",
+				p => $"            {FormatSetProperty(p)}",
 				Environment.NewLine);
 
 			return content;
@@ -143,7 +147,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 			
 			var method = string.Format(p.ConversionMethodSignature, dr);
 
-			var content = $"e.{p.Property}";
+			var content = $"e.{p.Property} = ";
 
 			if (p.IsDbNullable)
 			{
