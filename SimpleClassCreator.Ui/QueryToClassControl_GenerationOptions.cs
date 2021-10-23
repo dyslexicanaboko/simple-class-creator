@@ -28,6 +28,7 @@ namespace SimpleClassCreator.Ui
             obj.TableQuery = _svcClass.ParseTableName(TxtSourceSqlText.Text);
             obj.ClassOptions = GetClassOptions();
             obj.ClassServices = GetClassServices();
+            obj.ClassRepositories = GetClassRepositories();
 
             return obj;
         }
@@ -104,6 +105,20 @@ namespace SimpleClassCreator.Ui
             return e;
         }
 
+        private ClassRepositories GetClassRepositories()
+        {
+            var e = ClassRepositories.None;
+
+            foreach (var kvp in _repositoryToCheckBoxMap)
+            {
+                if (!B.IsChecked(kvp.Value)) continue;
+
+                e |= kvp.Key;
+            }
+
+            return e;
+        }
+
         private Dictionary<ClassServices, CheckBox> GetServiceToCheckBoxMap()
         {
             var dict = new Dictionary<ClassServices, CheckBox>
@@ -119,6 +134,17 @@ namespace SimpleClassCreator.Ui
                 { ClassServices.RepoBulkCopy, CbRepoBulkCopy },
                 { ClassServices.RepoDapper, CbRepoDapper },
                 { ClassServices.RepoEfFluentApi, CbRepoEfFluentApi }
+            };
+
+            return dict;
+        }
+
+        private Dictionary<ClassRepositories, CheckBox> GetRepositoryToCheckBoxMap()
+        {
+            var dict = new Dictionary<ClassRepositories, CheckBox>
+            {
+                { ClassRepositories.StaticStatements, CbRepoStatic },
+                { ClassRepositories.Dapper, CbRepoDapper }
             };
 
             return dict;

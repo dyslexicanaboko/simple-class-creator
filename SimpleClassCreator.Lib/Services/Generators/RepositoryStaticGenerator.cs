@@ -42,8 +42,8 @@ namespace SimpleClassCreator.Lib.Services.Generators
 				t = t.Replace("{{PrimaryKeySqlParameter}}", FormatSqlParameter(pk));
 			}
 
-			t = t.Replace("{{Schema}}", Instructions.TableMeta.Schema);
-			t = t.Replace("{{Table}}", Instructions.TableMeta.Table);
+			t = t.Replace("{{Schema}}", Instructions.TableQuery.Schema);
+			t = t.Replace("{{Table}}", Instructions.TableQuery.Table);
 			t = t.Replace("{{SelectAllList}}", FormatSelectList(Instructions.Properties));
 			t = t.Replace("{{InsertColumnList}}", FormatSelectList(lstNoPk));
 			t = t.Replace("{{InsertValuesList}}", FormatSelectList(lstNoPk, "@"));
@@ -96,6 +96,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 			p.SqlDbType = SqlDbType.{t};
 			p.Value = entity.{properties.Property};";
 
+			//TODO: Need to work through every type to see what the combinations are
 			if (t == SqlDbType.DateTime2)
 			{
 				content += Environment.NewLine + $"p.Scale = {properties.Scale};";
@@ -146,7 +147,8 @@ namespace SimpleClassCreator.Lib.Services.Generators
 
 			if (p.IsDbNullable)
 			{
-				content += $"{dr} == DBNull.Value ? null : ({p.SystemTypeAlias}?)";
+				//The Alias already has the question mark suffix if nullable
+				content += $"{dr} == DBNull.Value ? null : ({p.SystemTypeAlias})";
 			}
 				
 			content += $"{method};";

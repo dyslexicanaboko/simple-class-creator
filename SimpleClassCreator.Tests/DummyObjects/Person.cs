@@ -28,7 +28,7 @@ namespace SimpleClassCreator.Tests.DummyObjects
         {
             var sq = new SchemaQuery
             {
-                Table = new TableQuery { Schema = "dbo", Table = nameof(Person) },
+                TableQuery = new TableQuery { Schema = "dbo", Table = nameof(Person) },
                 IsSolitaryTableQuery = true,
                 HasPrimaryKey = true
             };

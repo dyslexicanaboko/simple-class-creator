@@ -57,14 +57,14 @@ namespace SimpleClassCreator.Tests.Lib.Services
             var p = new QueryToClassParameters
             {
                 SourceSqlType = SourceSqlType.TableName,
-                SourceSqlText = sq.Table.Table,
+                SourceSqlText = sq.TableQuery.Table,
                 LanguageType = CodeType.CSharp,
                 Namespace = "SimpleClassCreator.Tests.DummyObjects",
-                TableQuery = sq.Table
+                TableQuery = sq.TableQuery
             };
 
             p.ClassOptions.GenerateEntity = true;
-            p.ClassOptions.EntityName = sq.Table.Table;
+            p.ClassOptions.EntityName = sq.TableQuery.Table;
 
             var repo = new Mock<IQueryToClassRepository>();
             repo.Setup(x => x.GetSchema(p.TableQuery, It.IsAny<string>())).Returns(sq); //TODO: Fix this later

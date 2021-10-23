@@ -31,6 +31,7 @@ namespace SimpleClassCreator.Lib.Services
         };
 
         //I got the base of this list from here: https://stackoverflow.com/a/1362899/603807
+        //I am not using this right now because I realized later that the CodeProvider DOES provide the aliases. Going to keep it around for now.
         /// <summary>
         /// Strong mapping of System types and their aliases. List has been extended to include
         /// structures that are not primitive types but are used as such.
@@ -39,13 +40,13 @@ namespace SimpleClassCreator.Lib.Services
         {
             { typeof(byte), "byte" },
             { typeof(sbyte), "sbyte" },
-            { typeof(short), "short" }, //Single
+            { typeof(short), "short" },
             { typeof(ushort), "ushort" },
             { typeof(int), "int" },
             { typeof(uint), "uint" },
             { typeof(long), "long" },
             { typeof(ulong), "ulong" },
-            { typeof(float), "float" },
+            { typeof(float), "float" }, //Single
             { typeof(double), "double" },
             { typeof(decimal), "decimal" },
             { typeof(object), "object" },

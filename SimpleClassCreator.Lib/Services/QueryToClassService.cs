@@ -4,7 +4,6 @@ using SimpleClassCreator.Lib.Services.CodeFactory;
 using SimpleClassCreator.Lib.Services.Generators;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 
 namespace SimpleClassCreator.Lib.Services
@@ -33,9 +32,16 @@ namespace SimpleClassCreator.Lib.Services
 
             var rServices = GenerateServices(p, baseInstructions);
 
-            var lst = new List<GeneratedResult>(rClasses.Count + rServices.Count);
+            var rRepositories = GenerateRepositories(p, baseInstructions);
+
+            var lst = new List<GeneratedResult>(
+                rClasses.Count + 
+                rServices.Count +
+                rRepositories.Count);
+            
             lst.AddRange(rClasses);
             lst.AddRange(rServices);
+            lst.AddRange(rRepositories);
 
             //Writing to files will be handled again later
             //if (p.SaveAsFile)
@@ -190,6 +196,31 @@ namespace SimpleClassCreator.Lib.Services
             return lst;
         }
 
+        private IList<GeneratedResult> GenerateRepositories(QueryToClassParameters parameters, ClassInstructions baseInstructions)
+        {
+            if (parameters.ClassRepositories  == ClassRepositories.None) return new List<GeneratedResult>(0);
+
+            var repositories = parameters.ClassRepositories;
+
+            var lst = new List<GeneratedResult>();
+
+            if (repositories.HasFlag(ClassRepositories.StaticStatements))
+            {
+                var svc = new RepositoryStaticGenerator(baseInstructions);
+
+                lst.Add(svc.FillTemplate());
+            }
+
+            if (repositories.HasFlag(ClassRepositories.Dapper))
+            {
+                //var svc = new RepositoryDapperGenerator(baseInstructions);
+
+                //lst.Add(svc.FillTemplate());
+            }
+
+            return lst;
+        }
+
         private ClassInstructions GetInstructions(QueryToClassParameters parameters)
         {
             var p = parameters;
@@ -205,6 +236,7 @@ namespace SimpleClassCreator.Lib.Services
             ins.ClassName = p.ClassOptions.EntityName;
             ins.ModelName = p.ClassOptions.ModelName;
             ins.InterfaceName = "I" + (string.IsNullOrEmpty(p.ClassOptions.EntityName) ? p.ClassOptions.ModelName : p.ClassOptions.EntityName);
+            ins.TableQuery = p.TableQuery;
 
             foreach (var sc in schema.ColumnsAll)
             {

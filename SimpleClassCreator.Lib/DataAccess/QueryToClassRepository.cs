@@ -18,8 +18,8 @@ namespace SimpleClassCreator.Lib.DataAccess
 
             var sq = new SchemaQuery();
             sq.Query = query;
-            sq.Table = tableQuery;
-            sq.IsSolitaryTableQuery = sq.Table != null;
+            sq.TableQuery = tableQuery;
+            sq.IsSolitaryTableQuery = sq.TableQuery != null;
             sq.HasPrimaryKey = rs.GenericSchema.PrimaryKey.Any();
 
             sq.ColumnsAll = new List<SchemaColumn>(rs.GenericSchema.Columns.Count);

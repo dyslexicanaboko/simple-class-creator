@@ -20,6 +20,7 @@ namespace SimpleClassCreator.Ui
         private IQueryToClassService _svcQueryToClass;
         private IGeneralDatabaseQueries _generalRepo;
         private readonly Dictionary<ClassServices, CheckBox> _serviceToCheckBoxMap;
+        private readonly Dictionary<ClassRepositories, CheckBox> _repositoryToCheckBoxMap;
         private readonly CheckBoxGroup _classCheckBoxGroup;
 
         private static string DefaultPath => AppDomain.CurrentDomain.BaseDirectory;
@@ -50,6 +51,7 @@ namespace SimpleClassCreator.Ui
             TxtClassModelName.DefaultButton.Click += (sender, args) => SetModelName();
 
             _serviceToCheckBoxMap = GetServiceToCheckBoxMap();
+            _repositoryToCheckBoxMap = GetRepositoryToCheckBoxMap();
             _classCheckBoxGroup = GetCheckBoxGroup();
         }
 

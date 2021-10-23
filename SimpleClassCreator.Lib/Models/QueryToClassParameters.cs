@@ -56,6 +56,8 @@
         public ClassOptions ClassOptions { get; set; } = new ClassOptions();
 
         public ClassServices ClassServices { get; set; } = ClassServices.None;
+        
+        public ClassRepositories ClassRepositories { get; set; } = ClassRepositories.None;
 
         public bool HasElections => 
             ClassOptions.GenerateEntity || 

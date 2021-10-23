@@ -12,7 +12,7 @@ namespace SimpleClassCreator.Lib.Models
         /// </summary>
         public bool IsSolitaryTableQuery { get; set; }
 
-        public TableQuery Table { get; set; }
+        public TableQuery TableQuery { get; set; }
 
         public bool HasPrimaryKey { get; set; }
 

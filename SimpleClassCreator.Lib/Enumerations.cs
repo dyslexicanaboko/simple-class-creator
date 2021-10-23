@@ -41,4 +41,12 @@ namespace SimpleClassCreator.Lib
         RepoDapper = 1024,
         RepoEfFluentApi = 2048
     }
+
+    [Flags]
+    public enum ClassRepositories
+    {
+        None = 0,
+        StaticStatements = 1,
+        Dapper = 2
+    }
 }
