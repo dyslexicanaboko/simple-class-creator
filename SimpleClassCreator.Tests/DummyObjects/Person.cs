@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Services;
 
 namespace SimpleClassCreator.Tests.DummyObjects
 {
@@ -20,29 +24,46 @@ namespace SimpleClassCreator.Tests.DummyObjects
 
     public static class PersonUtil
     {
-        public static DataTable GetPersonAsDataTable()
+        public static SchemaQuery GetPersonAsSchemaQuery()
         {
-            var dt = new DataTable(nameof(Person));
+            var sq = new SchemaQuery
+            {
+                TableQuery = new TableQuery { Schema = "dbo", Table = nameof(Person) },
+                IsSolitaryTableQuery = true,
+                HasPrimaryKey = true
+            };
 
-            var dc = GetNonNullColumn(nameof(Person.PersonId), typeof(int));
-            dt.Columns.Add(dc);
+            sq.PrimaryKey = GetSchemaColumn(nameof(Person.PersonId), typeof(int), false);
+            sq.ColumnsNoPk = new List<SchemaColumn>
+            {
+                GetSchemaColumn(nameof(Person.Age), typeof(int), true),
+                GetSchemaColumn(nameof(Person.FirstName), typeof(string)),
+                GetSchemaColumn(nameof(Person.MiddleName), typeof(string), true),
+                GetSchemaColumn(nameof(Person.LastName), typeof(string)),
+                GetSchemaColumn(nameof(Person.BirthDate), typeof(DateTime), true)
+            };
 
-            dc = new DataColumn(nameof(Person.Age), typeof(int));
-            dt.Columns.Add(dc);
+            //Order matters
+            var lst = new List<SchemaColumn>();
+            lst.Add(sq.PrimaryKey);
+            lst.AddRange(sq.ColumnsNoPk);
+            
+            sq.ColumnsAll = lst;
 
-            dc = GetNonNullColumn(nameof(Person.FirstName), typeof(string));
-            dt.Columns.Add(dc);
+            return sq;
+        }
 
-            dc = new DataColumn(nameof(Person.MiddleName), typeof(string));
-            dt.Columns.Add(dc);
+        private static SchemaColumn GetSchemaColumn(string columnName, Type type, bool isNullable = false)
+        {
+            var c = new SchemaColumn
+            {
+                ColumnName = columnName,
+                SystemType = type,
+                IsDbNullable = isNullable,
+                SqlType = TypesService.MapSystemToSqlLoose[type].ToString()
+            };
 
-            dc = GetNonNullColumn(nameof(Person.LastName), typeof(string));
-            dt.Columns.Add(dc);
-
-            dc = new DataColumn(nameof(Person.BirthDate), typeof(DateTime));
-            dt.Columns.Add(dc);
-
-            return dt;
+            return c;
         }
 
         private static DataColumn GetNonNullColumn(string columnName, Type type)

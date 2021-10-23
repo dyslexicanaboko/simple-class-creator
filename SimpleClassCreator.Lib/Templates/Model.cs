@@ -2,8 +2,7 @@
 
 namespace {{Namespace}}
 {
-    {{ClassAttributes}}
-    public class {{ClassName}}
+    public class {{ClassName}}{{Interface}}
     {
 {{Properties}}
     }

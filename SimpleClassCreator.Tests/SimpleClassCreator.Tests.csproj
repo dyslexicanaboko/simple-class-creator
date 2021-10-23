@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DummyObjects\Person.cs" />
+    <Compile Include="Lib\DataAccess\QueryToClassRepositoryTests.cs" />
     <Compile Include="Lib\Services\CodeFactory\ClassMemberStringsTests.cs" />
     <Compile Include="Lib\Services\Generator\ModelGeneratorTests.cs" />
     <Compile Include="Lib\Services\NameFormatServiceTests.cs" />

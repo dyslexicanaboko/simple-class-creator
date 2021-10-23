@@ -1,4 +1,7 @@
-﻿using Moq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Moq;
 using NUnit.Framework;
 using SimpleClassCreator.Lib;
 using SimpleClassCreator.Lib.DataAccess;
@@ -11,7 +14,30 @@ namespace SimpleClassCreator.Tests.Lib.Services
 {
     [TestFixture]
     public class QueryToClassServiceTests
+        : TestBase
     {
+        [Test]
+        public void Providing_no_generation_elections_produces_null()
+        {
+            //Arrange
+            var p = new QueryToClassParameters
+            {
+                SourceSqlType = SourceSqlType.TableName,
+                LanguageType = CodeType.CSharp,
+                Namespace = "SimpleClassCreator.Tests.DummyObjects"
+            };
+
+            var repo = new Mock<IQueryToClassRepository>();
+
+            var svc = new QueryToClassService(repo.Object);
+
+            //Act
+            var actual = svc.Generate(p);
+
+            //Assert
+            Assert.IsNull(actual);
+        }
+
         /*
         3. Need to create templates for whatever code it is that I am trying to create
         A. Let's create a dummy object that is easy to understand and work off of that 
@@ -26,26 +52,27 @@ namespace SimpleClassCreator.Tests.Lib.Services
             //Arrange
             var expected = PersonUtil.PersonClass;
 
-            var dt = PersonUtil.GetPersonAsDataTable();
+            var sq = PersonUtil.GetPersonAsSchemaQuery();
 
-            var p = new ClassParameters
+            var p = new QueryToClassParameters
             {
-                ClassName = dt.TableName,
-                SourceType = SourceTypeEnum.TableName,
-                ClassSource = dt.TableName,
+                SourceSqlType = SourceSqlType.TableName,
+                SourceSqlText = sq.TableQuery.Table,
                 LanguageType = CodeType.CSharp,
                 Namespace = "SimpleClassCreator.Tests.DummyObjects",
-                TableQuery = new TableQuery() { Schema = "dbo", Table = dt.TableName }
+                TableQuery = sq.TableQuery
             };
-            
+
+            p.ClassOptions.GenerateEntity = true;
+            p.ClassOptions.EntityName = sq.TableQuery.Table;
+
             var repo = new Mock<IQueryToClassRepository>();
-            repo.Setup(x => x.GetSchema(It.IsAny<string>())).Returns(dt);
-            repo.Setup(x => x.GetPrimaryKeyColumn(It.IsAny<TableQuery>())).Returns(nameof(Person.PersonId));
+            repo.Setup(x => x.GetSchema(p.TableQuery, It.IsAny<string>())).Returns(sq); //TODO: Fix this later
 
             var svc = new QueryToClassService(repo.Object);
 
             //Act
-            var actual = svc.GenerateClass(p);
+            var actual = svc.Generate(p).Single().Contents;
 
             //This is for debug only
             //DumpFile("Expected.cs", expected);

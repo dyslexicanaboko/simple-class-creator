@@ -1,11 +1,10 @@
-﻿using SimpleClassCreator.Lib.Models;
+﻿using System.Collections.Generic;
+using SimpleClassCreator.Lib.Models;
 
 namespace SimpleClassCreator.Lib.Services
 {
     public interface IQueryToClassService
     {
-        string GenerateClass(ClassParameters parameters);
-     
-        string GenerateGridViewColumns(ClassParameters parameters);
+        IList<GeneratedResult> Generate(QueryToClassParameters parameters);
     }
 }

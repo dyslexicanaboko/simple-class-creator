@@ -1,5 +1,6 @@
 ﻿using Microsoft.CSharp;
 using Microsoft.VisualBasic;
+using SimpleClassCreator.Lib.Models;
 using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
@@ -11,73 +12,117 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
     {
         private readonly CodeDomProvider _provider;
 
-        public ClassMemberStrings(DataColumn dc, CodeType type, string fieldPrefix)
+        public ClassMemberStrings(SchemaColumn sc, CodeType type)
         {
-            var _type = type;
-
-            if (_type == CodeType.CSharp)
+            if (type == CodeType.CSharp)
                 _provider = new CSharpCodeProvider();
             else
                 _provider = new VBCodeProvider();
 
-            IsDbNullable = dc.AllowDBNull;
+            DatabaseTypeName = sc.SqlType.ToLower(); //Case is inconsistent, so making it lower on purpose
+
+            DatabaseType = TypesService.SqlTypes[DatabaseTypeName];
+
+            Size = sc.Size;
+
+            Precision = sc.Precision;
+
+            Scale = sc.Scale;
+
+            IsPrimaryKey = sc.IsPrimaryKey;
+            
+            IsDbNullable = sc.IsDbNullable;
 
             IsImplicitlyNullable = 
-                dc.DataType == typeof(string) || 
-                dc.DataType.BaseType == typeof(Array);
+                sc.SystemType == typeof(string) || 
+                sc.SystemType.BaseType == typeof(Array);
 
             //Remove unnecessary extra padding if it shows up
-            ColumnName = dc.ColumnName.Trim();
+            var trimmedColumnName = sc.ColumnName.Trim();
 
-            //Qualifying the column name for SQL
-            if(ColumnName.Contains(" ")) ColumnName = "[" + ColumnName + "]";
+            SetPropertyAndField(trimmedColumnName);
 
-            //Removing any whitespace
-            Property = ColumnName.Replace(" ", string.Empty);
+            SetColumnName(trimmedColumnName);
 
-            var firstChar = Property.Substring(0, 1);
-            var remainder = Property.Substring(1, Property.Length - 1);
+            SystemTypeName = sc.SystemType.Name;
 
-            //Pascal Case the property name
-            Property = firstChar.ToUpper() + remainder;
+            //Getting the system type as the alias.
+            //Removes the "System." prefix if it exists and sets the "InSystemNamespace" to true if found.
+            SystemTypeAlias = GetSystemTypeAsAlias(sc.SystemType, IsImplicitlyNullable, IsDbNullable);
 
-            //Camel case the field name
-            Field = fieldPrefix + "_" + firstChar.ToLower() + remainder;
-
-            //Getting the base type
-            SystemType = GetTypeAsString(dc.DataType);
-
-            //If this column is nullable then mark it with a question mark
-            if (!IsImplicitlyNullable && IsDbNullable)
-                SystemType = SystemType + "?";
-
-            //These statements are a matter of preference
-            StringValue = dc.DataType == typeof(string) || dc.DataType == typeof(DateTime) ? "AddString(" + Property + ")" : Property; //it is important to filter strings for SQL Injection, hence the AddString method
-            
-            ConvertTo = "Convert.To" + (dc.DataType == typeof(byte) ? "Int32" : dc.DataType.Name) + "("; //A byte can fit inside of an Int32
+            ConversionMethodSignature = GetConversionMethodSignature(sc.SystemType, SystemTypeName);
         }
 
-        public string ColumnName { get; }
-        
-        public bool InSystemNamespace { get; private set; }
-        
+        //For cloning only, bypasses all of the logic and is a straight copy
+        private ClassMemberStrings(ClassMemberStrings source, CodeDomProvider provider)
+        {
+            _provider = provider;
+
+            ColumnName = source.ColumnName;
+            InSystemNamespace = source.InSystemNamespace;
+            IsDbNullable = source.IsDbNullable;
+            IsImplicitlyNullable = source.IsImplicitlyNullable;
+            Field = source.Field;
+            Property = source.Property;
+            SystemTypeAlias = source.SystemTypeAlias;
+            ConversionMethodSignature = source.ConversionMethodSignature;
+        }
+
+        /// <summary>Qualified SQL Column name</summary>
+        public string ColumnName { get; private set; }
+
+        /// <summary>SQL Server database type name in lower case</summary>
+        public string DatabaseTypeName { get; }
+
+        /// <summary>SQL Server database type enumeration</summary>
+        public SqlDbType DatabaseType { get; }
+
+        /// <summary>Column size for varchar, nvarchar, char, nchar etc...</summary>
+        public int Size { get; }
+
+        /// <summary>Column precision for numeric types such as decimal(p,s)</summary>
+        public int Precision { get; }
+
+        /// <summary>Column scale for numeric types such as decimal(p,s) and for datetime2(s)</summary>
+        public int Scale { get; }
+
+        public bool IsPrimaryKey { get; }
+
         public bool IsDbNullable { get; }
         
+        /// <summary>
+        /// Some code types are nullable without having to qualify it with a question mark
+        /// in front of the type. In other words don't add a question mark to types that
+        /// are already nullable such as strings.
+        /// </summary>
         public bool IsImplicitlyNullable { get; }
-        
-        public string Field { get; }
-        
-        public string Property { get; }
-        
-        public string SystemType { get; }
-        
-        public string ConvertTo { get; }
-        
-        public string StringValue { get; }
 
-        private string GetTypeAsString(Type target)
+        public bool InSystemNamespace { get; private set; }
+
+        public string Field { get; private set; }
+        
+        /// <summary>Property name in code</summary>
+        public string Property { get; private set; }
+
+        /// <summary>Property's System Type in code from typeof(T). This is the alias of the type.</summary>
+        public string SystemTypeAlias { get; }
+
+        /// <summary>
+        /// Property's System Type in code from typeof(T). This is the full class name of the type, not the alias.
+        /// Does not include the "System." namespace as a prefix.
+        /// </summary>
+        public string SystemTypeName { get; }
+
+        public string ConversionMethodSignature { get; }
+
+        private string GetSystemTypeAsAlias(Type target, bool isImplicitlyNullable, bool isDbNullable)
         {
-            var str = _provider.GetTypeOutput(new CodeTypeReference(target));
+            var str = _provider.GetTypeOutput(new CodeTypeReference(target)); //This returns the alias if there is one
+
+            //This removes the possibility of knowing what the base type is, but in code this is what is needed
+            //If this column is nullable then mark it with a question mark
+            if (!isImplicitlyNullable && isDbNullable)
+                str = str + "?";
 
             if (!str.StartsWith("System.")) return str;
 
@@ -88,5 +133,45 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
 
             return str;
         }
+
+        //TODO: How to handle arrays? Like blobs from the database?
+        private string GetConversionMethodSignature(Type type, string systemTypeName)
+        {
+            //Guid does not have a method in the Convert class
+            if (type == typeof(Guid))
+            {
+                //DataReader column has to be converted to string first
+                return "Guid.Parse(Convert.ToString({0}))";
+            }
+
+            var typeString = systemTypeName;
+
+            var c = "Convert.To" + typeString + "({0})";
+
+            return c;
+        }
+
+        private void SetPropertyAndField(string unqualifiedColumnName)
+        {
+            //Removing any whitespace
+            Property = unqualifiedColumnName.Replace(" ", string.Empty);
+
+            var firstChar = Property.Substring(0, 1);
+            var remainder = Property.Substring(1, Property.Length - 1);
+
+            //Pascal Case the property name
+            Property = firstChar.ToUpper() + remainder;
+
+            //Camel case the field name
+            Field = "_" + firstChar.ToLower() + remainder;
+        }
+
+        private void SetColumnName(string trimmedColumnName)
+        {
+            //Qualifying the column name for SQL
+            ColumnName = trimmedColumnName.Contains(" ") ? ("[" + trimmedColumnName + "]") : trimmedColumnName;
+        }
+
+        public ClassMemberStrings Clone() => new ClassMemberStrings(this, _provider);
     }
 }

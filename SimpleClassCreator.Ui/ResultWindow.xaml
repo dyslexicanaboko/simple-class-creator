@@ -3,6 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ResultWindow" Height="548" Width="528">
     <Grid>
-        <TextBox Name="txtResult" IsReadOnly="True" IsReadOnlyCaretVisible="True" HorizontalContentAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch" VerticalScrollBarVisibility="Auto" />
+        <TextBox Name="TxtResult" IsReadOnly="True" IsReadOnlyCaretVisible="True" HorizontalContentAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch" VerticalScrollBarVisibility="Auto" Background="Black" Foreground="White" FontFamily="Courier New" FontSize="14" />
     </Grid>
 </Window>

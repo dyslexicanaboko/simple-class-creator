@@ -7,11 +7,13 @@ namespace SimpleClassCreator.Ui
     /// </summary>
     public partial class ResultWindow : Window
     {
-        public ResultWindow(string resultText)
+        public ResultWindow(string title, string contents)
         {
             InitializeComponent();
 
-            txtResult.Text = resultText;
+            Title = title;
+
+            TxtResult.Text = contents;
         }
     }
 }

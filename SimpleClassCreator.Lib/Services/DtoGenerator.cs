@@ -83,7 +83,7 @@ namespace SimpleClassCreator.Lib.Services
             return asm;
         }
 
-        public string MakeDto(string className, ClassParameters parameters)
+        public string MakeDto(string className, DtoMakerParameters parameters)
         {
             var p = parameters;
 
@@ -96,10 +96,8 @@ namespace SimpleClassCreator.Lib.Services
 
             var cn = t.Name + "Dto";
 
-            var wcfOk = p.IncludeSerializeablePropertiesOnly && p.IncludeSerializableAttribute;
-
             //Class declaration
-            if (wcfOk) sb.AppendLine("[DataContract]");
+            //if (wcfOk) sb.AppendLine("[DataContract]");
 
             sb.Append("public class ").AppendLine(cn);
 
@@ -120,7 +118,7 @@ namespace SimpleClassCreator.Lib.Services
                 var tp = pi.PropertyType;
 
                 //Class properties
-                if (wcfOk) sb.AppendLine("[DataMember]");
+                //if (wcfOk) sb.AppendLine("[DataMember]");
 
                 sb.Append("public ").Append(GetTypeAsString(tp));
 
@@ -262,7 +260,7 @@ namespace SimpleClassCreator.Lib.Services
 
         public void PrintClasses()
         {
-            if (true) ;
+            //if (true) ;
 
             var i = 0;
 

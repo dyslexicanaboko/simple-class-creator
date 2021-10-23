@@ -113,19 +113,29 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CheckBoxGroup.cs" />
     <Compile Include="DtoMakerControl.xaml.cs">
       <DependentUpon>DtoMakerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="QueryToClassControl.xaml.cs">
+      <DependentUpon>QueryToClassControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="QueryToClassControl_ConnectionString.cs" />
+    <Compile Include="QueryToClassControl_GenerationOptions.cs" />
     <Compile Include="ResultWindow.xaml.cs">
       <DependentUpon>ResultWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ConnectionManager.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="TextBoxWithDefaultControl.xaml.cs">
+      <DependentUpon>TextBoxWithDefaultControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControlBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="QueryToClassWindow.xaml.cs">
-      <DependentUpon>QueryToClassWindow.xaml</DependentUpon>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -160,11 +170,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="QueryToClassWindow.xaml">
+    <Page Include="QueryToClassControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ResultWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TextBoxWithDefaultControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -50,9 +50,24 @@
     <Compile Include="Models\AssemblyInfo.cs" />
     <Compile Include="Models\ClassInfo.cs" />
     <Compile Include="Models\ClassInstructions.cs" />
+    <Compile Include="Models\ClassOptions.cs" />
+    <Compile Include="Models\DtoMakerParameters.cs" />
+    <Compile Include="Models\GeneratedResult.cs" />
+    <Compile Include="Models\SchemaColumn.cs" />
+    <Compile Include="Models\SchemaQuery.cs" />
+    <Compile Include="Models\SchemaRaw.cs" />
     <Compile Include="Services\CodeFactory\ClassMemberStrings.cs" />
+    <Compile Include="Services\Generators\ClassEntityIComparableGenerator.cs" />
+    <Compile Include="Services\Generators\ClassEntityEqualityComparerGenerator.cs" />
+    <Compile Include="Services\Generators\RepositoryStaticGenerator.cs" />
+    <Compile Include="Services\Generators\ClassEntityIEquatableGenerator.cs" />
+    <Compile Include="Services\Generators\ServiceSerializationJsonGenerator.cs" />
+    <Compile Include="Services\Generators\ServiceCloningGenerator.cs" />
+    <Compile Include="Services\Generators\ServiceSerializationCsvGenerator.cs" />
+    <Compile Include="Services\Generators\ClassInterfaceGenerator.cs" />
+    <Compile Include="Services\Generators\ClassModelGenerator.cs" />
     <Compile Include="Services\Generators\GeneratorBase.cs" />
-    <Compile Include="Services\Generators\ModelGenerator.cs" />
+    <Compile Include="Services\Generators\ClassEntityGenerator.cs" />
     <Compile Include="Services\NameFormatService.cs" />
     <Compile Include="Services\DtoGenerator.cs" />
     <Compile Include="Models\PropertyInfo.cs" />
@@ -60,7 +75,7 @@
     <Compile Include="DataAccess\IGeneralDatabaseQueries.cs" />
     <Compile Include="DataAccess\IQueryToClassRepository.cs" />
     <Compile Include="Enumerations.cs" />
-    <Compile Include="Models\ClassParameters.cs" />
+    <Compile Include="Models\QueryToClassParameters.cs" />
     <Compile Include="Services\CodeFactory\CSharpLanguage.cs" />
     <Compile Include="DataAccess\BaseRepository.cs" />
     <Compile Include="Services\CodeFactory\DotNetLanguage.cs" />
@@ -71,13 +86,41 @@
     <Compile Include="Services\IDtoGenerator.cs" />
     <Compile Include="Services\IQueryToClassService.cs" />
     <Compile Include="Services\QueryToClassService.cs" />
+    <Compile Include="Services\TypesService.cs" />
     <Compile Include="StartUp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CodeFactory\VbDotNetLanguage.cs" />
-    <Content Include="Templates\IEquatableOfT.cs">
+    <Content Include="Templates\EntityEqualityComparer.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Entity.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Templates\Model.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Interface.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\EntityIEquatable.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\EntityIComparable.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\ServiceSerializationCsv.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\ServiceSerializationJson.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\ServiceCloning.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\RepositoryStatic.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\RepositoryDapper.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="Utils.cs" />

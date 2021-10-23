@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
-using SimpleClassCreator.Lib;
-using SimpleClassCreator.Lib.DataAccess;
 using SimpleClassCreator.Lib.Models;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 
 namespace SimpleClassCreator.Lib.DataAccess
 {
@@ -13,47 +12,53 @@ namespace SimpleClassCreator.Lib.DataAccess
     public class QueryToClassRepository
         : BaseRepository, IQueryToClassRepository
     {
-        public DataTable GetSchema(string query)
+        public SchemaQuery GetSchema(TableQuery tableQuery, string query)
         {
-            try
+            var rs = GetFullSchemaInformation(query);
+
+            var sq = new SchemaQuery();
+            sq.Query = query;
+            sq.TableQuery = tableQuery;
+            sq.IsSolitaryTableQuery = sq.TableQuery != null;
+            sq.HasPrimaryKey = rs.GenericSchema.PrimaryKey.Any();
+
+            sq.ColumnsAll = new List<SchemaColumn>(rs.GenericSchema.Columns.Count);
+
+            foreach (DataColumn dc in rs.GenericSchema.Columns)
             {
-                return ExecuteDataTable(query);
-            }
-            catch (Exception ex)
-            {
-                Utils.LogError(ex);
+                var sqlServerColumn = rs.SqlServerSchema.Select($"ColumnName = '{dc.ColumnName}'").Single();
 
-                throw;
-            }
-        }
-
-        public string GetPrimaryKeyColumn(TableQuery tableQuery)
-        {
-            try
-            {
-                var pSchema = new SqlParameter("@table_owner", tableQuery.Schema);
-                pSchema.SqlDbType = SqlDbType.NVarChar;
-                pSchema.Size = 256;
-
-                var pTable = new SqlParameter("@table_name", tableQuery.Table);
-                pTable.SqlDbType = SqlDbType.NVarChar;
-                pTable.Size = 256;
-
-                using (var dr = ExecuteStoredProcedure("sys.sp_pkeys", pTable, pSchema))
+                var sc = new SchemaColumn
                 {
-                    dr.Read();
+                    ColumnName = dc.ColumnName,
+                    IsDbNullable = dc.AllowDBNull,
+                    SystemType = dc.DataType,
+                    SqlType = sqlServerColumn.Field<string>("DataTypeName"),
+                    Size = sqlServerColumn.Field<int>("ColumnSize"),
+                    Precision = sqlServerColumn.Field<short>("NumericPrecision"),
+                    Scale = sqlServerColumn.Field<short>("NumericScale")
+                };
 
-                    var pk = Convert.ToString(dr["COLUMN_NAME"]);
-
-                    return pk;
-                }
+                sq.ColumnsAll.Add(sc);
             }
-            catch (Exception ex)
-            {
-                Utils.LogError(ex);
 
-                throw;
-            }
+            if (!sq.HasPrimaryKey) return sq;
+            
+            //TODO: This is assuming a single column is the primary key which is a bad idea, but okay for now
+            var pk = rs.GenericSchema.PrimaryKey.First();
+
+            sq.PrimaryKey = sq
+                .ColumnsAll
+                .Single(x => x.ColumnName.Equals(pk.ColumnName, StringComparison.InvariantCultureIgnoreCase));
+            
+            sq.PrimaryKey.IsPrimaryKey = true;
+
+            sq.ColumnsNoPk = sq
+                .ColumnsAll
+                .Where(x => !x.ColumnName.Equals(pk.ColumnName, StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
+
+            return sq;
         }
     }
 }

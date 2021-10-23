@@ -11,7 +11,7 @@ namespace SimpleClassCreator.Lib.Services
 
         string GetTypeAsString(Type target);
 
-        string MakeDto(string className, ClassParameters parameters);
+        string MakeDto(string className, DtoMakerParameters parameters);
 
         Type PrintClass(string className);
 

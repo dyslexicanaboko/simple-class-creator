@@ -7,12 +7,9 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
     {
         private bool _buildOutProperties = false;
 
-        public CSharpLanguage(string className, bool includeSerializableAttribute, bool buildOutProperties = false)
+        public CSharpLanguage(string className)
         {
             ClassName = CapitalizeFirstLetter(className);
-
-            _buildOutProperties = buildOutProperties;
-            IncludeSerializableAttribute = includeSerializableAttribute;
         }
 
         public override void InitializeMotifValues()
@@ -50,20 +47,20 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             if (_buildOutProperties)
             {
                 //Private Member
-                sb.AppendFormat("private {0} {1}{2}", info.SystemType, info.Field, LineTerminator);
+                sb.AppendFormat("private {0} {1}{2}", info.SystemTypeAlias, info.Field, LineTerminator);
 
                 if (IncludeSerializableAttribute)
                     sb.Append(DataMember);
 
                 //Public Property
-                sb.AppendFormat("public {0} {1}{3}{{{3} get {{ return {2}; }}{3} set {{ {2} = value; }}{3}}} ", info.SystemType, info.Property, info.Field, Environment.NewLine);
+                sb.AppendFormat("public {0} {1}{3}{{{3} get {{ return {2}; }}{3} set {{ {2} = value; }}{3}}} ", info.SystemTypeAlias, info.Property, info.Field, Environment.NewLine);
             }
             else
             {
                 if (IncludeSerializableAttribute)
                     sb.Append(DataMember);
 
-                sb.AppendFormat("{0} {1} {2} {{ get; set; }}", Public, info.SystemType, info.Property);
+                sb.AppendFormat("{0} {1} {2} {{ get; set; }}", Public, info.SystemTypeAlias, info.Property);
             }
 
             sb.AppendLine().AppendLine();

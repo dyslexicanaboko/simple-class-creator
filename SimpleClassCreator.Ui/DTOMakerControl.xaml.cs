@@ -106,14 +106,12 @@ Please keep in mind casing matters.";
             return sp;
         }
 
-        private ClassParameters GetParametersFromUi()
+        private DtoMakerParameters GetParametersFromUi()
         {
             //Not every parameter will be in use yet
-            var p = new ClassParameters
+            var p = new DtoMakerParameters
             {
                 IncludeCloneMethod = GetValue(cbxIncludeCloneMethod),
-                IncludeSerializeablePropertiesOnly = GetValue(cbxSerializableOnly),
-                IncludeSerializableAttribute = GetValue(cbxWcfEnabled),
                 ExcludeCollections = GetValue(cbxExcludeCollections),
                 IncludeTranslateMethod = GetValue(cbxIncludeTranslateMethod),
                 IncludeIEquatableOfTMethods = GetValue(cbxIncludeIEquatableOfTMethod)
@@ -135,7 +133,7 @@ Please keep in mind casing matters.";
 
             _generator.LoadAssembly(AssemblyFullPath);
 
-            var win = new ResultWindow(_generator.MakeDto(ClassFqdn, p));
+            var win = new ResultWindow("Dto", _generator.MakeDto(ClassFqdn, p));
             
             win.Show();
         }
