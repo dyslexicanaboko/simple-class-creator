@@ -52,7 +52,7 @@
                 <local:TextBoxWithDefaultControl x:Name="TxtEntityName" Margin="29,29,352,0" DefaultText="Entity1" VerticalAlignment="Top" Width="Auto"/>
             </Grid>
         </GroupBox>
-        <GroupBox Header="Step 4: Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,535,0,0" Width="652">
+        <GroupBox Header="Step 4: Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,524,0,0" Width="652" Height="137">
             <Grid>
                 <Button Content="Generate Code" Height="89" HorizontalAlignment="Left" Margin="6,10,0,0" Name="BtnGenerate" VerticalAlignment="Top" Width="186" Click="BtnGenerate_Click" FontSize="20" Background="#FFD62A2A" Foreground="White" />
                 <CheckBox Content="Save as file on generation" Height="16" HorizontalAlignment="Left" Margin="197,10,0,0" Name="CbSaveFileOnGeneration" VerticalAlignment="Top" Checked="CbSaveFileOnGeneration_Checked" Unchecked="CbSaveFileOnGeneration_Checked" />

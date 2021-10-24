@@ -7,7 +7,6 @@ using System.Linq;
 
 namespace {{Namespace}}
 {
-	//Should include interface?
     public class {{ClassName}}Repository
     {
 		public {{EntityName}} Select({{PrimaryKeyType}} {{PrimaryKey}})
@@ -48,13 +47,14 @@ namespace {{Namespace}}
 		}
 
 		//Preference on whether or not insert method returns a value is up to the user and the object being inserted
-		public int Insert({{EntityName}} entity)
+		public {{PrimaryKeyType}} Insert({{EntityName}} entity)
 		{
 			var sql = @"INSERT INTO {{Schema}}.{{Table}} (
-{{InsertColumnList}}) VALUES (
+{{InsertColumnList}}
+            ) VALUES (
 {{InsertValuesList}});
 
-			 SELECT SCOPE_IDENTITY() AS PK;"; //This assumes int for now
+			SELECT SCOPE_IDENTITY() AS PK;"; //This assumes int for now
 
 			var lst = GetParameters(entity);
 

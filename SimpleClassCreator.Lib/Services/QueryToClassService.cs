@@ -213,9 +213,9 @@ namespace SimpleClassCreator.Lib.Services
 
             if (repositories.HasFlag(ClassRepositories.Dapper))
             {
-                //var svc = new RepositoryDapperGenerator(baseInstructions);
+                var svc = new RepositoryDapperGenerator(baseInstructions);
 
-                //lst.Add(svc.FillTemplate());
+                lst.Add(svc.FillTemplate());
             }
 
             return lst;
