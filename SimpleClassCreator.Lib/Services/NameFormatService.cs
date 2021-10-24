@@ -9,7 +9,7 @@ namespace SimpleClassCreator.Lib.Services
         : INameFormatService
     {
         private const string DefaultSchema = "dbo";
-        private readonly Regex WhiteSpace = new Regex(@"\s+");
+        private readonly Regex _whiteSpace = new Regex(@"\s+");
 
         public TableQuery ParseTableName(string tableNameQuery)
         {
@@ -52,12 +52,15 @@ namespace SimpleClassCreator.Lib.Services
                     break;
             }
 
+            //Copy the unqualified version before it is qualified
+            tbl.TableUnqualified = tbl.Table;
+
             return tbl;
         }
 
         public string GetClassName(TableQuery tableQuery)
         {
-            var c = WhiteSpace.Replace(tableQuery.Table, string.Empty);
+            var c = _whiteSpace.Replace(tableQuery.TableUnqualified, string.Empty);
 
             return c;
         }
@@ -111,7 +114,7 @@ namespace SimpleClassCreator.Lib.Services
             return strTableQuery;
         }
 
-        private void Qualify(List<string> segments, TableQueryQualifiers qualifier, string segment)
+        private void Qualify(IList<string> segments, TableQueryQualifiers qualifier, string segment)
         {
             if (string.IsNullOrWhiteSpace(segment)) throw new ArgumentException($"{qualifier} cannot be null or whitespace.");
 

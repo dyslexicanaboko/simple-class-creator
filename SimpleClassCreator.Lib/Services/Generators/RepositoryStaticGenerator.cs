@@ -18,17 +18,19 @@ namespace SimpleClassCreator.Lib.Services.Generators
 
 		public override GeneratedResult FillTemplate()
 		{
-			//This is a hack for now, I am not going to keep this like this. I just need the entity name.
-			var className = Instructions.TableQuery.Table.Replace("[", string.Empty).Replace("]", string.Empty);
-
 			var strTemplate = GetTemplate(TemplateName);
 
 			var template = new StringBuilder(strTemplate);
 
+			/* Context
+			 * ClassName: Refers to the name of THIS class that is being generated "Table1Repository.cs"
+			 * EntityName: Refers to the existing source Entity Class assumed to have been generated already "Table1Entity.cs"
+			 * ModelName: Refers to the existing Model Class that compliments the Entity Class "Table1Model.cs" */
+
 			template.Replace("{{Namespace}}", Instructions.Namespace);
-			template.Replace("{{ClassName}}", className); //Name of the repository class
-			template.Replace("{{EntityName}}", Instructions.ClassName); //Entity name
-            template.Replace("{{Namespaces}}", FormatNamespaces(Instructions.Namespaces));
+			template.Replace("{{ClassName}}", Instructions.EntityName); //Prefix of the repository class name
+			template.Replace("{{EntityName}}", Instructions.ClassEntityName); //Class entity name
+			template.Replace("{{Namespaces}}", FormatNamespaces(Instructions.Namespaces));
 
 			var t = template.ToString();
 
@@ -56,7 +58,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 			t = t.Replace("{{SetProperties}}", FormatSetProperties(Instructions.Properties));
 
 			var r = GetResult();
-			r.Filename = className + "Repository.cs";
+			r.Filename = Instructions.EntityName + "Repository.cs";
 			r.Contents = t;
 
 			return r;
@@ -85,7 +87,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 			var content = GetTextBlock(properties,
 				p => $@"{FormatSqlParameter(p)}
 								  
-            lst.Add(p);",
+			lst.Add(p);",
 				Environment.NewLine);
 
 			return content;
@@ -110,7 +112,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 			{
 				content += Environment.NewLine +
 $@"            p.Scale = {properties.Scale};
-            p.Precision = {properties.Precision};";
+			p.Precision = {properties.Precision};";
 			}
 
 			if (t == SqlDbType.VarChar ||

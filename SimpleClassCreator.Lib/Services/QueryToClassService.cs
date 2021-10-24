@@ -98,7 +98,7 @@ namespace SimpleClassCreator.Lib.Services
                 interfaceName = baseInstructions.InterfaceName;
 
                 var ins = baseInstructions.Clone();
-                ins.ClassName = ins.InterfaceName;
+                ins.ClassEntityName = ins.InterfaceName;
 
                 var svc = new ClassInterfaceGenerator(ins);
 
@@ -108,7 +108,7 @@ namespace SimpleClassCreator.Lib.Services
             if (co.GenerateEntity)
             {
                 var ins = baseInstructions.Clone();
-                ins.ClassName = co.EntityName;
+                ins.ClassEntityName = co.ClassEntityName;
                 ins.InterfaceName = interfaceName;
                 ins.IsPartial = co.GenerateEntityIEquatable || co.GenerateEntityIComparable;
 
@@ -119,7 +119,7 @@ namespace SimpleClassCreator.Lib.Services
                 if (co.GenerateEntityIEquatable)
                 {
                     var insSub = baseInstructions.Clone();
-                    insSub.ClassName = co.EntityName;
+                    insSub.ClassEntityName = co.ClassEntityName;
 
                     var svcSub = new ClassEntityIEquatableGenerator(insSub);
 
@@ -129,7 +129,7 @@ namespace SimpleClassCreator.Lib.Services
                 if (co.GenerateEntityIComparable)
                 {
                     var insSub = baseInstructions.Clone();
-                    insSub.ClassName = co.EntityName;
+                    insSub.ClassEntityName = co.ClassEntityName;
 
                     var svcSub = new ClassEntityIComparableGenerator(insSub);
 
@@ -139,7 +139,7 @@ namespace SimpleClassCreator.Lib.Services
                 if (co.GenerateEntityEqualityComparer)
                 {
                     var insSub = baseInstructions.Clone();
-                    insSub.ClassName = co.EntityName;
+                    insSub.ClassEntityName = co.ClassEntityName;
 
                     var svcSub = new ClassEntityEqualityComparerGenerator(insSub);
 
@@ -150,7 +150,7 @@ namespace SimpleClassCreator.Lib.Services
             if (co.GenerateModel)
             {
                 var ins = baseInstructions.Clone();
-                ins.ClassName = co.ModelName;
+                ins.ClassEntityName = co.ClassModelName;
                 ins.InterfaceName = interfaceName;
 
                 var svc = new ClassModelGenerator(ins);
@@ -213,9 +213,9 @@ namespace SimpleClassCreator.Lib.Services
 
             if (repositories.HasFlag(ClassRepositories.Dapper))
             {
-                //var svc = new RepositoryDapperGenerator(baseInstructions);
+                var svc = new RepositoryDapperGenerator(baseInstructions);
 
-                //lst.Add(svc.FillTemplate());
+                lst.Add(svc.FillTemplate());
             }
 
             return lst;
@@ -233,9 +233,10 @@ namespace SimpleClassCreator.Lib.Services
             var ins = new ClassInstructions();
 
             ins.Namespace = p.Namespace;
-            ins.ClassName = p.ClassOptions.EntityName;
-            ins.ModelName = p.ClassOptions.ModelName;
-            ins.InterfaceName = "I" + (string.IsNullOrEmpty(p.ClassOptions.EntityName) ? p.ClassOptions.ModelName : p.ClassOptions.EntityName);
+            ins.EntityName = p.ClassOptions.EntityName;
+            ins.ClassEntityName = p.ClassOptions.ClassEntityName;
+            ins.ClassModelName = p.ClassOptions.ClassModelName;
+            ins.InterfaceName = "I" + (string.IsNullOrEmpty(p.ClassOptions.ClassEntityName) ? p.ClassOptions.ClassModelName : p.ClassOptions.ClassEntityName);
             ins.TableQuery = p.TableQuery;
 
             foreach (var sc in schema.ColumnsAll)

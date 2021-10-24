@@ -6,7 +6,14 @@ namespace SimpleClassCreator.Lib.Services
 {
     public class TypesService
     {
-        //FYI:The SqlDbType enum definition has a proper set of mappings going from SqlServer to System
+        //FYI:The enumerations below have a proper set of mappings going from Sql to System
+        /*  System.Data.SqlDbType
+                SQL Server specific
+                C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Data.dll
+            
+            System.Data.DbType
+                ANSI SQL (Generic)
+                C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\5.0.0\ref\net5.0\System.Data.Common.dll */
 
         /// <summary>
         /// Loose mapping going from System type to Sql Server database type.
@@ -28,6 +35,33 @@ namespace SimpleClassCreator.Lib.Services
             {typeof(DateTime), SqlDbType.DateTime2},
             {typeof(DateTimeOffset), SqlDbType.DateTimeOffset},
             {typeof(Guid), SqlDbType.UniqueIdentifier}
+        };
+
+        /// <summary>
+        /// Loose mapping going from SQL Server database type to Database type. Does not account for all types!
+        /// </summary>
+        public static readonly Dictionary<SqlDbType, DbType> MapSqlDbTypeToDbTypeLoose = new Dictionary<SqlDbType, DbType>
+        {
+            { SqlDbType.BigInt, DbType.Int64 },
+            { SqlDbType.Binary, DbType.Binary },
+            { SqlDbType.Bit, DbType.Boolean },
+            { SqlDbType.Char, DbType.AnsiStringFixedLength },
+            { SqlDbType.Date, DbType.Date },
+            { SqlDbType.DateTime, DbType.DateTime },
+            { SqlDbType.DateTime2, DbType.DateTime2 },
+            { SqlDbType.DateTimeOffset, DbType.DateTimeOffset },
+            { SqlDbType.Decimal, DbType.Decimal },
+            { SqlDbType.Float, DbType.Double },
+            { SqlDbType.Int, DbType.Int32 },
+            { SqlDbType.Money, DbType.Currency },
+            { SqlDbType.NChar, DbType.StringFixedLength },
+            { SqlDbType.NVarChar, DbType.String },
+            { SqlDbType.Real, DbType.Single },
+            { SqlDbType.SmallInt, DbType.Int16 },
+            { SqlDbType.Time, DbType.Time },
+            { SqlDbType.UniqueIdentifier, DbType.Guid },
+            { SqlDbType.VarChar, DbType.AnsiString },
+            { SqlDbType.Xml, DbType.Xml }
         };
 
         //I got the base of this list from here: https://stackoverflow.com/a/1362899/603807

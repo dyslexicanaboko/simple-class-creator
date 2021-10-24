@@ -19,7 +19,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
             var template = new StringBuilder(strTemplate);
 
             template.Replace("{{Namespace}}", Instructions.Namespace);
-            template.Replace("{{ClassName}}", Instructions.ClassName);
+            template.Replace("{{ClassName}}", Instructions.ClassEntityName);
             template.Replace("{{Interface}}", FormatInterface(Instructions.InterfaceName));
             template.Replace("{{Namespaces}}", FormatNamespaces(Instructions.Namespaces));
 

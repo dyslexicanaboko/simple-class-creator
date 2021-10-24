@@ -78,14 +78,15 @@ namespace SimpleClassCreator.Ui
         {
             var c = new ClassOptions
             {
-                EntityName = TxtClassEntityName.Text,
+                EntityName = TxtEntityName.Text,
+                ClassEntityName = TxtClassEntityName.Text,
                 GenerateEntity = B.IsChecked(CbClassEntity),
                 GenerateEntityIEquatable = B.IsChecked(CbClassEntityIEquatable),
                 GenerateEntityIComparable = B.IsChecked(CbClassEntityIComparable),
                 GenerateEntityEqualityComparer = B.IsChecked(CbClassEntityEqualityComparer),
                 GenerateInterface = B.IsChecked(CbClassInterface),
                 GenerateModel = B.IsChecked(CbClassModel),
-                ModelName = TxtClassModelName.Text
+                ClassModelName = TxtClassModelName.Text
             };
 
             return c;
