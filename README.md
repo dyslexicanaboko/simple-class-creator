@@ -2,12 +2,13 @@
 A WPF application for handling the creation of mundane CRUD work which currently includes:
  - Solitary table or compound query to model, entity and interface
  - Serialization options to and from CSV or JSON
- - Static repository layer
+ - Static repository option: My implementation of an inline SQL ADO.Net repository
+ - Dapper repository option
 
 ## Upcoming changes
- - Dapper support coming soon 10/23/2021
+ - Entity Framework FluentAPI repository option coming soon 10/23/2021
  - For other upcoming features check out the Issues section
- - I'm considering renaming the project to SpotWelder since that's what this is basically
+ - I'm considering renaming the project to SpotWelder since that's what this is basically (and I am starting to like that name more than SimpleClassCreator)
 
 There is a somewhat working "model to DTO" option. It's kind of broken, I will revisit this section soon because I have other ideas I want to implement as well.
 
