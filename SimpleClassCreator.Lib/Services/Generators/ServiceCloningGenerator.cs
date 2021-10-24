@@ -26,8 +26,8 @@ namespace SimpleClassCreator.Lib.Services.Generators
             //Instructions.InterfaceName
 
             template.Replace("{{Namespace}}", Instructions.Namespace);
-            template.Replace("{{EntityName}}", Instructions.ClassName);
-            template.Replace("{{ModelName}}", Instructions.ModelName);
+            template.Replace("{{EntityName}}", Instructions.ClassEntityName);
+            template.Replace("{{ModelName}}", Instructions.ClassModelName);
             template.Replace("{{InterfaceName}}", Instructions.InterfaceName);
             template.Replace("{{Namespaces}}", FormatNamespaces(Instructions.Namespaces));
 

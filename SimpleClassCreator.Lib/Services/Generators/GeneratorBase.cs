@@ -29,7 +29,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
         {
             var r = new GeneratedResult
             {
-                Filename = Instructions.ClassName + ".cs"
+                Filename = Instructions.ClassEntityName + ".cs"
             };
 
             return r;

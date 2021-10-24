@@ -8,6 +8,10 @@
         
         public string Schema { get; set; }
 
+        /// <summary>Qualified version of the table name.</summary>
         public string Table { get; set; }
+
+        /// <summary>Unqualified version of the table name.</summary>
+        public string TableUnqualified { get; set; }
     }
 }

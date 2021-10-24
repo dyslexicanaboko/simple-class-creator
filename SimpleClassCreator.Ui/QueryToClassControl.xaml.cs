@@ -41,7 +41,10 @@ namespace SimpleClassCreator.Ui
             CbConnectionString_Refresh();
             
             TxtNamespaceName.ApplyDefault();
-            
+
+            TxtEntityName.DefaultButton_UnregisterDefaultEvent();
+            TxtEntityName.DefaultButton.Click += BtnEntityNameDefault_Click;
+
             TxtClassEntityName.TextBox.TextChanged += TxtClassEntityName_TextChanged;
             TxtClassEntityName.TextBox.MouseDown += TxtClassEntityName_MouseDown;
             TxtClassEntityName.DefaultButton_UnregisterDefaultEvent();
@@ -71,6 +74,8 @@ namespace SimpleClassCreator.Ui
 
             FormatTableName(TxtSourceSqlText);
 
+            TxtEntityName.Text = GetDefaultEntityName();
+
             TxtClassEntityName.Text = GetDefaultClassName();
         }
 
@@ -92,15 +97,27 @@ namespace SimpleClassCreator.Ui
                 TxtFileName.Text = TxtClassEntityName.Text + ".cs";
         }
 
+        private void BtnEntityNameDefault_Click(object sender, RoutedEventArgs e)
+        {
+            TxtEntityName.Text = GetDefaultEntityName();
+        }
+
+        private string GetDefaultEntityName()
+        {
+            var tbl = _svcClass.ParseTableName(TxtSourceSqlText.Text);
+
+            var entity = _svcClass.GetClassName(tbl);
+
+            return entity;
+        }
+
         private string GetDefaultClassName(bool includeExtension = false)
         {
             string strName;
 
             if (RbSourceTypeTableName.IsChecked == true)
             {
-                var tbl = _svcClass.ParseTableName(TxtSourceSqlText.Text);
-
-                strName = _svcClass.GetClassName(tbl);
+                strName = GetDefaultEntityName();
             }
             else
             {

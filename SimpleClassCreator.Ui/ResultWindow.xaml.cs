@@ -15,5 +15,10 @@ namespace SimpleClassCreator.Ui
 
             TxtResult.Text = contents;
         }
+
+        private void BtnCopy_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(TxtResult.Text);
+        }
     }
 }

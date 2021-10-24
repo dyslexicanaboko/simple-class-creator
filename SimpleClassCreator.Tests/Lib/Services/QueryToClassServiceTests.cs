@@ -64,7 +64,7 @@ namespace SimpleClassCreator.Tests.Lib.Services
             };
 
             p.ClassOptions.GenerateEntity = true;
-            p.ClassOptions.EntityName = sq.TableQuery.Table;
+            p.ClassOptions.ClassEntityName = sq.TableQuery.Table;
 
             var repo = new Mock<IQueryToClassRepository>();
             repo.Setup(x => x.GetSchema(p.TableQuery, It.IsAny<string>())).Returns(sq); //TODO: Fix this later

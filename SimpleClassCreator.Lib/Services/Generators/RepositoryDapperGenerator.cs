@@ -8,28 +8,26 @@ using System.Text;
 
 namespace SimpleClassCreator.Lib.Services.Generators
 {
-	public class RepositoryStaticGenerator
+	public class RepositoryDapperGenerator
 		: GeneratorBase
 	{
-		public RepositoryStaticGenerator(ClassInstructions instructions)
-			: base(instructions, "RepositoryStatic.cs")
+		public RepositoryDapperGenerator(ClassInstructions instructions)
+			: base(instructions, "RepositoryDapper.cs")
 		{
 		}
 
 		public override GeneratedResult FillTemplate()
 		{
+			//This is a hack for now, I am not going to keep this like this. I just need the entity name.
+			var className = Instructions.TableQuery.Table.Replace("[", string.Empty).Replace("]", string.Empty);
+
 			var strTemplate = GetTemplate(TemplateName);
 
 			var template = new StringBuilder(strTemplate);
 
-			/* Context
-			 * ClassName: Refers to the name of THIS class that is being generated "Table1Repository.cs"
-			 * EntityName: Refers to the existing source Entity Class assumed to have been generated already "Table1Entity.cs"
-			 * ModelName: Refers to the existing Model Class that compliments the Entity Class "Table1Model.cs" */
-
 			template.Replace("{{Namespace}}", Instructions.Namespace);
-			template.Replace("{{ClassName}}", Instructions.EntityName); //Prefix of the repository class name
-			template.Replace("{{EntityName}}", Instructions.ClassEntityName); //Class entity name
+			template.Replace("{{ClassName}}", className); //Name of the repository class
+			template.Replace("{{EntityName}}", Instructions.ClassEntityName); //Entity name
 			template.Replace("{{Namespaces}}", FormatNamespaces(Instructions.Namespaces));
 
 			var t = template.ToString();
@@ -58,7 +56,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 			t = t.Replace("{{SetProperties}}", FormatSetProperties(Instructions.Properties));
 
 			var r = GetResult();
-			r.Filename = Instructions.EntityName + "Repository.cs";
+			r.Filename = className + "Repository.cs";
 			r.Contents = t;
 
 			return r;

@@ -59,6 +59,7 @@
     <Compile Include="Services\CodeFactory\ClassMemberStrings.cs" />
     <Compile Include="Services\Generators\ClassEntityIComparableGenerator.cs" />
     <Compile Include="Services\Generators\ClassEntityEqualityComparerGenerator.cs" />
+    <Compile Include="Services\Generators\RepositoryDapperGenerator.cs" />
     <Compile Include="Services\Generators\RepositoryStaticGenerator.cs" />
     <Compile Include="Services\Generators\ClassEntityIEquatableGenerator.cs" />
     <Compile Include="Services\Generators\ServiceSerializationJsonGenerator.cs" />

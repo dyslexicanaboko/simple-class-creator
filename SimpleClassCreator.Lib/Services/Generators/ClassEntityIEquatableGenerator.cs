@@ -22,7 +22,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
             var template = new StringBuilder(strTemplate);
 
             template.Replace("{{Namespace}}", Instructions.Namespace);
-            template.Replace("{{ClassName}}", Instructions.ClassName);
+            template.Replace("{{ClassName}}", Instructions.ClassEntityName);
             template.Replace("{{Namespaces}}", FormatNamespaces(Instructions.Namespaces));
 
             var t = template.ToString();
@@ -34,7 +34,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
             t = t.Replace("{{PropertiesHashCode}}", FormatForHashCode(Instructions.Properties));
 
             var r = GetResult();
-            r.Filename = Instructions.ClassName + "_IEquatable.cs";
+            r.Filename = Instructions.ClassEntityName + "_IEquatable.cs";
             r.Contents = t;
 
             return r;
