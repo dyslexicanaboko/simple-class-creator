@@ -97,7 +97,8 @@ namespace SimpleClassCreator.Lib.Services.Generators
 		{
 			var t = properties.DatabaseType;
 
-			var content = $@"p = new SqlParameter();
+			var content = 
+$@"            p = new SqlParameter();
 			p.ParameterName = ""@{properties.Property}"";
 			p.SqlDbType = SqlDbType.{t};
 			p.Value = entity.{properties.Property};";

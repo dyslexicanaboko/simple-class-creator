@@ -1,8 +1,9 @@
 ﻿using SimpleClassCreator.Lib;
 using SimpleClassCreator.Lib.Models;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
-using B = SimpleClassCreator.Ui.UserControlBase;
+using B = SimpleClassCreator.Ui.UserControlExtensions;
 
 namespace SimpleClassCreator.Ui
 {
@@ -19,10 +20,10 @@ namespace SimpleClassCreator.Ui
             if (obj == null) return null;
 
             obj.LanguageType = CodeType.CSharp;
-            obj.OverwriteExistingFiles = B.IsCheckedAndEnabled(CbReplaceExistingFiles);
+            obj.OverwriteExistingFiles = CbReplaceExistingFiles.IsCheckedAndEnabled();
             obj.Namespace = TxtNamespaceName.Text;
 
-            if (B.IsTextInvalid(TxtClassEntityName, "Class name cannot be empty."))
+            if (TxtClassEntityName.IsTextInvalid("Class name cannot be empty."))
                 return null;
 
             obj.TableQuery = _svcClass.ParseTableName(TxtSourceSqlText.Text);
@@ -46,20 +47,20 @@ namespace SimpleClassCreator.Ui
 
             obj.SourceSqlType = GetSourceType();
 
-            if (B.IsTextInvalid(TxtSourceSqlText, obj.SourceSqlType + " cannot be empty."))
+            if (TxtSourceSqlText.IsTextInvalid(obj.SourceSqlType + " cannot be empty."))
                 return null;
 
             obj.SourceSqlText = TxtSourceSqlText.Text;
-            obj.SaveAsFile = B.IsChecked(CbSaveFileOnGeneration);
+            obj.SaveAsFile = CbSaveFileOnGeneration.IsChecked();
 
             if (obj.SaveAsFile)
             {
                 const string s = "If saving file on generation, then {0} cannot be empty.";
 
-                if (B.IsTextInvalid(TxtPath, string.Format(s, "Path")))
+                if (TxtPath.IsTextInvalid(string.Format(s, "Path")))
                     return null;
 
-                if (B.IsTextInvalid(TxtFileName, string.Format(s, "File name")))
+                if (TxtFileName.IsTextInvalid(string.Format(s, "File name")))
                     return null;
             }
 
@@ -69,7 +70,7 @@ namespace SimpleClassCreator.Ui
             if (_classCheckBoxGroup.HasTickedCheckBox())
                 return obj;
             
-            B.Warning("You must select at least one construct for generation. None is not an option.");
+            B.ShowWarningMessage("You must select at least one construct for generation. None is not an option.");
 
             return null;
         }
@@ -80,12 +81,12 @@ namespace SimpleClassCreator.Ui
             {
                 EntityName = TxtEntityName.Text,
                 ClassEntityName = TxtClassEntityName.Text,
-                GenerateEntity = B.IsChecked(CbClassEntity),
-                GenerateEntityIEquatable = B.IsChecked(CbClassEntityIEquatable),
-                GenerateEntityIComparable = B.IsChecked(CbClassEntityIComparable),
-                GenerateEntityEqualityComparer = B.IsChecked(CbClassEntityEqualityComparer),
-                GenerateInterface = B.IsChecked(CbClassInterface),
-                GenerateModel = B.IsChecked(CbClassModel),
+                GenerateEntity = CbClassEntity.IsChecked(),
+                GenerateEntityIEquatable = CbClassEntityIEquatable.IsChecked(),
+                GenerateEntityIComparable = CbClassEntityIComparable.IsChecked(),
+                GenerateEntityEqualityComparer = CbClassEntityEqualityComparer.IsChecked(),
+                GenerateInterface = CbClassInterface.IsChecked(),
+                GenerateModel = CbClassModel.IsChecked(),
                 ClassModelName = TxtClassModelName.Text
             };
 
@@ -98,7 +99,7 @@ namespace SimpleClassCreator.Ui
 
             foreach (var kvp in _serviceToCheckBoxMap)
             {
-                if (!B.IsChecked(kvp.Value)) continue;
+                if (!kvp.Value.IsChecked()) continue;
 
                 e |= kvp.Key;
             }
@@ -112,7 +113,7 @@ namespace SimpleClassCreator.Ui
 
             foreach (var kvp in _repositoryToCheckBoxMap)
             {
-                if (!B.IsChecked(kvp.Value)) continue;
+                if (!kvp.Value.IsChecked()) continue;
 
                 e |= kvp.Key;
             }
@@ -131,8 +132,6 @@ namespace SimpleClassCreator.Ui
                 { ClassServices.SerializeCsv, CbSerializeCsv },
                 { ClassServices.SerializeJson, CbSerializeJson },
                 { ClassServices.RepoStatic, CbRepoStatic },
-                { ClassServices.RepoDynamic, CbRepoDynamic },
-                { ClassServices.RepoBulkCopy, CbRepoBulkCopy },
                 { ClassServices.RepoDapper, CbRepoDapper },
                 { ClassServices.RepoEfFluentApi, CbRepoEfFluentApi }
             };
@@ -159,6 +158,20 @@ namespace SimpleClassCreator.Ui
             cbg.Add(CbClassInterface);
 
             return cbg;
+        }
+
+        private void BtnDynamicStatements_OnClick(object sender, RoutedEventArgs e)
+        {
+            //TODO: This is good for now, but might want to create a simple HTML page for this and display it as part of a web browser component
+            var content = 
+@"There is no point in providing dynamic generation or bulk copy options because the code is 
+so generic it will not likely change for most objects. Therefore I have a separate repository 
+for boiler plate starter code where I am maintaining this kind of code.
+
+You can find it here: 
+https://github.com/dyslexicanaboko/code-snippets/tree/develop/Visual%20C%23/BasicDataLayers";
+
+            ShowResultWindow("Basic data layers", content);
         }
     }
 }

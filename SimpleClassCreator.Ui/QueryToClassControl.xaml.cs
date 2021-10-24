@@ -7,7 +7,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using B = SimpleClassCreator.Ui.UserControlBase;
+using B = SimpleClassCreator.Ui.UserControlExtensions;
 
 namespace SimpleClassCreator.Ui
 {
@@ -168,7 +168,7 @@ namespace SimpleClassCreator.Ui
 
         private void CbSaveFileOnGeneration_Checked(object sender, RoutedEventArgs e)
         {
-            ToggleSaveFileOnGenerationDependentControls(B.IsChecked(CbSaveFileOnGeneration));
+            ToggleSaveFileOnGenerationDependentControls(CbSaveFileOnGeneration.IsChecked());
         }
 
         private void ToggleSaveFileOnGenerationDependentControls(bool isEnabled)
@@ -254,18 +254,22 @@ namespace SimpleClassCreator.Ui
 
                 foreach (var g in results)
                 {
-                    var win = new ResultWindow(g.Filename, g.Contents);
-
-                    win.Show();
-
-                    ResultWindows.Add(win);
+                    ShowResultWindow(g.Filename, g.Contents);
                 }
-                
             }
             catch (Exception ex)
             {
-                B.Error(ex);
+                B.ShowErrorMessage(ex);
             }
+        }
+
+        private void ShowResultWindow(string title, string contents)
+        {
+            var win = new ResultWindow(title, contents);
+
+            win.Show();
+
+            ResultWindows.Add(win);
         }
 
         private SourceSqlType GetSourceType()
@@ -311,25 +315,25 @@ namespace SimpleClassCreator.Ui
         {
             if (CbClassEntityEqualityComparer == null) return; //On Startup controls are still null
 
-            var isChecked = B.IsChecked(CbClassEntity);
+            var isChecked = CbClassEntity.IsChecked();
 
             CbClassEntityEqualityComparer.IsEnabled = isChecked;
             CbClassEntityIEquatable.IsEnabled = isChecked;
             CbClassEntityIComparable.IsEnabled = isChecked;
             CbCloneInterfaceToEntity.IsEnabled = isChecked;
 
-            CbClassModelAndEntity_ToggleJointDependents(isChecked, B.IsChecked(CbClassModel));
+            CbClassModelAndEntity_ToggleJointDependents(isChecked, CbClassModel.IsChecked());
         }
 
         private void CbClassModel_ToggleDependents()
         {
             if (CbCloneEntityToModel == null) return; //On Startup controls are still null
 
-            var isChecked = B.IsChecked(CbClassModel);
+            var isChecked = CbClassModel.IsChecked();
 
             CbCloneInterfaceToModel.IsEnabled = isChecked;
          
-            CbClassModelAndEntity_ToggleJointDependents(B.IsChecked(CbClassEntity), isChecked);
+            CbClassModelAndEntity_ToggleJointDependents(CbClassEntity.IsChecked(), isChecked);
         }
 
         private void CbClassModelAndEntity_ToggleJointDependents(bool isEntityChecked, bool isModelChecked)
