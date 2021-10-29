@@ -61,7 +61,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 				else
 				{
 					//If the PK is not identity, then the PK needs to explicitly be provided and inserted
-					lstInsert.Add(pk);
+					lstInsert.Insert(0, pk);
 				}
 
 				t = t.Replace("{{ScopeIdentity}}", scopeIdentity);

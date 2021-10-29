@@ -34,19 +34,39 @@ namespace SimpleClassCreator.Lib.Services.Generators
 
 			var pk = Instructions.Properties.SingleOrDefault(x => x.IsPrimaryKey);
 			var lstNoPk = Instructions.Properties.Where(x => !x.IsPrimaryKey).ToList();
+			var lstInsert = new List<ClassMemberStrings>(lstNoPk);
 
 			//TODO: What to do when there is no primary key?
 			if (pk != null)
 			{
-				t = t.Replace("{{PrimaryKey}}", pk.ColumnName);
+				t = t.Replace("{{PrimaryKeyParameter}}", pk.Parameter);
+				t = t.Replace("{{PrimaryKeyProperty}}", pk.Property);
+				t = t.Replace("{{PrimaryKeyColumn}}", pk.ColumnName);
 				t = t.Replace("{{PrimaryKeyType}}", pk.SystemTypeAlias);
+
+				var scopeIdentity = string.Empty;
+
+				if (pk.IsIdentity)
+				{
+					//If the PK is identity then the PK needs to be returned
+					scopeIdentity = @"
+			SELECT SCOPE_IDENTITY() AS PK;";
+				}
+				else
+				{
+					//If the PK is not identity, then the PK needs to explicitly be provided and inserted
+					lstInsert.Insert(0, pk);
+				}
+
+				t = t.Replace("{{ScopeIdentity}}", scopeIdentity);
+				t = t.Replace("{{PrimaryKeyInsertExecution}}", FormatInsertExecution(pk));
 			}
 
 			t = t.Replace("{{Schema}}", Instructions.TableQuery.Schema);
 			t = t.Replace("{{Table}}", Instructions.TableQuery.Table);
 			t = t.Replace("{{SelectAllList}}", FormatSelectList(Instructions.Properties));
-			t = t.Replace("{{InsertColumnList}}", FormatSelectList(lstNoPk));
-			t = t.Replace("{{InsertValuesList}}", FormatSelectList(lstNoPk, "@"));
+			t = t.Replace("{{InsertColumnList}}", FormatSelectList(lstInsert));
+			t = t.Replace("{{InsertValuesList}}", FormatSelectList(lstInsert, "@"));
 			t = t.Replace("{{UpdateParameters}}", FormatUpdateList(lstNoPk));
 			t = t.Replace("{{DynamicParameters}}", FormatDynamicParameterList(Instructions.Properties));
 
@@ -116,6 +136,25 @@ namespace SimpleClassCreator.Lib.Services.Generators
 			}
 
 			var content = $"				p.Add({string.Join(", ", lst)});";
+
+			return content;
+		}
+
+		private string FormatInsertExecution(ClassMemberStrings primaryKey)
+		{
+			string content;
+
+			if (primaryKey.IsIdentity)
+			{
+				content = $"            return connection.ExecuteScalar<{primaryKey.SystemTypeAlias}>(sql, entity);";
+			}
+			else
+			{
+				content = 
+$@"            connection.Execute(sql, p);
+
+			    return entity.{primaryKey.Property};";
+			}
 
 			return content;
 		}
