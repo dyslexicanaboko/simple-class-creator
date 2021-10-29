@@ -5,7 +5,9 @@ namespace SimpleClassCreator.Lib.Models
     public class SchemaColumn
     {
         public bool IsPrimaryKey { get; set; }
-        
+
+        public bool IsIdentity { get; set; }
+
         public bool IsDbNullable { get; set; }
 
         public string ColumnName { get; set; }
@@ -18,6 +20,6 @@ namespace SimpleClassCreator.Lib.Models
         
         public int Precision { get; set; }
         
-        public int Scale { get; set; }
+        public int Scale { get; set; } 
     }
 }

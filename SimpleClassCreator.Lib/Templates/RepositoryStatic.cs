@@ -9,15 +9,15 @@ namespace {{Namespace}}
 {
     public class {{ClassName}}Repository
     {
-		public {{EntityName}} Select({{PrimaryKeyType}} {{PrimaryKey}})
+		public {{EntityName}} Select({{PrimaryKeyType}} {{PrimaryKeyParameter}})
 		{
 			var sql = @"
 			SELECT
 {{SelectAllList}}
 			FROM {{Schema}}.{{Table}}
-			WHERE {{PrimaryKey}} = @{{PrimaryKey}}";
+			WHERE {{PrimaryKeyColumn}} = @{{PrimaryKeyProperty}}";
 
-			var p = GetPrimaryKeyParameter({{PrimaryKey}});
+			var p = GetPrimaryKeyParameter({{PrimaryKeyParameter}});
 
 			using (var dr = ExecuteReaderText(sql, p))
 			{
@@ -53,39 +53,35 @@ namespace {{Namespace}}
 {{InsertColumnList}}
             ) VALUES (
 {{InsertValuesList}});
-
-			SELECT SCOPE_IDENTITY() AS PK;"; //This assumes int for now
+{{ScopeIdentity}}";
 
 			var lst = GetParameters(entity);
 
-			using (var dr = ExecuteReaderText(sql, lst.ToArray()))
-			{
-				//This assumes int for now
-				return Convert.ToInt32(GetScalar(dr, "PK"));
-			}
+{{PrimaryKeyInsertExecution}}
 		}
 
 		public void Update({{EntityName}} entity)
 		{
 			var sql = @"UPDATE {{Schema}}.{{Table}} SET 
 {{UpdateParameters}}
-					WHERE {{PrimaryKey}} = @{{PrimaryKey}}";
+					WHERE {{PrimaryKeyColumn}} = @{{PrimaryKeyProperty}}";
 
 			var lst = GetParameters(entity);
 
-			var p = GetPrimaryKeyParameter(entity.{{PrimaryKey}});
+			var p = GetPrimaryKeyParameter(entity.{{PrimaryKeyProperty}});
 
 			lst.Add(p);
 
 			ExecuteNonQuery(sql, lst.ToArray());
 		}
 		
-		private SqlParameter GetPrimaryKeyParameter({{EntityName}} entity)
+		private SqlParameter GetPrimaryKeyParameter({{PrimaryKeyType}} {{PrimaryKeyParameter}})
 		{
-			SqlParameter p = null;
+			var p = new SqlParameter();
+			p.ParameterName = ""@{{PrimaryKeyProperty}}"";
+			p.SqlDbType = SqlDbType.{{PrimaryKeySqlDbType}};
+			p.Value = {{PrimaryKeyParameter}};
 			
-			{{PrimaryKeySqlParameter}}
-
 			return p;
 		}
 
