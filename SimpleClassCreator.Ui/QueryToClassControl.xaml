@@ -44,18 +44,19 @@
                 <CheckBox x:Name="CbSerializeJson" Content="JSON" HorizontalAlignment="Left" Margin="333,152,0,0" VerticalAlignment="Top" Height="15" Width="64"/>
                 <Label Content="Repository" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.208,2.893" Margin="458,3,0,0" FontWeight="Bold" FontSize="14" Width="81" />
                 <CheckBox x:Name="CbRepoStatic" Content="Static statements" HorizontalAlignment="Left" Margin="485,31,0,0" VerticalAlignment="Top" Height="15" Width="110"/>
-                <CheckBox x:Name="CbRepoDynamic" Content="Dynamic statements" HorizontalAlignment="Left" Margin="485,49,0,0" VerticalAlignment="Top" Height="15" Width="127" IsEnabled="False"/>
-                <CheckBox x:Name="CbRepoBulkCopy" Content="Bulk copy" HorizontalAlignment="Left" Margin="485,66,0,0" VerticalAlignment="Top" Height="15" Width="71" IsEnabled="False"/>
-                <CheckBox x:Name="CbRepoDapper" Content="Dapper" HorizontalAlignment="Left" Margin="485,84,0,0" VerticalAlignment="Top" Height="15" Width="59"/>
-                <CheckBox x:Name="CbRepoEfFluentApi" Content="EF Fluent API" HorizontalAlignment="Left" Margin="485,101,0,0" VerticalAlignment="Top" Height="15" Width="89" IsEnabled="False"/>
+                <CheckBox x:Name="CbRepoDapper" Content="Dapper" HorizontalAlignment="Left" Margin="485,48,0,0" VerticalAlignment="Top" Height="15" Width="59"/>
+                <CheckBox x:Name="CbRepoEfFluentApi" Content="EF Fluent API" HorizontalAlignment="Left" Margin="485,64,0,0" VerticalAlignment="Top" Height="15" Width="89" IsEnabled="False"/>
                 <Label Content="Entity" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.722,0.571" FontWeight="Bold" FontSize="14" Width="86" Margin="0,1,0,0" />
                 <local:TextBoxWithDefaultControl x:Name="TxtEntityName" Margin="29,29,352,0" DefaultText="Entity1" VerticalAlignment="Top" Width="Auto"/>
+                <Button x:Name="BtnDynamicStatements" HorizontalAlignment="Left" Margin="485,84,0,0" VerticalAlignment="Top" Width="145" Height="37" Click="BtnDynamicStatements_OnClick">
+                    <TextBlock Text="Need dynamic statements and bulk copy?" TextWrapping="Wrap" />
+                </Button>
             </Grid>
         </GroupBox>
         <GroupBox Header="Step 4: Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,524,0,0" Width="652" Height="137">
             <Grid>
                 <Button Content="Generate Code" Height="89" HorizontalAlignment="Left" Margin="6,10,0,0" Name="BtnGenerate" VerticalAlignment="Top" Width="186" Click="BtnGenerate_Click" FontSize="20" Background="#FFD62A2A" Foreground="White" />
-                <CheckBox Content="Save as file on generation" Height="16" HorizontalAlignment="Left" Margin="197,10,0,0" Name="CbSaveFileOnGeneration" VerticalAlignment="Top" Checked="CbSaveFileOnGeneration_Checked" Unchecked="CbSaveFileOnGeneration_Checked" />
+                <CheckBox Content="Save as file on generation" Height="16" HorizontalAlignment="Left" Margin="197,10,0,0" Name="CbSaveFileOnGeneration" VerticalAlignment="Top" Checked="CbSaveFileOnGeneration_Checked" Unchecked="CbSaveFileOnGeneration_Checked" IsEnabled="False" />
                 <TextBox Height="23" HorizontalAlignment="Left" Margin="276,76,0,0" Name="TxtFileName" VerticalAlignment="Top" Width="120" IsEnabled="False" TextChanged="TxtFileName_TextChanged" />
                 <CheckBox Content="Replace existing files" Height="16" HorizontalAlignment="Left" Margin="217,32,0,0" Name="CbReplaceExistingFiles" VerticalAlignment="Top" IsEnabled="False" />
                 <Label Content="File name" Height="28" HorizontalAlignment="Left" Margin="213,76,0,0" Name="LblFileName" VerticalAlignment="Top" IsEnabled="False" />

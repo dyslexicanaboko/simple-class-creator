@@ -39,20 +39,40 @@ namespace SimpleClassCreator.Lib.Services.Generators
 
 			var pk = Instructions.Properties.SingleOrDefault(x => x.IsPrimaryKey);
 			var lstNoPk = Instructions.Properties.Where(x => !x.IsPrimaryKey).ToList();
+			var lstInsert = new List<ClassMemberStrings>(lstNoPk);
 
 			//TODO: What to do when there is no primary key?
 			if (pk != null)
 			{
-				t = t.Replace("{{PrimaryKey}}", pk.ColumnName);
+				t = t.Replace("{{PrimaryKeyParameter}}", pk.Parameter);
+				t = t.Replace("{{PrimaryKeyProperty}}", pk.Property);
+				t = t.Replace("{{PrimaryKeyColumn}}", pk.ColumnName);
 				t = t.Replace("{{PrimaryKeyType}}", pk.SystemTypeAlias);
-				t = t.Replace("{{PrimaryKeySqlParameter}}", FormatSqlParameter(pk));
+				t = t.Replace("{{PrimaryKeySqlDbType}}", pk.DatabaseType.ToString());
+
+				var scopeIdentity = string.Empty;
+
+				if (pk.IsIdentity)
+				{
+					//If the PK is identity then the PK needs to be returned
+					scopeIdentity = @"
+			SELECT SCOPE_IDENTITY() AS PK;";
+				}
+				else
+				{
+					//If the PK is not identity, then the PK needs to explicitly be provided and inserted
+					lstInsert.Insert(0, pk);
+				}
+
+				t = t.Replace("{{ScopeIdentity}}", scopeIdentity);
+				t = t.Replace("{{PrimaryKeyInsertExecution}}", FormatInsertExecution(pk));
 			}
 
 			t = t.Replace("{{Schema}}", Instructions.TableQuery.Schema);
 			t = t.Replace("{{Table}}", Instructions.TableQuery.Table);
 			t = t.Replace("{{SelectAllList}}", FormatSelectList(Instructions.Properties));
-			t = t.Replace("{{InsertColumnList}}", FormatSelectList(lstNoPk));
-			t = t.Replace("{{InsertValuesList}}", FormatSelectList(lstNoPk, "@"));
+			t = t.Replace("{{InsertColumnList}}", FormatSelectList(lstInsert));
+			t = t.Replace("{{InsertValuesList}}", FormatSelectList(lstInsert, "@"));
 			t = t.Replace("{{UpdateParameters}}", FormatUpdateList(lstNoPk));
 			t = t.Replace("{{SqlParameters}}", FormatSqlParameterList(lstNoPk));
 			t = t.Replace("{{SetProperties}}", FormatSetProperties(Instructions.Properties));
@@ -97,7 +117,8 @@ namespace SimpleClassCreator.Lib.Services.Generators
 		{
 			var t = properties.DatabaseType;
 
-			var content = $@"p = new SqlParameter();
+			var content = 
+$@"            p = new SqlParameter();
 			p.ParameterName = ""@{properties.Property}"";
 			p.SqlDbType = SqlDbType.{t};
 			p.Value = entity.{properties.Property};";
@@ -158,6 +179,31 @@ $@"            p.Scale = {properties.Scale};
 			}
 				
 			content += $"{method};";
+
+			return content;
+		}
+
+		private string FormatInsertExecution(ClassMemberStrings primaryKey)
+		{
+			string content;
+
+			if (primaryKey.IsIdentity)
+			{
+				var method = string.Format(primaryKey.ConversionMethodSignature, "GetScalar(dr, \"PK\")");
+
+				content = $@"
+			using (var dr = ExecuteReaderText(sql, lst.ToArray()))
+			{{
+				return {method};
+			}}";
+			}
+			else
+			{
+				content = $@"
+			ExecuteNonQuery(sql, lst.ToArray());
+
+			return entity.{primaryKey.Property};";
+			}
 
 			return content;
 		}

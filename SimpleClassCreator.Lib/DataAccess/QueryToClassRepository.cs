@@ -50,7 +50,8 @@ namespace SimpleClassCreator.Lib.DataAccess
             sq.PrimaryKey = sq
                 .ColumnsAll
                 .Single(x => x.ColumnName.Equals(pk.ColumnName, StringComparison.InvariantCultureIgnoreCase));
-            
+
+            sq.PrimaryKey.IsIdentity = pk.AutoIncrement;
             sq.PrimaryKey.IsPrimaryKey = true;
 
             sq.ColumnsNoPk = sq

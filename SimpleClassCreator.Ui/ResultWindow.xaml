@@ -9,6 +9,9 @@
                 <Button Name="BtnCopy" Click="BtnCopy_Click">
                     <Image Source="images/Copy_16x.png" ToolTip="Copy to clipboard" />
                 </Button>
+                <Button Name="BtnSave" Click="BtnSave_OnClick">
+                    <Image Source="images/SaveAs_16x.png" ToolTip="Copy to clipboard" />
+                </Button>
             </ToolBar>
         </ToolBarTray>
     </Grid>

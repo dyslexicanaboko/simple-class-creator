@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using B = SimpleClassCreator.Ui.UserControlBase;
+using B = SimpleClassCreator.Ui.UserControlExtensions;
 
 namespace SimpleClassCreator.Ui
 {
@@ -53,7 +53,7 @@ namespace SimpleClassCreator.Ui
                 showMessage = !obj.Success;
 
             if (showMessage)
-                B.Warning(obj.Success ? "Connected Successfully" : "Connection Failed. Returned error: " + obj.Message);
+                B.ShowWarningMessage(obj.Success ? "Connected Successfully" : "Connection Failed. Returned error: " + obj.Message);
 
             return obj.Success;
         }

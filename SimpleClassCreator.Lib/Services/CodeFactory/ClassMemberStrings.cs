@@ -30,7 +30,9 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             Scale = sc.Scale;
 
             IsPrimaryKey = sc.IsPrimaryKey;
-            
+
+            IsIdentity = sc.IsIdentity;
+
             IsDbNullable = sc.IsDbNullable;
 
             IsImplicitlyNullable = 
@@ -87,6 +89,8 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
         public int Scale { get; }
 
         public bool IsPrimaryKey { get; }
+        
+        public bool IsIdentity { get; }
 
         public bool IsDbNullable { get; }
         
@@ -100,7 +104,10 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
         public bool InSystemNamespace { get; private set; }
 
         public string Field { get; private set; }
-        
+
+        /// <summary>Parameter name in code</summary>
+        public string Parameter { get; private set; }
+
         /// <summary>Property name in code</summary>
         public string Property { get; private set; }
 
@@ -162,8 +169,11 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             //Pascal Case the property name
             Property = firstChar.ToUpper() + remainder;
 
+            //Camel case the parameter name
+            Parameter = firstChar.ToLower() + remainder;
+
             //Camel case the field name
-            Field = "_" + firstChar.ToLower() + remainder;
+            Field = "_" + Parameter;
         }
 
         private void SetColumnName(string trimmedColumnName)

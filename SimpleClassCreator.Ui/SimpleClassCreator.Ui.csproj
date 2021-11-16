@@ -131,7 +131,7 @@
     <Compile Include="TextBoxWithDefaultControl.xaml.cs">
       <DependentUpon>TextBoxWithDefaultControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControlBase.cs" />
+    <Compile Include="UserControlExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindow.xaml.cs">
@@ -207,6 +207,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\Copy_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\SaveAs_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\StatusHelp_16x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

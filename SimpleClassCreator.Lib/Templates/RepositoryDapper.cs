@@ -10,17 +10,17 @@ namespace {{Namespace}}
 {
     public class {{ClassName}}Repository
     {
-		public {{EntityName}} Select({{PrimaryKeyType}} {{PrimaryKey}})
+		public {{EntityName}} Select({{PrimaryKeyType}} {{PrimaryKeyParameter}})
 		{
 			var sql = @"
 			SELECT
 {{SelectAllList}}
 			FROM {{Schema}}.{{Table}}
-			WHERE {{PrimaryKey}} = @{{PrimaryKey}}";
+			WHERE {{PrimaryKeyColumn}} = @{{PrimaryKeyProperty}}";
 			
 			using (var connection = new SqlConnection(ConnectionString))
 			{
-				var lst = connection.Query<{{EntityName}}>(sql, new { {{PrimaryKey}} = {{PrimaryKey}}}).ToList();
+				var lst = connection.Query<{{EntityName}}>(sql, new { {{PrimaryKeyProperty}} = {{PrimaryKeyParameter}}}).ToList();
 
 				if (!lst.Any()) return null;
 
@@ -52,12 +52,11 @@ namespace {{Namespace}}
 {{InsertColumnList}}
             ) VALUES (
 {{InsertValuesList}});
-
-			SELECT SCOPE_IDENTITY() AS PK;"; //This assumes int for now
+{{ScopeIdentity}}";
 
 			using (var connection = new SqlConnection(ConnectionString))
 			{
-				return connection.ExecuteScalar<{{PrimaryKeyType}}>(sql, entity);
+{{PrimaryKeyInsertExecution}}
 			}
 		}
 
@@ -65,7 +64,7 @@ namespace {{Namespace}}
 		{
 			var sql = @"UPDATE {{Schema}}.{{Table}} SET 
 {{UpdateParameters}}
-            WHERE {{PrimaryKey}} = @{{PrimaryKey}}";
+            WHERE {{PrimaryKeyColumn}} = @{{PrimaryKeyProperty}}";
 
 			using (var connection = new SqlConnection(ConnectionString))
 			{
