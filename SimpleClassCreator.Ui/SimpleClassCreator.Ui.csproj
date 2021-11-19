@@ -114,6 +114,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CheckBoxGroup.cs" />
+    <Compile Include="ConnectionStringControl.xaml.cs">
+      <DependentUpon>ConnectionStringControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DtoMakerControl.xaml.cs">
       <DependentUpon>DtoMakerControl.xaml</DependentUpon>
     </Compile>
@@ -121,7 +124,6 @@
     <Compile Include="QueryToClassControl.xaml.cs">
       <DependentUpon>QueryToClassControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="QueryToClassControl_ConnectionString.cs" />
     <Compile Include="QueryToClassControl_GenerationOptions.cs" />
     <Compile Include="ResultWindow.xaml.cs">
       <DependentUpon>ResultWindow.xaml</DependentUpon>
@@ -166,6 +168,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ConnectionStringControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DtoMakerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

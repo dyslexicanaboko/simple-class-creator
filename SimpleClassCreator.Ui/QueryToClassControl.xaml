@@ -9,10 +9,7 @@
              mc:Ignorable="d" Height="682.333" Width="682">
     <Grid Background="White" Margin="0,0,10,0">
         <GroupBox Header="Step 1: Connection String" Height="100" HorizontalAlignment="Left" Margin="12,12,0,0" VerticalAlignment="Top" Width="652">
-            <Grid>
-                <Button Content="Test" Height="65" HorizontalAlignment="Left" Margin="567,6,0,0" Name="BtnConnectionStringTest" VerticalAlignment="Top" Width="40" Click="BtnConnectionStringTest_Click" />
-                <ComboBox Height="65" HorizontalAlignment="Left" Margin="8,6,0,0" Name="CbConnectionString" VerticalAlignment="Top" Width="553" IsEditable="True" ItemsSource="{Binding}" DisplayMemberPath="ConnectionString" SelectedValuePath="ConnectionString" KeyDown="CbConnectionString_KeyDown" />
-            </Grid>
+            <my:ConnectionStringControl x:Name="ConnectionStringCb" />
         </GroupBox>
         <GroupBox Header="Step 2: Class Source" Height="146" HorizontalAlignment="Left" Margin="12,118,0,0" VerticalAlignment="Top" Width="652">
             <Grid>

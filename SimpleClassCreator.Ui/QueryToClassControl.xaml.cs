@@ -35,10 +35,6 @@ namespace SimpleClassCreator.Ui
             SetPathAsDefault();
 
             ResultWindows = new List<ResultWindow>();
-
-            VerifiedConnections = new ConnectionManager();
-
-            CbConnectionString_Refresh();
             
             TxtNamespaceName.ApplyDefault();
 
@@ -66,6 +62,8 @@ namespace SimpleClassCreator.Ui
             _svcClass = classService;
             _svcQueryToClass = queryToClassService;
             _generalRepo = repository;
+
+            ConnectionStringCb.Dependencies(_generalRepo);
         }
 
         private void TxtSqlSourceText_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)

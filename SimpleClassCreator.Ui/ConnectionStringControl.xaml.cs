@@ -1,20 +1,22 @@
-﻿using System.Collections.ObjectModel;
+﻿using SimpleClassCreator.Lib.DataAccess;
+using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using B = SimpleClassCreator.Ui.UserControlExtensions;
 
 namespace SimpleClassCreator.Ui
 {
     /// <summary>
-    /// Segregating the Connection String code into its own file so I can decouple it from this
-    /// control in the future. It has becomes its own beast and shouldn't be together with this
-    /// control anymore.
+    /// Interaction logic for ConnectionStringControl.xaml
     /// </summary>
-    public partial class QueryToClassControl
+    public partial class ConnectionStringControl : UserControl
     {
-        private ConnectionManager VerifiedConnections { get; }
+        private IGeneralDatabaseQueries _generalRepo;
 
-        private ConnectionManager.Connection CurrentConnection
+        public ConnectionManager VerifiedConnections { get; } = new ConnectionManager();
+
+        public ConnectionManager.Connection CurrentConnection
         {
             get
             {
@@ -29,13 +31,37 @@ namespace SimpleClassCreator.Ui
             }
         }
 
+        public ConnectionStringControl()
+        {
+            InitializeComponent();
+
+            CbConnectionString_Refresh();
+        }
+
+        public void Dependencies(
+            IGeneralDatabaseQueries repository)
+        {
+            _generalRepo = repository;
+        }
+
+        private void BtnConnectionStringTest_Click(object sender, RoutedEventArgs e)
+        {
+            TestConnectionString();
+        }
+
         private void CbConnectionString_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
                 TestConnectionString();
         }
 
-        private bool TestConnectionString(bool showMessageOnFailureOnly = false)
+        private void CbConnectionString_Refresh()
+        {
+            CbConnectionString.ItemsSource =
+                new ObservableCollection<ConnectionManager.Connection>(VerifiedConnections.Connections);
+        }
+
+        public bool TestConnectionString(bool showMessageOnFailureOnly = false)
         {
             var con = CurrentConnection;
 
@@ -56,17 +82,6 @@ namespace SimpleClassCreator.Ui
                 B.ShowWarningMessage(obj.Success ? "Connected Successfully" : "Connection Failed. Returned error: " + obj.Message);
 
             return obj.Success;
-        }
-
-        private void BtnConnectionStringTest_Click(object sender, RoutedEventArgs e)
-        {
-            TestConnectionString();
-        }
-
-        private void CbConnectionString_Refresh()
-        {
-            CbConnectionString.ItemsSource =
-                new ObservableCollection<ConnectionManager.Connection>(VerifiedConnections.Connections);
         }
     }
 }

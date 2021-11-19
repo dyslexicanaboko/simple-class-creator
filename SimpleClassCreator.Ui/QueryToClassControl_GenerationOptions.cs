@@ -38,12 +38,12 @@ namespace SimpleClassCreator.Ui
         {
             var obj = new QueryToClassParameters();
 
-            var con = CurrentConnection;
+            var con = ConnectionStringCb.CurrentConnection;
 
-            if (!con.Verified && !TestConnectionString(true))
+            if (!con.Verified && !ConnectionStringCb.TestConnectionString(true))
                 return null;
 
-            obj.ConnectionString = CurrentConnection.ConnectionString;
+            obj.ConnectionString = con.ConnectionString;
 
             obj.SourceSqlType = GetSourceType();
 
@@ -69,7 +69,7 @@ namespace SimpleClassCreator.Ui
 
             if (_classCheckBoxGroup.HasTickedCheckBox())
                 return obj;
-            
+
             B.ShowWarningMessage("You must select at least one construct for generation. None is not an option.");
 
             return null;
