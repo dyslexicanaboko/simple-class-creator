@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ConnectionsCSV" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Data Source=.\SQLEXPRESS;Initial Catalog=ClientManager;Integrated Security=SSPI;|Data Source=.\SQLEXPRESS;Initial Catalog=Dummy;Integrated Security=SSPI;</Value>
+      <Value Profile="(Default)">Data Source=.;Initial Catalog=YourDatabase;Integrated Security=SSPI;|Data Source=.;Initial Catalog=YourOtherDatabase;Integrated Security=SSPI;</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -25,8 +25,8 @@ namespace SimpleClassCreator.Ui.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Initial Catalog=ClientManager;Integrated Security=SSPI;|" +
-            "Data Source=.\\SQLEXPRESS;Initial Catalog=Dummy;Integrated Security=SSPI;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.;Initial Catalog=YourDatabase;Integrated Security=SSPI;|Data Source=" +
+            ".;Initial Catalog=YourOtherDatabase;Integrated Security=SSPI;")]
         public string ConnectionsCSV {
             get {
                 return ((string)(this["ConnectionsCSV"]));
