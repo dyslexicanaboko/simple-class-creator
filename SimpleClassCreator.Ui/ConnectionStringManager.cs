@@ -2,22 +2,22 @@
 
 namespace SimpleClassCreator.Ui
 {
-    public class ConnectionManager
+    public class ConnectionStringManager
     {
         private const int MaxConnections = 10;
 
         public List<Connection> Connections { get; }
         
-        public ConnectionManager()
+        public ConnectionStringManager()
         {
             Connections = LoadConnections();
         }
 
         private List<Connection> LoadConnections()
         {
-            List<Connection> lst = new List<Connection>();
+            var lst = new List<Connection>();
 
-            string[] arr = Properties.Settings.Default.ConnectionsCSV.Split('|');
+            var arr = Properties.Settings.Default.ConnectionsCSV.Split('|');
 
             foreach (string s in arr)
                 lst.Add(new Connection { ConnectionString = s, Verified = true });
@@ -56,13 +56,6 @@ namespace SimpleClassCreator.Ui
 
         public class Connection
         {
-            public Connection()
-            {
-                ConnectionString = null;
-                
-                Verified = false;
-            }
-
             public string ConnectionString { get; set; }
 
             public bool Verified { get; set; }

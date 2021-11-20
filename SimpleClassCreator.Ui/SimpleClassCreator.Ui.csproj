@@ -128,7 +128,7 @@
     <Compile Include="ResultWindow.xaml.cs">
       <DependentUpon>ResultWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ConnectionManager.cs" />
+    <Compile Include="ConnectionStringManager.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TextBoxWithDefaultControl.xaml.cs">
       <DependentUpon>TextBoxWithDefaultControl.xaml</DependentUpon>
@@ -161,6 +161,9 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <Content Include="Profile.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

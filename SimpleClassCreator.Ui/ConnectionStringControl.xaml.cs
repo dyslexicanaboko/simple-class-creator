@@ -14,16 +14,16 @@ namespace SimpleClassCreator.Ui
     {
         private IGeneralDatabaseQueries _generalRepo;
 
-        public ConnectionManager VerifiedConnections { get; } = new ConnectionManager();
+        public ConnectionStringManager VerifiedConnectionsString { get; } = new ConnectionStringManager();
 
-        public ConnectionManager.Connection CurrentConnection
+        public ConnectionStringManager.Connection CurrentConnection
         {
             get
             {
                 if (CbConnectionString.SelectedIndex > -1)
-                    return (ConnectionManager.Connection)CbConnectionString.SelectedItem;
+                    return (ConnectionStringManager.Connection)CbConnectionString.SelectedItem;
 
-                var obj = new ConnectionManager.Connection();
+                var obj = new ConnectionStringManager.Connection();
                 obj.Verified = false;
                 obj.ConnectionString = CbConnectionString.Text;
 
@@ -58,7 +58,7 @@ namespace SimpleClassCreator.Ui
         private void CbConnectionString_Refresh()
         {
             CbConnectionString.ItemsSource =
-                new ObservableCollection<ConnectionManager.Connection>(VerifiedConnections.Connections);
+                new ObservableCollection<ConnectionStringManager.Connection>(VerifiedConnectionsString.Connections);
         }
 
         public bool TestConnectionString(bool showMessageOnFailureOnly = false)
@@ -69,7 +69,7 @@ namespace SimpleClassCreator.Ui
 
             con.Verified = obj.Success;
 
-            VerifiedConnections.UpdateConnection(con);
+            VerifiedConnectionsString.UpdateConnection(con);
 
             CbConnectionString_Refresh();
 
