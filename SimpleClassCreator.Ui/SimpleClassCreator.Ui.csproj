@@ -79,6 +79,9 @@
     <StartupObject>SimpleClassCreator.Ui.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SimpleInjector, Version=5.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
       <HintPath>..\packages\SimpleInjector.5.3.1\lib\net461\SimpleInjector.dll</HintPath>
     </Reference>
@@ -120,6 +123,10 @@
     <Compile Include="DtoMakerControl.xaml.cs">
       <DependentUpon>DtoMakerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Profile\IProfileManager.cs" />
+    <Compile Include="Profile\ProfileManager.cs" />
+    <Compile Include="Profile\ProfileSaver.cs" />
+    <Compile Include="Profile\UserConnectionString.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="QueryToClassControl.xaml.cs">
       <DependentUpon>QueryToClassControl.xaml</DependentUpon>
@@ -128,7 +135,7 @@
     <Compile Include="ResultWindow.xaml.cs">
       <DependentUpon>ResultWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ConnectionStringManager.cs" />
+    <Compile Include="Profile\ConnectionStringManager.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TextBoxWithDefaultControl.xaml.cs">
       <DependentUpon>TextBoxWithDefaultControl.xaml</DependentUpon>

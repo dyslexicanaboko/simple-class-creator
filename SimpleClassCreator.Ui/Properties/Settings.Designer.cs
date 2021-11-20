@@ -22,18 +22,5 @@ namespace SimpleClassCreator.Ui.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.;Initial Catalog=YourDatabase;Integrated Security=SSPI;|Data Source=" +
-            ".;Initial Catalog=YourOtherDatabase;Integrated Security=SSPI;")]
-        public string ConnectionsCSV {
-            get {
-                return ((string)(this["ConnectionsCSV"]));
-            }
-            set {
-                this["ConnectionsCSV"] = value;
-            }
-        }
     }
 }

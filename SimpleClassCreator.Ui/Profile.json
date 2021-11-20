@@ -2,8 +2,14 @@
   "ConnectionStringManager": {
     "MaxConnectionStrings": 10,
     "ConnectionStrings": [
-      "Data Source=.;Initial Catalog=YourDatabase;Integrated Security=SSPI;", 
-      "Data Source=.;Initial Catalog=YourOtherDatabase;Integrated Security=SSPI"
+      {
+        "ConnectionString": "Data Source=.;Initial Catalog=YourDatabase;Integrated Security=SSPI;",
+        "Verified": false
+      },
+      {
+        "ConnectionString": "Data Source=.;Initial Catalog=YourOtherDatabase;Integrated Security=SSPI;",
+        "Verified": false
+      }
     ]
   }
 }

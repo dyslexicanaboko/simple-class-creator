@@ -1,4 +1,5 @@
 ﻿using SimpleClassCreator.Lib.DataAccess;
+using SimpleClassCreator.Ui.Profile;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,16 +15,16 @@ namespace SimpleClassCreator.Ui
     {
         private IGeneralDatabaseQueries _generalRepo;
 
-        public ConnectionStringManager VerifiedConnectionsString { get; } = new ConnectionStringManager();
+        public ConnectionStringManager UserConnectionStrings { get; private set; }
 
-        public ConnectionStringManager.Connection CurrentConnection
+        public UserConnectionString CurrentConnection
         {
             get
             {
                 if (CbConnectionString.SelectedIndex > -1)
-                    return (ConnectionStringManager.Connection)CbConnectionString.SelectedItem;
+                    return (UserConnectionString)CbConnectionString.SelectedItem;
 
-                var obj = new ConnectionStringManager.Connection();
+                var obj = new UserConnectionString();
                 obj.Verified = false;
                 obj.ConnectionString = CbConnectionString.Text;
 
@@ -34,14 +35,17 @@ namespace SimpleClassCreator.Ui
         public ConnectionStringControl()
         {
             InitializeComponent();
-
-            CbConnectionString_Refresh();
         }
 
         public void Dependencies(
+            IProfileManager profileManager,
             IGeneralDatabaseQueries repository)
         {
             _generalRepo = repository;
+
+            UserConnectionStrings = profileManager.ConnectionStringManager;
+
+            CbConnectionString_Refresh();
         }
 
         private void BtnConnectionStringTest_Click(object sender, RoutedEventArgs e)
@@ -58,7 +62,7 @@ namespace SimpleClassCreator.Ui
         private void CbConnectionString_Refresh()
         {
             CbConnectionString.ItemsSource =
-                new ObservableCollection<ConnectionStringManager.Connection>(VerifiedConnectionsString.Connections);
+                new ObservableCollection<UserConnectionString>(UserConnectionStrings.ConnectionStrings);
         }
 
         public bool TestConnectionString(bool showMessageOnFailureOnly = false)
@@ -69,7 +73,7 @@ namespace SimpleClassCreator.Ui
 
             con.Verified = obj.Success;
 
-            VerifiedConnectionsString.UpdateConnection(con);
+            UserConnectionStrings.Update(con);
 
             CbConnectionString_Refresh();
 

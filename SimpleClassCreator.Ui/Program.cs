@@ -1,5 +1,6 @@
 ﻿using SimpleClassCreator.Lib.DataAccess;
 using SimpleClassCreator.Lib.Services;
+using SimpleClassCreator.Ui.Profile;
 using SimpleInjector;
 using System;
 
@@ -7,9 +8,13 @@ namespace SimpleClassCreator.Ui
 {
     static class Program
     {
+        private static ProfileSaver _profileSaver;
+
         [STAThread]
         static void Main()
         {
+            _profileSaver = new ProfileSaver();
+
             var container = Bootstrap();
 
             // Any additional other configuration, e.g. of your desired MVVM toolkit.
@@ -28,6 +33,7 @@ namespace SimpleClassCreator.Ui
             container.Register<IDtoGenerator, DtoGenerator>();
             container.Register<INameFormatService, NameFormatService>();
             container.Register<IQueryToClassService, QueryToClassService>();
+            container.Register<IProfileManager>(GetProfileManager, Lifestyle.Singleton);
 
             // Register your windows and view models:
             //container.Register<DtoMakerControl>();
@@ -37,6 +43,13 @@ namespace SimpleClassCreator.Ui
             container.Verify();
 
             return container;
+        }
+
+        private static ProfileManager GetProfileManager()
+        {
+            var profileManager = _profileSaver.Load();
+
+            return profileManager;
         }
 
         private static void RunApplication(Container container)

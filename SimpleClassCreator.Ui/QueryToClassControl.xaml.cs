@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using SimpleClassCreator.Ui.Profile;
 using B = SimpleClassCreator.Ui.UserControlExtensions;
 
 namespace SimpleClassCreator.Ui
@@ -57,13 +58,14 @@ namespace SimpleClassCreator.Ui
         public void Dependencies(
             INameFormatService classService, 
             IQueryToClassService queryToClassService,
-            IGeneralDatabaseQueries repository)
+            IGeneralDatabaseQueries repository,
+            IProfileManager profileManager)
         {
             _svcClass = classService;
             _svcQueryToClass = queryToClassService;
             _generalRepo = repository;
 
-            ConnectionStringCb.Dependencies(_generalRepo);
+            ConnectionStringCb.Dependencies(profileManager, _generalRepo);
         }
 
         private void TxtSqlSourceText_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
