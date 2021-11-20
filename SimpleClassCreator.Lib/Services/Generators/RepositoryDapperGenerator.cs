@@ -119,12 +119,12 @@ namespace SimpleClassCreator.Lib.Services.Generators
 			//TODO: Need to work through every type to see what the combinations are
 			if (t == SqlDbType.DateTime2)
 			{
-				lst.Add($"Scale: {properties.Scale}");
+				lst.Add($"scale: {properties.Scale}");
 			}
 
 			if (t == SqlDbType.Decimal)
 			{
-				lst.Add($"Precision: {properties.Precision}, Scale: {properties.Scale}");
+				lst.Add($"precision: {properties.Precision}, scale: {properties.Scale}");
 			}
 
 			if (t == SqlDbType.VarChar ||
@@ -132,7 +132,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 				t == SqlDbType.Char ||
 				t == SqlDbType.NChar)
 			{
-				lst.Add($"Size: {properties.Size}");
+				lst.Add($"size: {properties.Size}");
 			}
 
 			var content = $"				p.Add({string.Join(", ", lst)});";
