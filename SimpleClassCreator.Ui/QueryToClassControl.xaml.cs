@@ -4,6 +4,7 @@ using SimpleClassCreator.Lib.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -264,15 +265,17 @@ namespace SimpleClassCreator.Ui
             }
         }
 
-        private void BtnGenerate_Click(object sender, RoutedEventArgs e)
+        private async void BtnGenerate_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 var obj = GetParameters();
 
                 if (obj == null) return;
+                
+                PbGenerator.IsIndeterminate = true;
 
-                var results = _svcQueryToClass.Generate(obj);
+                var results = await Task.Run(() => _svcQueryToClass.Generate(obj));
 
                 foreach (var g in results)
                 {
@@ -286,6 +289,10 @@ namespace SimpleClassCreator.Ui
             catch (Exception ex)
             {
                 B.ShowErrorMessage(ex);
+            }
+            finally
+            {
+                PbGenerator.IsIndeterminate = false;
             }
         }
 

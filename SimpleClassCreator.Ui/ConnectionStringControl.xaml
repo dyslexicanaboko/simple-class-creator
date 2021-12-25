@@ -9,6 +9,7 @@
              d:DesignHeight="79.185" d:DesignWidth="612.661">
     <Grid Background="White">
         <Button Content="Test" Height="65" HorizontalAlignment="Left" Margin="567,6,0,0" Name="BtnConnectionStringTest" VerticalAlignment="Top" Width="40" Click="BtnConnectionStringTest_Click" />
-        <ComboBox Height="65" HorizontalAlignment="Left" Margin="8,6,0,0" Name="CbConnectionString" VerticalAlignment="Top" Width="553" IsEditable="True" ItemsSource="{Binding}" DisplayMemberPath="ConnectionString" SelectedValuePath="ConnectionString" KeyDown="CbConnectionString_KeyDown" />
+        <ComboBox Height="48" HorizontalAlignment="Left" Margin="8,6,0,0" Name="CbConnectionString" VerticalAlignment="Top" Width="553" IsEditable="True" ItemsSource="{Binding}" DisplayMemberPath="ConnectionString" SelectedValuePath="ConnectionString" KeyDown="CbConnectionString_KeyDown" />
+        <ProgressBar Name="PbConnectionTest" HorizontalAlignment="Left" Height="12" Margin="8,59,0,0" VerticalAlignment="Top" Width="553"/>
     </Grid>
 </UserControl>

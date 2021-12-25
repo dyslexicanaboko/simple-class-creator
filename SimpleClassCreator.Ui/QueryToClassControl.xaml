@@ -61,6 +61,7 @@
                 <Label Content="Path" Height="28" HorizontalAlignment="Left" Margin="213,50,0,0" Name="LblPath" VerticalAlignment="Top" IsEnabled="False" />
                 <Button Content="Default" Height="23" HorizontalAlignment="Left" Margin="402,76,0,0" Name="BtnFileNameDefault" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="BtnFileNameDefault_Click" />
                 <Button Content="Default" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="402,49,0,0" Name="BtnPathDefault" VerticalAlignment="Top" Width="75" Click="BtnPathDefault_Click" />
+                <ProgressBar Name="PbGenerator" HorizontalAlignment="Left" Height="34" Margin="365,10,0,0" VerticalAlignment="Top" Width="265"/>
             </Grid>
         </GroupBox>
     </Grid>

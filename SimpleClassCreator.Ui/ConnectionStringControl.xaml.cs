@@ -1,9 +1,11 @@
 ﻿using SimpleClassCreator.Lib.DataAccess;
 using SimpleClassCreator.Ui.Profile;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using SimpleClassCreator.Lib.Models;
 using B = SimpleClassCreator.Ui.UserControlExtensions;
 
 namespace SimpleClassCreator.Ui
@@ -48,15 +50,15 @@ namespace SimpleClassCreator.Ui
             CbConnectionString_Refresh();
         }
 
-        private void BtnConnectionStringTest_Click(object sender, RoutedEventArgs e)
+        private async void BtnConnectionStringTest_Click(object sender, RoutedEventArgs e)
         {
-            TestConnectionString();
+            await TestConnectionStringNonBlocking();
         }
 
-        private void CbConnectionString_KeyDown(object sender, KeyEventArgs e)
+        private async void CbConnectionString_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-                TestConnectionString();
+                await TestConnectionStringNonBlocking();
         }
 
         private void CbConnectionString_Refresh()
@@ -65,27 +67,57 @@ namespace SimpleClassCreator.Ui
                 new ObservableCollection<UserConnectionString>(UserConnectionStrings.ConnectionStrings);
         }
 
-        public bool TestConnectionString(bool showMessageOnFailureOnly = false)
+        private async Task TestConnectionStringNonBlocking()
         {
-            var con = CurrentConnection;
+            try
+            {
+                BtnConnectionStringTest.IsEnabled = false;
+                PbConnectionTest.IsIndeterminate = true;
 
-            var obj = _generalRepo.TestConnectionString(con.ConnectionString);
+                var con = CurrentConnection;
 
-            con.Verified = obj.Success;
+                var result = await Task.Run(() => TestConnectionString(con));
 
-            UserConnectionStrings.Update(con);
+                ShowResult(result);
+            }
+            finally
+            {
+                BtnConnectionStringTest.IsEnabled = true;
+                PbConnectionTest.IsIndeterminate = false;
+            }
+        }
 
+        private ConnectionResult TestConnectionString(UserConnectionString userConnectionString)
+        {
+            var obj = _generalRepo.TestConnectionString(userConnectionString.ConnectionString);
+
+            userConnectionString.Verified = obj.Success;
+
+            UserConnectionStrings.Update(userConnectionString);
+
+            return obj;
+        }
+
+        private bool ShowResult(ConnectionResult result, bool showMessageOnFailureOnly = false)
+        {
             CbConnectionString_Refresh();
 
             var showMessage = true;
 
             if (showMessageOnFailureOnly)
-                showMessage = !obj.Success;
+                showMessage = !result.Success;
 
             if (showMessage)
-                B.ShowWarningMessage(obj.Success ? "Connected Successfully" : "Connection Failed. Returned error: " + obj.Message);
+                B.ShowWarningMessage(result.Success ? "Connected Successfully" : "Connection Failed. Returned error: " + result.Message);
 
-            return obj.Success;
+            return result.Success;
+        }
+
+        public bool TestConnectionString(bool showMessageOnFailureOnly = false)
+        {
+            var obj = TestConnectionString(CurrentConnection);
+
+            return ShowResult(obj, showMessageOnFailureOnly);
         }
     }
 }
