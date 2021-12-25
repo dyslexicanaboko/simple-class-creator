@@ -3,6 +3,7 @@ using SimpleClassCreator.Lib.Models;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using SimpleClassCreator.Lib.Exceptions;
 
 namespace SimpleClassCreator.Lib.DataAccess
 {
@@ -26,7 +27,15 @@ namespace SimpleClassCreator.Lib.DataAccess
 
             foreach (DataColumn dc in rs.GenericSchema.Columns)
             {
-                var sqlServerColumn = rs.SqlServerSchema.Select($"ColumnName = '{dc.ColumnName}'").Single();
+                var arr = rs.SqlServerSchema.Select($"ColumnName = '{dc.ColumnName}'");
+
+                //If the query provided contains repeat column names, this won't work. Let the user know they have to change their query.
+                if (arr.Length > 1)
+                {
+                    throw new NonUniqueColumnException(dc.ColumnName);
+                }
+
+                var sqlServerColumn = arr.Single();
 
                 var sc = new SchemaColumn
                 {
