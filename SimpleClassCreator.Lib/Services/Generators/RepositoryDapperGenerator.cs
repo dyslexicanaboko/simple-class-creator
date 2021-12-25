@@ -107,32 +107,33 @@ namespace SimpleClassCreator.Lib.Services.Generators
 		private string FormatDynamicParameter(ClassMemberStrings properties)
 		{
 			var t = properties.DatabaseType;
-			var dbType = TypesService.MapSqlDbTypeToDbTypeLoose[t];
+
+			var strDbType = TypesService.MapSqlDbTypeToDbTypeLoose.TryGetValue(t, out var dbType) ? 
+				dbType.ToString() : 
+				$"SqlDbType.{t}_MissingMapping";
 
 			var lst = new List<string>
 			{
 				$"name: \"@{properties.Property}\"",
-				$"dbType: DbType.{dbType}",
+				$"dbType: DbType.{strDbType}",
 				$"value: entity.{properties.Property}"
 			};
 
 			//TODO: Need to work through every type to see what the combinations are
-			if (t == SqlDbType.DateTime2)
+			switch (t)
 			{
-				lst.Add($"scale: {properties.Scale}");
-			}
-
-			if (t == SqlDbType.Decimal)
-			{
-				lst.Add($"precision: {properties.Precision}, scale: {properties.Scale}");
-			}
-
-			if (t == SqlDbType.VarChar ||
-				t == SqlDbType.NVarChar ||
-				t == SqlDbType.Char ||
-				t == SqlDbType.NChar)
-			{
-				lst.Add($"size: {properties.Size}");
+				case SqlDbType.DateTime2:
+					lst.Add($"scale: {properties.Scale}");
+					break;
+				case SqlDbType.Decimal:
+					lst.Add($"precision: {properties.Precision}, scale: {properties.Scale}");
+					break;
+				case SqlDbType.VarChar:
+				case SqlDbType.NVarChar:
+				case SqlDbType.Char:
+				case SqlDbType.NChar:
+					lst.Add($"size: {properties.Size}");
+					break;
 			}
 
 			var content = $"				p.Add({string.Join(", ", lst)});";
@@ -153,7 +154,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 				content = 
 $@"            connection.Execute(sql, p);
 
-			    return entity.{primaryKey.Property};";
+				return entity.{primaryKey.Property};";
 			}
 
 			return content;

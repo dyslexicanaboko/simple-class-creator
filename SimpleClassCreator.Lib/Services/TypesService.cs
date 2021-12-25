@@ -43,7 +43,7 @@ namespace SimpleClassCreator.Lib.Services
         public static readonly Dictionary<SqlDbType, DbType> MapSqlDbTypeToDbTypeLoose = new Dictionary<SqlDbType, DbType>
         {
             { SqlDbType.BigInt, DbType.Int64 },
-            { SqlDbType.Binary, DbType.Binary },
+            //{ SqlDbType.Binary, ??? },
             { SqlDbType.Bit, DbType.Boolean },
             { SqlDbType.Char, DbType.AnsiStringFixedLength },
             { SqlDbType.Date, DbType.Date },
@@ -59,7 +59,9 @@ namespace SimpleClassCreator.Lib.Services
             { SqlDbType.Real, DbType.Single },
             { SqlDbType.SmallInt, DbType.Int16 },
             { SqlDbType.Time, DbType.Time },
+            { SqlDbType.TinyInt, DbType.Byte },
             { SqlDbType.UniqueIdentifier, DbType.Guid },
+            { SqlDbType.VarBinary, DbType.Binary },
             { SqlDbType.VarChar, DbType.AnsiString },
             { SqlDbType.Xml, DbType.Xml }
         };
