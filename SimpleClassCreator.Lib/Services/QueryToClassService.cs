@@ -224,9 +224,11 @@ namespace SimpleClassCreator.Lib.Services
         private ClassInstructions GetInstructions(QueryToClassParameters parameters)
         {
             var p = parameters;
-         
+
             //primaryKey = GetPrimaryKeyColumn(p.TableQuery); //This is specific to the repos
-            var sqlQuery = p.SourceSqlType == SourceSqlType.TableName ? ("SET FMTONLY ON; SELECT * FROM " + p.SourceSqlText + "; SET FMTONLY OFF;") : p.SourceSqlText;
+            var selector = p.SourceSqlType == SourceSqlType.TableName ? "SELECT * FROM " : string.Empty;
+
+            var sqlQuery = $"SET FMTONLY ON; {selector}{p.SourceSqlText}; SET FMTONLY OFF;";
 
             var schema = _repository.GetSchema(p.TableQuery, sqlQuery);
 

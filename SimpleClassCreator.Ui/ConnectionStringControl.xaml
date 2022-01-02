@@ -1,0 +1,15 @@
+﻿<UserControl Name="ConnectionStringsComboBox"
+             x:Class="SimpleClassCreator.Ui.ConnectionStringControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SimpleClassCreator.Ui"
+             mc:Ignorable="d" 
+             d:DesignHeight="79.185" d:DesignWidth="612.661">
+    <Grid Background="White">
+        <Button Content="Test" Height="65" HorizontalAlignment="Left" Margin="567,6,0,0" Name="BtnConnectionStringTest" VerticalAlignment="Top" Width="40" Click="BtnConnectionStringTest_Click" />
+        <ComboBox Height="48" HorizontalAlignment="Left" Margin="8,6,0,0" Name="CbConnectionString" VerticalAlignment="Top" Width="553" IsEditable="True" ItemsSource="{Binding}" DisplayMemberPath="ConnectionString" SelectedValuePath="ConnectionString" KeyDown="CbConnectionString_KeyDown" />
+        <ProgressBar Name="PbConnectionTest" HorizontalAlignment="Left" Height="12" Margin="8,59,0,0" VerticalAlignment="Top" Width="553"/>
+    </Grid>
+</UserControl>

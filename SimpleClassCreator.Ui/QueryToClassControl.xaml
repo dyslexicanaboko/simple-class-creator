@@ -9,10 +9,7 @@
              mc:Ignorable="d" Height="682.333" Width="682">
     <Grid Background="White" Margin="0,0,10,0">
         <GroupBox Header="Step 1: Connection String" Height="100" HorizontalAlignment="Left" Margin="12,12,0,0" VerticalAlignment="Top" Width="652">
-            <Grid>
-                <Button Content="Test" Height="65" HorizontalAlignment="Left" Margin="567,6,0,0" Name="BtnConnectionStringTest" VerticalAlignment="Top" Width="40" Click="BtnConnectionStringTest_Click" />
-                <ComboBox Height="65" HorizontalAlignment="Left" Margin="8,6,0,0" Name="CbConnectionString" VerticalAlignment="Top" Width="553" IsEditable="True" ItemsSource="{Binding}" DisplayMemberPath="ConnectionString" SelectedValuePath="ConnectionString" KeyDown="CbConnectionString_KeyDown" />
-            </Grid>
+            <my:ConnectionStringControl x:Name="ConnectionStringCb" />
         </GroupBox>
         <GroupBox Header="Step 2: Class Source" Height="146" HorizontalAlignment="Left" Margin="12,118,0,0" VerticalAlignment="Top" Width="652">
             <Grid>
@@ -64,6 +61,7 @@
                 <Label Content="Path" Height="28" HorizontalAlignment="Left" Margin="213,50,0,0" Name="LblPath" VerticalAlignment="Top" IsEnabled="False" />
                 <Button Content="Default" Height="23" HorizontalAlignment="Left" Margin="402,76,0,0" Name="BtnFileNameDefault" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="BtnFileNameDefault_Click" />
                 <Button Content="Default" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="402,49,0,0" Name="BtnPathDefault" VerticalAlignment="Top" Width="75" Click="BtnPathDefault_Click" />
+                <ProgressBar Name="PbGenerator" HorizontalAlignment="Left" Height="34" Margin="365,10,0,0" VerticalAlignment="Top" Width="265"/>
             </Grid>
         </GroupBox>
     </Grid>

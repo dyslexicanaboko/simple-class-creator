@@ -4,9 +4,12 @@ using SimpleClassCreator.Lib.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using SimpleClassCreator.Lib.Exceptions;
+using SimpleClassCreator.Ui.Profile;
 using B = SimpleClassCreator.Ui.UserControlExtensions;
 
 namespace SimpleClassCreator.Ui
@@ -35,10 +38,6 @@ namespace SimpleClassCreator.Ui
             SetPathAsDefault();
 
             ResultWindows = new List<ResultWindow>();
-
-            VerifiedConnections = new ConnectionManager();
-
-            CbConnectionString_Refresh();
             
             TxtNamespaceName.ApplyDefault();
 
@@ -61,22 +60,32 @@ namespace SimpleClassCreator.Ui
         public void Dependencies(
             INameFormatService classService, 
             IQueryToClassService queryToClassService,
-            IGeneralDatabaseQueries repository)
+            IGeneralDatabaseQueries repository,
+            IProfileManager profileManager)
         {
             _svcClass = classService;
             _svcQueryToClass = queryToClassService;
             _generalRepo = repository;
+
+            ConnectionStringCb.Dependencies(profileManager, _generalRepo);
         }
 
         private void TxtSqlSourceText_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             if (RbSourceTypeTableName.IsChecked != true) return;
 
-            FormatTableName(TxtSourceSqlText);
+            try
+            {
+                FormatTableName(TxtSourceSqlText);
 
-            TxtEntityName.Text = GetDefaultEntityName();
+                TxtEntityName.Text = GetDefaultEntityName();
 
-            TxtClassEntityName.Text = GetDefaultClassName();
+                TxtClassEntityName.Text = GetDefaultClassName();
+            }
+            catch (Exception ex)
+            {
+                B.ShowWarningMessage($"The table name you provided could not be formatted.\nPlease select the Query radio button if your source is not just a table name.\n\nError: {ex.Message}");
+            }
         }
 
         private void FormatTableName(TextBox target)
@@ -91,15 +100,29 @@ namespace SimpleClassCreator.Ui
 
         private void BtnClassEntityNameDefault_Click(object sender, RoutedEventArgs e)
         {
-            TxtClassEntityName.Text = GetDefaultClassName();
+            try
+            {
+                TxtClassEntityName.Text = GetDefaultClassName();
 
-            if (string.IsNullOrWhiteSpace(TxtFileName.Text))
-                TxtFileName.Text = TxtClassEntityName.Text + ".cs";
+                if (string.IsNullOrWhiteSpace(TxtFileName.Text))
+                    TxtFileName.Text = TxtClassEntityName.Text + ".cs";
+            }
+            catch
+            {
+                TxtClassEntityName.Text = "Class1";
+            }
         }
 
         private void BtnEntityNameDefault_Click(object sender, RoutedEventArgs e)
         {
-            TxtEntityName.Text = GetDefaultEntityName();
+            try
+            {
+                TxtEntityName.Text = GetDefaultEntityName();
+            }
+            catch
+            {
+                TxtEntityName.Text = "Entity1";
+            }
         }
 
         private string GetDefaultEntityName()
@@ -242,24 +265,34 @@ namespace SimpleClassCreator.Ui
             }
         }
 
-        private void BtnGenerate_Click(object sender, RoutedEventArgs e)
+        private async void BtnGenerate_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 var obj = GetParameters();
 
                 if (obj == null) return;
+                
+                PbGenerator.IsIndeterminate = true;
 
-                var results = _svcQueryToClass.Generate(obj);
+                var results = await Task.Run(() => _svcQueryToClass.Generate(obj));
 
                 foreach (var g in results)
                 {
                     ShowResultWindow(g.Filename, g.Contents);
                 }
             }
+            catch (NonUniqueColumnException nucEx)
+            {
+                B.ShowWarningMessage(nucEx.Message);
+            }
             catch (Exception ex)
             {
                 B.ShowErrorMessage(ex);
+            }
+            finally
+            {
+                PbGenerator.IsIndeterminate = false;
             }
         }
 
