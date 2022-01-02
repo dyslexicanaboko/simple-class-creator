@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using SimpleClassCreator.Lib.Exceptions;
+using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Ui.Profile;
 using B = SimpleClassCreator.Ui.UserControlExtensions;
 
@@ -19,11 +20,9 @@ namespace SimpleClassCreator.Ui
     /// </summary>
     public partial class QueryToMockDataControl : UserControl
     {
-        private INameFormatService _svcClass;
-        //private IQueryToMockDataService _svcQueryToMockData;
-        private IGeneralDatabaseQueries _generalRepo;
-
-        private static string DefaultPath => AppDomain.CurrentDomain.BaseDirectory;
+        private INameFormatService _svcNameFormat;
+        private IQueryToMockDataService _svcQueryToMockData;
+        private IGeneralDatabaseQueries _repoGeneral;
 
         private List<ResultWindow> ResultWindows { get; }
         
@@ -33,19 +32,22 @@ namespace SimpleClassCreator.Ui
             InitializeComponent();
 
             ResultWindows = new List<ResultWindow>();
+
+            TxtClassEntityName.DefaultButton_UnregisterDefaultEvent();
+            TxtClassEntityName.DefaultButton.Click += BtnClassEntityNameDefault_Click;
         }
 
         public void Dependencies(
-            INameFormatService classService, 
-            //IQueryToMockDataService queryToClassService,
+            INameFormatService nameFormatService, 
+            IQueryToMockDataService queryToMockDataService,
             IGeneralDatabaseQueries repository,
             IProfileManager profileManager)
         {
-            _svcClass = classService;
-            //_svcQueryToMockData = queryToClassService;
-            _generalRepo = repository;
+            _svcNameFormat = nameFormatService;
+            _svcQueryToMockData = queryToMockDataService;
+            _repoGeneral = repository;
 
-            ConnectionStringCb.Dependencies(profileManager, _generalRepo);
+            ConnectionStringCb.Dependencies(profileManager, _repoGeneral);
         }
 
         private void TxtSqlSourceText_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -55,10 +57,26 @@ namespace SimpleClassCreator.Ui
             try
             {
                 FormatTableName(TxtSourceSqlText);
+
+                TxtClassEntityName.Text = GetDefaultClassName();
             }
             catch (Exception ex)
             {
                 B.ShowWarningMessage($"The table name you provided could not be formatted.\nPlease select the Query radio button if your source is not just a table name.\n\nError: {ex.Message}");
+            }
+        }
+
+        private void BtnPreview_OnClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var p = GetParameters();
+
+                TbEntityResult.Text = _svcQueryToMockData.GetEntity(p);
+            }
+            catch (Exception ex)
+            {
+                B.ShowErrorMessage(ex);
             }
         }
 
@@ -69,9 +87,77 @@ namespace SimpleClassCreator.Ui
             if (string.IsNullOrWhiteSpace(strName))
                 return;
 
-            target.Text = _svcClass.FormatTableQuery(strName);
+            target.Text = _svcNameFormat.FormatTableQuery(strName);
         }
-        
+
+        private QueryToMockDataParameters GetParameters()
+        {
+            var obj = CommonValidation();
+
+            //Check if the common validation failed
+            if (obj == null) return null;
+
+            if (TxtClassEntityName.IsTextInvalid("Class name cannot be empty."))
+                return null;
+
+            obj.ClassEntityName = TxtClassEntityName.Text;
+
+            obj.TableQuery = _svcNameFormat.ParseTableName(TxtSourceSqlText.Text);
+
+            return obj;
+        }
+
+        private QueryToMockDataParameters CommonValidation()
+        {
+            var obj = new QueryToMockDataParameters();
+
+            var con = ConnectionStringCb.CurrentConnection;
+
+            if (!con.Verified && !ConnectionStringCb.TestConnectionString(true))
+                return null;
+
+            obj.ConnectionString = con.ConnectionString;
+
+            obj.SourceSqlType = GetSourceType();
+
+            if (TxtSourceSqlText.IsTextInvalid(obj.SourceSqlType + " cannot be empty."))
+                return null;
+
+            obj.SourceSqlText = TxtSourceSqlText.Text;
+
+            return obj;
+        }
+
+        private void BtnClassEntityNameDefault_Click(object sender, RoutedEventArgs e)
+        {
+            TxtClassEntityName.Text = GetDefaultClassName();
+        }
+
+        private string GetDefaultClassName()
+        {
+            string strName;
+
+            try
+            {
+                if (RbSourceTypeTableName.IsChecked == true)
+                {
+                    var tbl = _svcNameFormat.ParseTableName(TxtSourceSqlText.Text);
+
+                    strName = _svcNameFormat.GetClassName(tbl);
+                }
+                else
+                {
+                    strName = "Class1";
+                }
+            }
+            catch
+            {
+                strName = "Class1";
+            }
+
+            return strName;
+        }
+
         private async void BtnGenerate_Click(object sender, RoutedEventArgs e)
         {
             try

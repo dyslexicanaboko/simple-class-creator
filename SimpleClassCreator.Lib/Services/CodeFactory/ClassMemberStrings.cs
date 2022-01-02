@@ -12,7 +12,7 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
     {
         private readonly CodeDomProvider _provider;
 
-        public ClassMemberStrings(SchemaColumn sc, CodeType type)
+        public ClassMemberStrings(SchemaColumn sc, CodeType type = CodeType.CSharp)
         {
             if (type == CodeType.CSharp)
                 _provider = new CSharpCodeProvider();

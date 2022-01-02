@@ -54,10 +54,13 @@
     <Compile Include="Models\ClassOptions.cs" />
     <Compile Include="Models\DtoMakerParameters.cs" />
     <Compile Include="Models\GeneratedResult.cs" />
+    <Compile Include="Models\QueryToMockDataParameters.cs" />
     <Compile Include="Models\SchemaColumn.cs" />
     <Compile Include="Models\SchemaQuery.cs" />
     <Compile Include="Models\SchemaRaw.cs" />
+    <Compile Include="Services\ClassMetaDataBase.cs" />
     <Compile Include="Services\CodeFactory\ClassMemberStrings.cs" />
+    <Compile Include="Services\Generators\ClassEntitySimpleGenerator.cs" />
     <Compile Include="Services\Generators\ClassEntityIComparableGenerator.cs" />
     <Compile Include="Services\Generators\ClassEntityEqualityComparerGenerator.cs" />
     <Compile Include="Services\Generators\RepositoryDapperGenerator.cs" />
@@ -88,6 +91,7 @@
     <Compile Include="Services\IDtoGenerator.cs" />
     <Compile Include="Services\IQueryToClassService.cs" />
     <Compile Include="Services\QueryToClassService.cs" />
+    <Compile Include="Services\QueryToMockDataService.cs" />
     <Compile Include="Services\TypesService.cs" />
     <Compile Include="StartUp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -123,6 +127,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Templates\RepositoryDapper.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\EntitySimple.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="Utils.cs" />

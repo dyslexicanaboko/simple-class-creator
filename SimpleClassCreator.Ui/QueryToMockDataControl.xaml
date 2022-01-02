@@ -11,16 +11,14 @@
         <GroupBox Header="Step 1: Connection string" Height="100" HorizontalAlignment="Left" Margin="12,12,0,0" VerticalAlignment="Top" Width="652">
             <my:ConnectionStringControl x:Name="ConnectionStringCb" />
         </GroupBox>
-        <GroupBox Header="Step 2: Object source" Height="146" HorizontalAlignment="Left" Margin="12,118,0,0" VerticalAlignment="Top" Width="652">
+        <GroupBox Header="Step 2: Object source" Height="401" HorizontalAlignment="Left" Margin="12,118,0,0" VerticalAlignment="Top" Width="652">
             <Grid>
                 <RadioButton Content="Query" Height="16" HorizontalAlignment="Left" Margin="95,8,0,0" Name="RbSourceTypeQuery" VerticalAlignment="Top" IsChecked="True" GroupName="rbgSourceType" RenderTransformOrigin="1.059,0.5" />
                 <RadioButton Content="Table Name" Height="16" HorizontalAlignment="Left" Margin="12,8,0,0" Name="RbSourceTypeTableName" VerticalAlignment="Top" GroupName="rbgSourceType" IsChecked="True" />
                 <TextBox Height="89" HorizontalAlignment="Left" Margin="10,29,0,0" Name="TxtSourceSqlText" VerticalAlignment="Top" Width="596" LostKeyboardFocus="TxtSqlSourceText_LostKeyboardFocus" AcceptsReturn="True" />
-            </Grid>
-        </GroupBox>
-        <GroupBox Header="Preview" Height="254" HorizontalAlignment="Left" Margin="12,270,0,0" VerticalAlignment="Top" Width="652">
-            <Grid>
-                
+                <my:TextBoxWithDefaultControl x:Name="TxtClassEntityName" DefaultText="Entity1" Margin="12,123,414,0" VerticalAlignment="Top" Width="Auto"/>
+                <Button x:Name="BtnPreview" Content="Preview" HorizontalAlignment="Left" Margin="226,123,0,0" VerticalAlignment="Top" Width="75" Click="BtnPreview_OnClick" Height="25"/>
+                <TextBlock x:Name="TbEntityResult" HorizontalAlignment="Left" Margin="12,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="215" Width="289" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
             </Grid>
         </GroupBox>
         <GroupBox Header="Step 3: Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,524,0,0" Width="652" Height="137">

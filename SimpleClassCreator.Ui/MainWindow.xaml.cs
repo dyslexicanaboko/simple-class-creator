@@ -13,6 +13,7 @@ namespace SimpleClassCreator.Ui
     {
         public MainWindow(INameFormatService classService,
             IQueryToClassService queryToClassService,
+            IQueryToMockDataService queryToMockDataService,
             IGeneralDatabaseQueries repository,
             IProfileManager profileManager)
         {
@@ -28,6 +29,7 @@ namespace SimpleClassCreator.Ui
 
             CtrlQueryToMockData.Dependencies(
                 classService,
+                queryToMockDataService,
                 repository,
                 profileManager);
         }
