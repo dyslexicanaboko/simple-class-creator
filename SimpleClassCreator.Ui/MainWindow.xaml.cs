@@ -25,11 +25,17 @@ namespace SimpleClassCreator.Ui
                 queryToClassService, 
                 repository, 
                 profileManager);
+
+            CtrlQueryToMockData.Dependencies(
+                classService,
+                repository,
+                profileManager);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             CtrlQueryToClass.CloseResultWindows();
+            CtrlQueryToMockData.CloseResultWindows();
         }
 
         private void btnAbout_Click(object sender, RoutedEventArgs e)
