@@ -56,6 +56,9 @@ namespace {{Namespace}}
 
 			using (var connection = new SqlConnection(ConnectionString))
 			{
+				var p = new DynamicParameters();
+{{DynamicParametersInsert}}
+				
 {{PrimaryKeyInsertExecution}}
 			}
 		}
@@ -69,7 +72,7 @@ namespace {{Namespace}}
 			using (var connection = new SqlConnection(ConnectionString))
 			{
 				var p = new DynamicParameters();
-{{DynamicParameters}}
+{{DynamicParametersUpdate}}
 
 				connection.Execute(sql, p);
 			}

@@ -68,7 +68,8 @@ namespace SimpleClassCreator.Lib.Services.Generators
 			t = t.Replace("{{InsertColumnList}}", FormatSelectList(lstInsert));
 			t = t.Replace("{{InsertValuesList}}", FormatSelectList(lstInsert, "@"));
 			t = t.Replace("{{UpdateParameters}}", FormatUpdateList(lstNoPk));
-			t = t.Replace("{{DynamicParameters}}", FormatDynamicParameterList(Instructions.Properties));
+			t = t.Replace("{{DynamicParametersInsert}}", FormatDynamicParameterList(lstInsert));
+			t = t.Replace("{{DynamicParametersUpdate}}", FormatDynamicParameterList(Instructions.Properties));
 
 			var r = GetResult();
 			r.Filename = Instructions.EntityName + "Repository.cs";
