@@ -46,6 +46,8 @@ namespace SimpleClassCreator.Lib.Services.Generators
             foreach (DataRow r in dataTable.Rows)
             {
                 var sb = new StringBuilder();
+                sb.AppendLine($"new {cn}")
+                    .AppendLine("{");
 
                 foreach (DataColumn c in dataTable.Columns)
                 {
@@ -54,13 +56,12 @@ namespace SimpleClassCreator.Lib.Services.Generators
 
                     var value = GetValueString(p, r[c]);
 
-                    sb.AppendLine($"new {cn}")
-                        .AppendLine("{")
-                        .Append(p.Property).Append(" = ").Append(Convert.ToString(value))
-                        .AppendLine("}");
-
-                    lst.Add(sb.ToString());
+                    sb.Append(p.Property).Append(" = ").Append(Convert.ToString(value)).AppendLine(",");
                 }
+                
+                sb.AppendLine("}");
+
+                lst.Add(sb.ToString());
             }
 
             var sbFinal = new StringBuilder();
@@ -84,7 +85,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 
             if (property.SystemType == typeof(string))
             {
-                strValue = $"\"{strValue}\"";
+                strValue = string.IsNullOrEmpty(strValue) ? "string.Empty" : $"\"{strValue}\"";
             }
 
             if (property.SystemType == typeof(DateTime))

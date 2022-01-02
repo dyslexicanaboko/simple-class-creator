@@ -16,10 +16,10 @@
                 <RadioButton Content="Query" Height="16" HorizontalAlignment="Left" Margin="95,8,0,0" Name="RbSourceTypeQuery" VerticalAlignment="Top" IsChecked="True" GroupName="rbgSourceType" RenderTransformOrigin="1.059,0.5" />
                 <RadioButton Content="Table Name" Height="16" HorizontalAlignment="Left" Margin="12,8,0,0" Name="RbSourceTypeTableName" VerticalAlignment="Top" GroupName="rbgSourceType" IsChecked="True" />
                 <TextBox Height="89" HorizontalAlignment="Left" Margin="10,29,0,0" Name="TxtSourceSqlText" VerticalAlignment="Top" Width="596" LostKeyboardFocus="TxtSqlSourceText_LostKeyboardFocus" AcceptsReturn="True" />
-                <my:TextBoxWithDefaultControl x:Name="TxtClassEntityName" DefaultText="Entity1" Margin="12,123,414,0" VerticalAlignment="Top" Width="Auto"/>
-                <Button x:Name="BtnPreview" Content="Preview" HorizontalAlignment="Left" Margin="226,123,0,0" VerticalAlignment="Top" Width="75" Click="BtnPreview_OnClick" Height="25"/>
-                <TextBlock x:Name="TbEntityResult" HorizontalAlignment="Left" Margin="12,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="215" Width="289" />
-                <TextBlock x:Name="TbMockDataResults" HorizontalAlignment="Left" Margin="306,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="215" Width="324" />
+                <my:TextBoxWithDefaultControl x:Name="TxtClassEntityName" DefaultText="Entity1" Margin="9,123,417,0" VerticalAlignment="Top" Width="Auto"/>
+                <Button x:Name="BtnPreview" Content="Preview" HorizontalAlignment="Left" Margin="221,121,0,0" VerticalAlignment="Top" Width="75" Click="BtnPreview_OnClick" Height="25"/>
+                <TextBox x:Name="TbEntityResult" HorizontalAlignment="Left" TextWrapping="NoWrap" VerticalAlignment="Top" Height="230" Width="301" Margin="10,148,0,0" IsReadOnly="True" IsReadOnlyCaretVisible="True" HorizontalContentAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch" VerticalScrollBarVisibility="Auto" />
+                <TextBox x:Name="TbMockDataResults" HorizontalAlignment="Left" TextWrapping="NoWrap" VerticalAlignment="Top" Height="230" Width="324" Margin="316,148,0,0" IsReadOnly="True" IsReadOnlyCaretVisible="True" HorizontalContentAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch" VerticalScrollBarVisibility="Auto" />
             </Grid>
         </GroupBox>
         <GroupBox Header="Step 3: Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,524,0,0" Width="652" Height="137">
