@@ -9,8 +9,8 @@ namespace SimpleClassCreator.Lib.Services
     public class QueryToClassService 
         : ClassMetaDataBase, IQueryToClassService
     {
-        public QueryToClassService(IQueryToClassRepository repository)
-            : base(repository)
+        public QueryToClassService(IQueryToClassRepository repository, IGeneralDatabaseQueries genericDatabaseQueries)
+            : base(repository, genericDatabaseQueries)
         {
             
         }

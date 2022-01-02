@@ -18,7 +18,8 @@
                 <TextBox Height="89" HorizontalAlignment="Left" Margin="10,29,0,0" Name="TxtSourceSqlText" VerticalAlignment="Top" Width="596" LostKeyboardFocus="TxtSqlSourceText_LostKeyboardFocus" AcceptsReturn="True" />
                 <my:TextBoxWithDefaultControl x:Name="TxtClassEntityName" DefaultText="Entity1" Margin="12,123,414,0" VerticalAlignment="Top" Width="Auto"/>
                 <Button x:Name="BtnPreview" Content="Preview" HorizontalAlignment="Left" Margin="226,123,0,0" VerticalAlignment="Top" Width="75" Click="BtnPreview_OnClick" Height="25"/>
-                <TextBlock x:Name="TbEntityResult" HorizontalAlignment="Left" Margin="12,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="215" Width="289" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                <TextBlock x:Name="TbEntityResult" HorizontalAlignment="Left" Margin="12,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="215" Width="289" />
+                <TextBlock x:Name="TbMockDataResults" HorizontalAlignment="Left" Margin="306,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="215" Width="324" />
             </Grid>
         </GroupBox>
         <GroupBox Header="Step 3: Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,524,0,0" Width="652" Height="137">

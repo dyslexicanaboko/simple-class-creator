@@ -1,4 +1,9 @@
 ﻿using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Services.CodeFactory;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Text;
 
 namespace SimpleClassCreator.Lib.Services.Generators
@@ -30,6 +35,69 @@ namespace SimpleClassCreator.Lib.Services.Generators
             r.Contents = t;
 
             return r;
+        }
+
+        public GeneratedResult FillMockDataTemplate(DataTable dataTable)
+        {
+            var lst = new List<string>(dataTable.Rows.Count);
+
+            var cn = Instructions.ClassEntityName;
+
+            foreach (DataRow r in dataTable.Rows)
+            {
+                var sb = new StringBuilder();
+
+                foreach (DataColumn c in dataTable.Columns)
+                {
+                    var p = Instructions.Properties.Single(x =>
+                        x.Property.Equals(c.ColumnName, StringComparison.OrdinalIgnoreCase));
+
+                    var value = GetValueString(p, r[c]);
+
+                    sb.AppendLine($"new {cn}")
+                        .AppendLine("{")
+                        .Append(p.Property).Append(" = ").Append(Convert.ToString(value))
+                        .AppendLine("}");
+
+                    lst.Add(sb.ToString());
+                }
+            }
+
+            var sbFinal = new StringBuilder();
+
+            sbFinal.AppendLine($"var lst = new List<{cn}>")
+                .AppendLine("{")
+                .Append(string.Join("," + Environment.NewLine, lst))
+                .AppendLine("};");
+
+            var result = GetResult();
+            result.Contents = sbFinal.ToString();
+
+            return result;
+        }
+
+        private string GetValueString(ClassMemberStrings property, object value)
+        {
+            if (value == DBNull.Value) return "null";
+
+            var strValue = Convert.ToString(value);
+
+            if (property.SystemType == typeof(string))
+            {
+                strValue = $"\"{strValue}\"";
+            }
+
+            if (property.SystemType == typeof(DateTime))
+            {
+                strValue = $"DateTime.Parse(\"{strValue}\")";
+            }
+
+            if (property.SystemType == typeof(Guid))
+            {
+                strValue = $"Guid.Parse(\"{strValue}\")";
+            }
+
+            return strValue;
         }
     }
 }

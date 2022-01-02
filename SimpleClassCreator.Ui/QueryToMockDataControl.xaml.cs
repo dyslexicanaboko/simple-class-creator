@@ -73,6 +73,8 @@ namespace SimpleClassCreator.Ui
                 var p = GetParameters();
 
                 TbEntityResult.Text = _svcQueryToMockData.GetEntity(p);
+
+                TbMockDataResults.Text = _svcQueryToMockData.GetMockData(p);
             }
             catch (Exception ex)
             {

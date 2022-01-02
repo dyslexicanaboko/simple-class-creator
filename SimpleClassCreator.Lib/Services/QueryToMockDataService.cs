@@ -2,6 +2,7 @@
 using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services.CodeFactory;
 using SimpleClassCreator.Lib.Services.Generators;
+using System.Data;
 using System.Linq;
 
 namespace SimpleClassCreator.Lib.Services
@@ -17,9 +18,10 @@ namespace SimpleClassCreator.Lib.Services
         : ClassMetaDataBase, IQueryToMockDataService
     {
         private readonly IQueryToClassRepository _repository;
-     
-        public QueryToMockDataService(IQueryToClassRepository repository)
-            : base(repository)
+        private ClassInstructions _instructions;
+
+        public QueryToMockDataService(IQueryToClassRepository repository, IGeneralDatabaseQueries genericDatabaseQueries)
+            : base(repository, genericDatabaseQueries)
         {
             _repository = repository;
         }
@@ -45,12 +47,29 @@ namespace SimpleClassCreator.Lib.Services
         {
             //Generate the mock data constructs using the entity for as much data as is requested.
             //Most of this is going to be contained inside of this service because there is no other way
+            var p = parameters;
 
-            return null;
+            _repository.ChangeConnectionString(p.ConnectionString);
+            
+            _genericDatabaseQueries.ChangeConnectionString(p.ConnectionString);
+
+            //Get the meta data needed about the entity
+            var instructions = GetInstructions(p);
+
+            var dt = GetRowData(p.SourceSqlType, p.SourceSqlText);
+
+            var generator = new ClassEntitySimpleGenerator(instructions);
+
+            //Generate the string representation of the class for preview
+            var res = generator.FillMockDataTemplate(dt);
+
+            return res.Contents;
         }
 
         private ClassInstructions GetInstructions(QueryToMockDataParameters parameters)
         {
+            if (_instructions != null) return _instructions;
+
             var p = parameters;
 
             var schema = GetSchema(p.SourceSqlType, p.SourceSqlText, p.TableQuery);
@@ -60,6 +79,8 @@ namespace SimpleClassCreator.Lib.Services
             ins.ClassEntityName = p.ClassEntityName;
             ins.TableQuery = p.TableQuery;
             ins.Properties = schema.ColumnsAll.Select(x => new ClassMemberStrings(x)).ToList();
+
+            _instructions = ins;
 
             return ins;
         }

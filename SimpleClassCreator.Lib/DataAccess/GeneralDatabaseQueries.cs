@@ -1,4 +1,5 @@
 ﻿using SimpleClassCreator.Lib.Models;
+using System.Data;
 
 namespace SimpleClassCreator.Lib.DataAccess
 {
@@ -13,5 +14,7 @@ namespace SimpleClassCreator.Lib.DataAccess
 
             return result;
         }
+
+        public DataTable GetRowData(string sql) => ExecuteDataTable(sql);
     }
 }

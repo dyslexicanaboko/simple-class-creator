@@ -1,9 +1,9 @@
-﻿using System;
+﻿using SimpleClassCreator.Lib.Exceptions;
 using SimpleClassCreator.Lib.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using SimpleClassCreator.Lib.Exceptions;
 
 namespace SimpleClassCreator.Lib.DataAccess
 {

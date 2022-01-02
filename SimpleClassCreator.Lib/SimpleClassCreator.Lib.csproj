@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\IBaseRepository.cs" />
     <Compile Include="Exceptions\NonUniqueColumnException.cs" />
     <Compile Include="Models\AssemblyInfo.cs" />
     <Compile Include="Models\ClassInfo.cs" />

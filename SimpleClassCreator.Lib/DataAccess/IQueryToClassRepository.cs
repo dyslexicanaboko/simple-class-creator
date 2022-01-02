@@ -3,9 +3,8 @@
 namespace SimpleClassCreator.Lib.DataAccess
 {
     public interface IQueryToClassRepository
+        : IBaseRepository
     {
-        void ChangeConnectionString(string connectionString);
-
         SchemaQuery GetSchema(TableQuery tableQuery, string query);
     }
 }

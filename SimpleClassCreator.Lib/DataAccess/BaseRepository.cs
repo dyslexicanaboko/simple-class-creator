@@ -1,8 +1,8 @@
-﻿using System;
+﻿using SimpleClassCreator.Lib.Models;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using SimpleClassCreator.Lib.Models;
 
 namespace SimpleClassCreator.Lib.DataAccess
 {
@@ -11,6 +11,7 @@ namespace SimpleClassCreator.Lib.DataAccess
     ///     All Data Access Layers should inherit from this base class
     /// </summary>
     public abstract class BaseRepository
+        : IBaseRepository
     {
         private string _connectionString;
 
@@ -81,6 +82,28 @@ namespace SimpleClassCreator.Lib.DataAccess
                     cmd.CommandTimeout = 0;
 
                     return cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        protected virtual DataTable ExecuteDataTable(string sql)
+        {
+            using (var con = new SqlConnection(_connectionString))
+            {
+                con.Open();
+
+                using (var cmd = new SqlCommand(sql, con))
+                {
+                    cmd.CommandTimeout = 0;
+
+                    var dt = new DataTable("Table1");
+
+                    using (var da = new SqlDataAdapter(cmd))
+                    {
+                        da.Fill(dt);
+                    }
+
+                    return dt;
                 }
             }
         }
