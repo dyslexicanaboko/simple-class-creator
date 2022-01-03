@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess\IBaseRepository.cs" />
+    <Compile Include="Events\RowProcessedEventArgs.cs" />
     <Compile Include="Exceptions\NonUniqueColumnException.cs" />
     <Compile Include="Models\AssemblyInfo.cs" />
     <Compile Include="Models\ClassInfo.cs" />

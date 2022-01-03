@@ -1,4 +1,5 @@
-﻿using SimpleClassCreator.Lib.Models;
+﻿using SimpleClassCreator.Lib.Events;
+using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services.CodeFactory;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,10 @@ namespace SimpleClassCreator.Lib.Services.Generators
     public class ClassEntitySimpleGenerator
         : GeneratorBase
     {
+        public delegate void RowProcessedHandler(object sender, RowProcessedEventArgs e);
+
+        public event RowProcessedHandler RowProcessed;
+
         public ClassEntitySimpleGenerator(ClassInstructions instructions)
             : base(instructions, "EntitySimple.cs")
         {
@@ -43,6 +48,8 @@ namespace SimpleClassCreator.Lib.Services.Generators
 
             var cn = Instructions.ClassEntityName;
 
+            var count = 0;
+
             foreach (DataRow r in dataTable.Rows)
             {
                 var sb = new StringBuilder();
@@ -62,6 +69,12 @@ namespace SimpleClassCreator.Lib.Services.Generators
                 sb.AppendLine("}");
 
                 lst.Add(sb.ToString());
+
+                RaiseRowProcessedEvent(new RowProcessedEventArgs
+                {
+                    Count = ++count, 
+                    Total = dataTable.Rows.Count
+                });
             }
 
             var sbFinal = new StringBuilder();
@@ -100,5 +113,7 @@ namespace SimpleClassCreator.Lib.Services.Generators
 
             return strValue;
         }
+
+        private void RaiseRowProcessedEvent(RowProcessedEventArgs e) => RowProcessed?.Invoke(this, e);
     }
 }

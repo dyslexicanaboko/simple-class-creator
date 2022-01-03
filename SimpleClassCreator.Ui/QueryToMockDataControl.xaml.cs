@@ -1,16 +1,17 @@
 ﻿using SimpleClassCreator.Lib;
 using SimpleClassCreator.Lib.DataAccess;
+using SimpleClassCreator.Lib.Events;
+using SimpleClassCreator.Lib.Exceptions;
+using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services;
+using SimpleClassCreator.Ui.Profile;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using SimpleClassCreator.Lib.Exceptions;
-using SimpleClassCreator.Lib.Models;
-using SimpleClassCreator.Ui.Profile;
+using System.Windows.Threading;
 using B = SimpleClassCreator.Ui.UserControlExtensions;
 
 namespace SimpleClassCreator.Ui
@@ -44,8 +45,10 @@ namespace SimpleClassCreator.Ui
             IProfileManager profileManager)
         {
             _svcNameFormat = nameFormatService;
-            _svcQueryToMockData = queryToMockDataService;
             _repoGeneral = repository;
+
+            _svcQueryToMockData = queryToMockDataService;
+            _svcQueryToMockData.RowProcessed += MockData_RowProcessed;
 
             ConnectionStringCb.Dependencies(profileManager, _repoGeneral);
         }
@@ -167,8 +170,8 @@ namespace SimpleClassCreator.Ui
                 var obj = GetParameters();
 
                 if (obj == null) return;
-                
-                PbGenerator.IsIndeterminate = true;
+
+                PbGenerator.Value = 0;
 
                 var result = await Task.Run(() => _svcQueryToMockData.GetMockData(obj));
 
@@ -182,10 +185,23 @@ namespace SimpleClassCreator.Ui
             {
                 B.ShowErrorMessage(ex);
             }
-            finally
-            {
-                PbGenerator.IsIndeterminate = false;
-            }
+        }
+
+        private void MockData_RowProcessed(object sender, RowProcessedEventArgs e)
+        {
+            PbGenerator.Dispatcher.BeginInvoke(
+                DispatcherPriority.Normal
+                , new DispatcherOperationCallback(delegate
+                {
+                    PbGenerator.Maximum = e.Total;
+                    PbGenerator.Value = e.Count;
+
+                    var percent = e.Count / (double)e.Total;
+
+                    LblPbValues.Content = $"{e.Count}/{e.Total} = {percent:P}";
+                    
+                    return null;
+                }), null);
         }
 
         private void ShowResultWindow(string title, string contents)

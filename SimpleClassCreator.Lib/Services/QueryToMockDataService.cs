@@ -1,4 +1,5 @@
 ﻿using SimpleClassCreator.Lib.DataAccess;
+using SimpleClassCreator.Lib.Events;
 using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services.CodeFactory;
 using SimpleClassCreator.Lib.Services.Generators;
@@ -11,6 +12,8 @@ namespace SimpleClassCreator.Lib.Services
         string GetEntity(QueryToMockDataParameters parameters);
 
         GeneratedResult GetMockData(QueryToMockDataParameters parameters, int? top = null);
+
+        event QueryToMockDataService.RowProcessedHandler RowProcessed;
     }
 
     public class QueryToMockDataService
@@ -18,6 +21,10 @@ namespace SimpleClassCreator.Lib.Services
     {
         private readonly IQueryToClassRepository _repository;
         private ClassInstructions _instructions;
+
+        public delegate void RowProcessedHandler(object sender, RowProcessedEventArgs e);
+
+        public event RowProcessedHandler RowProcessed;
 
         public QueryToMockDataService(IQueryToClassRepository repository, IGeneralDatabaseQueries genericDatabaseQueries)
             : base(repository, genericDatabaseQueries)
@@ -58,12 +65,15 @@ namespace SimpleClassCreator.Lib.Services
             var dt = GetRowData(p.SourceSqlType, p.SourceSqlText, top);
 
             var generator = new ClassEntitySimpleGenerator(instructions);
+            generator.RowProcessed += MockData_RowProcessed;
 
             //Generate the string representation of the class for preview
             var res = generator.FillMockDataTemplate(dt);
 
             return res;
         }
+
+        private void MockData_RowProcessed(object sender, RowProcessedEventArgs e) => RowProcessed?.Invoke(this, e);
 
         private ClassInstructions GetInstructions(QueryToMockDataParameters parameters)
         {
