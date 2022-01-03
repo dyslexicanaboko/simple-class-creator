@@ -33,6 +33,7 @@ namespace SimpleClassCreator.Ui
             container.Register<IDtoGenerator, DtoGenerator>();
             container.Register<INameFormatService, NameFormatService>();
             container.Register<IQueryToClassService, QueryToClassService>();
+            container.Register<IQueryToMockDataService, QueryToMockDataService>();
             container.Register<IProfileManager>(GetProfileManager, Lifestyle.Singleton);
 
             // Register your windows and view models:

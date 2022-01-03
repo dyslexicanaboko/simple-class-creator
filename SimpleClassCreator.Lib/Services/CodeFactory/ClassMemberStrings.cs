@@ -12,7 +12,7 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
     {
         private readonly CodeDomProvider _provider;
 
-        public ClassMemberStrings(SchemaColumn sc, CodeType type)
+        public ClassMemberStrings(SchemaColumn sc, CodeType type = CodeType.CSharp)
         {
             if (type == CodeType.CSharp)
                 _provider = new CSharpCodeProvider();
@@ -45,6 +45,8 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             SetPropertyAndField(trimmedColumnName);
 
             SetColumnName(trimmedColumnName);
+
+            SystemType = sc.SystemType;
 
             SystemTypeName = sc.SystemType.Name;
 
@@ -110,6 +112,8 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
 
         /// <summary>Property name in code</summary>
         public string Property { get; private set; }
+
+        public Type SystemType { get; }
 
         /// <summary>Property's System Type in code from typeof(T). This is the alias of the type.</summary>
         public string SystemTypeAlias { get; }

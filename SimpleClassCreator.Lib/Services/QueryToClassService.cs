@@ -2,20 +2,17 @@
 using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services.CodeFactory;
 using SimpleClassCreator.Lib.Services.Generators;
-using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace SimpleClassCreator.Lib.Services
 {
     public class QueryToClassService 
-        : IQueryToClassService
+        : ClassMetaDataBase, IQueryToClassService
     {
-        private readonly IQueryToClassRepository _repository;
-        
-        public QueryToClassService(IQueryToClassRepository repository)
+        public QueryToClassService(IQueryToClassRepository repository, IGeneralDatabaseQueries genericDatabaseQueries)
+            : base(repository, genericDatabaseQueries)
         {
-            _repository = repository;
+            
         }
 
         public IList<GeneratedResult> Generate(QueryToClassParameters parameters)
@@ -24,7 +21,7 @@ namespace SimpleClassCreator.Lib.Services
 
             if (!p.HasElections) return null;
 
-            _repository.ChangeConnectionString(p.ConnectionString);
+            _queryToClassRepository.ChangeConnectionString(p.ConnectionString);
 
             var baseInstructions = GetInstructions(parameters);
 
@@ -48,6 +45,34 @@ namespace SimpleClassCreator.Lib.Services
             //    WriteClassToFile(p, content);
 
             return lst;
+        }
+
+        private ClassInstructions GetInstructions(QueryToClassParameters parameters)
+        {
+            var p = parameters;
+
+            var schema = GetSchema(p.SourceSqlType, p.SourceSqlText, p.TableQuery);
+
+            var ins = new ClassInstructions();
+
+            ins.Namespace = p.Namespace;
+            ins.EntityName = p.ClassOptions.EntityName;
+            ins.ClassEntityName = p.ClassOptions.ClassEntityName;
+            ins.ClassModelName = p.ClassOptions.ClassModelName;
+            ins.InterfaceName = "I" + (string.IsNullOrEmpty(p.ClassOptions.ClassEntityName) ? p.ClassOptions.ClassModelName : p.ClassOptions.ClassEntityName);
+            ins.TableQuery = p.TableQuery;
+
+            foreach (var sc in schema.ColumnsAll)
+            {
+                var prop = new ClassMemberStrings(sc, p.LanguageType);
+
+                //Add the system namespace if any of the properties require it
+                if (prop.InSystemNamespace) ins.AddNamespace("System");
+
+                ins.Properties.Add(prop);
+            }
+
+            return ins;
         }
 
         #region Generate GridView
@@ -221,61 +246,30 @@ namespace SimpleClassCreator.Lib.Services
             return lst;
         }
 
-        private ClassInstructions GetInstructions(QueryToClassParameters parameters)
-        {
-            var p = parameters;
+        #region Old code - not sure for what
+        ///// <summary>
+        ///// Manufacture the physical code file
+        ///// </summary>
+        ///// <param name="p">Generation parameters</param>
+        ///// <param name="content">Class contents</param>
+        //private void WriteClassToFile(QueryToClassParameters p, string content)
+        //{
+        //    var fullFilePath = Path.Combine(p.FilePath, p.Filename);
 
-            //primaryKey = GetPrimaryKeyColumn(p.TableQuery); //This is specific to the repos
-            var selector = p.SourceSqlType == SourceSqlType.TableName ? "SELECT * FROM " : string.Empty;
+        //    File.WriteAllText(fullFilePath, content);
 
-            var sqlQuery = $"SET FMTONLY ON; {selector}{p.SourceSqlText}; SET FMTONLY OFF;";
+        //    Console.WriteLine($"{content.Length} Characters Written to {fullFilePath}");
+        //}
 
-            var schema = _repository.GetSchema(p.TableQuery, sqlQuery);
-
-            var ins = new ClassInstructions();
-
-            ins.Namespace = p.Namespace;
-            ins.EntityName = p.ClassOptions.EntityName;
-            ins.ClassEntityName = p.ClassOptions.ClassEntityName;
-            ins.ClassModelName = p.ClassOptions.ClassModelName;
-            ins.InterfaceName = "I" + (string.IsNullOrEmpty(p.ClassOptions.ClassEntityName) ? p.ClassOptions.ClassModelName : p.ClassOptions.ClassEntityName);
-            ins.TableQuery = p.TableQuery;
-
-            foreach (var sc in schema.ColumnsAll)
-            {
-                var prop = new ClassMemberStrings(sc, p.LanguageType);
-
-                //Add the system namespace if any of the properties require it
-                if (prop.InSystemNamespace) ins.AddNamespace("System");
-
-                ins.Properties.Add(prop);
-            }
-
-            return ins;
-        }
-
-        /// <summary>
-        /// Manufacture the physical code file
-        /// </summary>
-        /// <param name="p">Generation parameters</param>
-        /// <param name="content">Class contents</param>
-        private void WriteClassToFile(QueryToClassParameters p, string content)
-        {
-            var fullFilePath = Path.Combine(p.FilePath, p.Filename);
-
-            File.WriteAllText(fullFilePath, content);
-
-            Console.WriteLine($"{content.Length} Characters Written to {fullFilePath}");
-        }
-
-        //I don't remember what this was for. Will keep it around until later.
-        private bool IsNumber(Type targetType)
-        {
-            return targetType == typeof(int) ||
-                   targetType == typeof(byte) ||
-                   targetType == typeof(short) ||
-                   targetType == typeof(double) ||
-                   targetType == typeof(decimal);
-        }
+        ////I don't remember what this was for. Will keep it around until later.
+        //private bool IsNumber(Type targetType)
+        //{
+        //    return targetType == typeof(int) ||
+        //           targetType == typeof(byte) ||
+        //           targetType == typeof(short) ||
+        //           targetType == typeof(double) ||
+        //           targetType == typeof(decimal);
+        //} 
+        #endregion
     }
 }

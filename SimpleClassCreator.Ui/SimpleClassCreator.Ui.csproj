@@ -128,6 +128,9 @@
     <Compile Include="Profile\ProfileSaver.cs" />
     <Compile Include="Profile\UserConnectionString.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="QueryToMockDataControl.xaml.cs">
+      <DependentUpon>QueryToMockDataControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="QueryToClassControl.xaml.cs">
       <DependentUpon>QueryToClassControl.xaml</DependentUpon>
     </Compile>
@@ -185,6 +188,10 @@
     <Page Include="DtoMakerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="QueryToMockDataControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="QueryToClassControl.xaml">
       <SubType>Designer</SubType>

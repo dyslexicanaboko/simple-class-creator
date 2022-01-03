@@ -26,7 +26,7 @@ namespace SimpleClassCreator.Ui
             if (TxtClassEntityName.IsTextInvalid("Class name cannot be empty."))
                 return null;
 
-            obj.TableQuery = _svcClass.ParseTableName(TxtSourceSqlText.Text);
+            obj.TableQuery = _svcNameFormat.ParseTableName(TxtSourceSqlText.Text);
             obj.ClassOptions = GetClassOptions();
             obj.ClassServices = GetClassServices();
             obj.ClassRepositories = GetClassRepositories();

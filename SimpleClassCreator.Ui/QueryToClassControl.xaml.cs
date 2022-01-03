@@ -19,7 +19,7 @@ namespace SimpleClassCreator.Ui
     /// </summary>
     public partial class QueryToClassControl : UserControl
     {
-        private INameFormatService _svcClass;
+        private INameFormatService _svcNameFormat;
         private IQueryToClassService _svcQueryToClass;
         private IGeneralDatabaseQueries _generalRepo;
         private readonly Dictionary<ClassServices, CheckBox> _serviceToCheckBoxMap;
@@ -58,12 +58,12 @@ namespace SimpleClassCreator.Ui
         }
 
         public void Dependencies(
-            INameFormatService classService, 
+            INameFormatService nameFormatService, 
             IQueryToClassService queryToClassService,
             IGeneralDatabaseQueries repository,
             IProfileManager profileManager)
         {
-            _svcClass = classService;
+            _svcNameFormat = nameFormatService;
             _svcQueryToClass = queryToClassService;
             _generalRepo = repository;
 
@@ -95,7 +95,7 @@ namespace SimpleClassCreator.Ui
             if (string.IsNullOrWhiteSpace(strName))
                 return;
 
-            target.Text = _svcClass.FormatTableQuery(strName);
+            target.Text = _svcNameFormat.FormatTableQuery(strName);
         }
 
         private void BtnClassEntityNameDefault_Click(object sender, RoutedEventArgs e)
@@ -127,9 +127,9 @@ namespace SimpleClassCreator.Ui
 
         private string GetDefaultEntityName()
         {
-            var tbl = _svcClass.ParseTableName(TxtSourceSqlText.Text);
+            var tbl = _svcNameFormat.ParseTableName(TxtSourceSqlText.Text);
 
-            var entity = _svcClass.GetClassName(tbl);
+            var entity = _svcNameFormat.GetClassName(tbl);
 
             return entity;
         }
