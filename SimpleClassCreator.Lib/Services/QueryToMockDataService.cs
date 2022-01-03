@@ -2,7 +2,6 @@
 using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services.CodeFactory;
 using SimpleClassCreator.Lib.Services.Generators;
-using System.Data;
 using System.Linq;
 
 namespace SimpleClassCreator.Lib.Services
@@ -11,7 +10,7 @@ namespace SimpleClassCreator.Lib.Services
     {
         string GetEntity(QueryToMockDataParameters parameters);
 
-        string GetMockData(QueryToMockDataParameters parameters);
+        GeneratedResult GetMockData(QueryToMockDataParameters parameters, int? top = null);
     }
 
     public class QueryToMockDataService
@@ -43,7 +42,7 @@ namespace SimpleClassCreator.Lib.Services
             return res.Contents;
         }
 
-        public string GetMockData(QueryToMockDataParameters parameters)
+        public GeneratedResult GetMockData(QueryToMockDataParameters parameters, int? top = null)
         {
             //Generate the mock data constructs using the entity for as much data as is requested.
             //Most of this is going to be contained inside of this service because there is no other way
@@ -56,14 +55,14 @@ namespace SimpleClassCreator.Lib.Services
             //Get the meta data needed about the entity
             var instructions = GetInstructions(p);
 
-            var dt = GetRowData(p.SourceSqlType, p.SourceSqlText);
+            var dt = GetRowData(p.SourceSqlType, p.SourceSqlText, top);
 
             var generator = new ClassEntitySimpleGenerator(instructions);
 
             //Generate the string representation of the class for preview
             var res = generator.FillMockDataTemplate(dt);
 
-            return res.Contents;
+            return res;
         }
 
         private ClassInstructions GetInstructions(QueryToMockDataParameters parameters)

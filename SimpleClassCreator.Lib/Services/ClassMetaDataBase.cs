@@ -1,4 +1,5 @@
-﻿using SimpleClassCreator.Lib.DataAccess;
+﻿using System;
+using SimpleClassCreator.Lib.DataAccess;
 using SimpleClassCreator.Lib.Models;
 using System.Data;
 
@@ -8,6 +9,7 @@ namespace SimpleClassCreator.Lib.Services
     {
         protected readonly IQueryToClassRepository _queryToClassRepository;
         protected readonly IGeneralDatabaseQueries _genericDatabaseQueries;
+        private const string Select = "SELECT";
 
         protected ClassMetaDataBase(IQueryToClassRepository repository, IGeneralDatabaseQueries genericDatabaseQueries)
         {
@@ -28,9 +30,27 @@ namespace SimpleClassCreator.Lib.Services
             return schema;
         }
 
-        protected virtual DataTable GetRowData(SourceSqlType sourceSqlType, string sourceSqlText, int top = 5)
+        protected virtual DataTable GetRowData(SourceSqlType sourceSqlType, string sourceSqlText, int? top = null)
         {
-            var selector = sourceSqlType == SourceSqlType.TableName ? $"SELECT TOP({top}) * FROM " : string.Empty;
+            var selector = string.Empty;
+            var strTop = string.Empty;
+
+            if (top.HasValue)
+            {
+                strTop = $" TOP({top.Value}) ";
+            }
+
+            if (sourceSqlType == SourceSqlType.TableName)
+            {
+                selector = $"SELECT{strTop} * FROM ";
+
+            }
+            else if(top.HasValue && sourceSqlText.IndexOf("TOP", StringComparison.OrdinalIgnoreCase) == -1)
+            {
+                var i = sourceSqlText.IndexOf(Select, StringComparison.OrdinalIgnoreCase) + Select.Length;
+
+                sourceSqlText = sourceSqlText.Insert(i, strTop);
+            }
 
             var sqlQuery = $"{selector}{sourceSqlText}";
 

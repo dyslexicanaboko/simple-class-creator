@@ -74,7 +74,7 @@ namespace SimpleClassCreator.Ui
 
                 TbEntityResult.Text = _svcQueryToMockData.GetEntity(p);
 
-                TbMockDataResults.Text = _svcQueryToMockData.GetMockData(p);
+                TbMockDataResults.Text = _svcQueryToMockData.GetMockData(p, 5).Contents;
             }
             catch (Exception ex)
             {
@@ -164,18 +164,15 @@ namespace SimpleClassCreator.Ui
         {
             try
             {
-                //var obj = GetParameters();
+                var obj = GetParameters();
 
-                //if (obj == null) return;
+                if (obj == null) return;
                 
                 PbGenerator.IsIndeterminate = true;
 
-                //var results = await Task.Run(() => _svcQueryToMockData.Generate(obj));
+                var result = await Task.Run(() => _svcQueryToMockData.GetMockData(obj));
 
-                //foreach (var g in results)
-                //{
-                //    ShowResultWindow(g.Filename, g.Contents);
-                //}
+                ShowResultWindow(result.Filename, result.Contents);
             }
             catch (NonUniqueColumnException nucEx)
             {

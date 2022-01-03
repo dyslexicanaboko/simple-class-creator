@@ -25,7 +25,8 @@
         <GroupBox Header="Step 3: Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,524,0,0" Width="652" Height="137">
             <Grid>
                 <Button Content="Generate data" Height="89" HorizontalAlignment="Left" Margin="6,10,0,0" Name="BtnGenerate" VerticalAlignment="Top" Width="186" Click="BtnGenerate_Click" FontSize="20" Background="#FFD62A2A" Foreground="White" />
-                <ProgressBar x:Name="PbGenerator" HorizontalAlignment="Left" Height="34" Margin="365,10,0,0" VerticalAlignment="Top" Width="265"/>
+                <ProgressBar x:Name="PbGenerator" HorizontalAlignment="Left" Height="34" Margin="203,10,0,0" VerticalAlignment="Top" Width="427"/>
+                <Label Content="Remember to use TOP to limit the amount of data you are querying." HorizontalAlignment="Left" Margin="203,49,0,0" VerticalAlignment="Top"/>
             </Grid>
         </GroupBox>
     </Grid>
