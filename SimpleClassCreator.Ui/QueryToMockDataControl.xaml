@@ -11,23 +11,27 @@
         <GroupBox Header="Step 1: Connection string" Height="100" HorizontalAlignment="Left" Margin="12,12,0,0" VerticalAlignment="Top" Width="652">
             <my:ConnectionStringControl x:Name="ConnectionStringCb" />
         </GroupBox>
-        <GroupBox Header="Step 2: Object source" Height="401" HorizontalAlignment="Left" Margin="12,118,0,0" VerticalAlignment="Top" Width="652">
+        <GroupBox Header="Step 2: Object source" Height="447" HorizontalAlignment="Left" Margin="12,118,0,0" VerticalAlignment="Top" Width="652">
             <Grid>
                 <RadioButton Content="Query" Height="16" HorizontalAlignment="Left" Margin="95,8,0,0" Name="RbSourceTypeQuery" VerticalAlignment="Top" IsChecked="True" GroupName="rbgSourceType" RenderTransformOrigin="1.059,0.5" />
                 <RadioButton Content="Table Name" Height="16" HorizontalAlignment="Left" Margin="12,8,0,0" Name="RbSourceTypeTableName" VerticalAlignment="Top" GroupName="rbgSourceType" IsChecked="True" />
                 <TextBox Height="89" HorizontalAlignment="Left" Margin="10,29,0,0" Name="TxtSourceSqlText" VerticalAlignment="Top" Width="596" LostKeyboardFocus="TxtSqlSourceText_LostKeyboardFocus" AcceptsReturn="True" />
-                <my:TextBoxWithDefaultControl x:Name="TxtClassEntityName" DefaultText="Entity1" Margin="9,123,417,0" VerticalAlignment="Top" Width="Auto"/>
-                <Button x:Name="BtnPreview" Content="Preview" HorizontalAlignment="Left" Margin="221,121,0,0" VerticalAlignment="Top" Width="75" Click="BtnPreview_OnClick" Height="25"/>
-                <TextBox x:Name="TbEntityResult" HorizontalAlignment="Left" TextWrapping="NoWrap" VerticalAlignment="Top" Height="230" Width="301" Margin="10,148,0,0" IsReadOnly="True" IsReadOnlyCaretVisible="True" HorizontalContentAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch" VerticalScrollBarVisibility="Auto" />
-                <TextBox x:Name="TbMockDataResults" HorizontalAlignment="Left" TextWrapping="NoWrap" VerticalAlignment="Top" Height="230" Width="324" Margin="316,148,0,0" IsReadOnly="True" IsReadOnlyCaretVisible="True" HorizontalContentAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch" VerticalScrollBarVisibility="Auto" />
+                <my:TextBoxWithDefaultControl x:Name="TxtClassEntityName" DefaultText="Entity1" Margin="82,124,269,0" VerticalAlignment="Top" Width="Auto"/>
+                <Button x:Name="BtnPreview" Content="Preview" HorizontalAlignment="Left" Margin="376,123,0,0" VerticalAlignment="Top" Width="75" Click="BtnPreview_OnClick" Height="25"/>
+                <TextBox x:Name="TbEntityResult" HorizontalAlignment="Left" TextWrapping="NoWrap" VerticalAlignment="Top" Height="251" Width="301" Margin="10,170,0,0" IsReadOnly="True" IsReadOnlyCaretVisible="True" HorizontalContentAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch" VerticalScrollBarVisibility="Auto" />
+                <TextBox x:Name="TbMockDataResults" HorizontalAlignment="Left" TextWrapping="NoWrap" VerticalAlignment="Top" Height="251" Width="324" Margin="316,170,0,0" IsReadOnly="True" IsReadOnlyCaretVisible="True" HorizontalContentAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch" VerticalScrollBarVisibility="Auto" />
+                <Label Content="Class preview" HorizontalAlignment="Left" Margin="12,144,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.798,-0.013" FontWeight="Bold"/>
+                <Label Content="Top 5 data preview" HorizontalAlignment="Left" Margin="316,144,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.798,-0.013" FontWeight="Bold"/>
+                <Label Content="Class name" HorizontalAlignment="Left" Margin="12,122,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="LblPreviewTimestamp" Content="MM/dd/yyyy HH:mm:ss" HorizontalAlignment="Left" Margin="456,123,0,0" VerticalAlignment="Top" ToolTip="Timestamp of when preview was generated."/>
             </Grid>
         </GroupBox>
-        <GroupBox Header="Step 3: Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,524,0,0" Width="652" Height="137">
+        <GroupBox Header="Step 3: Generate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,570,0,0" Width="652" Height="102">
             <Grid>
-                <Button Content="Generate data" Height="89" HorizontalAlignment="Left" Margin="6,10,0,0" Name="BtnGenerate" VerticalAlignment="Top" Width="186" Click="BtnGenerate_Click" FontSize="20" Background="#FFD62A2A" Foreground="White" />
-                <ProgressBar x:Name="PbGenerator" HorizontalAlignment="Left" Height="34" Margin="203,36,0,0" VerticalAlignment="Top" Width="427"/>
-                <Label Content="Remember to use TOP to limit the amount of data you are querying." HorizontalAlignment="Left" Margin="203,10,0,0" VerticalAlignment="Top"/>
-                <Label x:Name="LblPbValues" Content="0/0 = 0%" HorizontalAlignment="Left" Margin="375,40,0,0" VerticalAlignment="Top"/>
+                <Button Content="Generate data" Height="56" HorizontalAlignment="Left" Margin="0,12,0,0" Name="BtnGenerate" VerticalAlignment="Top" Width="186" Click="BtnGenerate_Click" FontSize="20" Background="#FFD62A2A" Foreground="White" />
+                <ProgressBar x:Name="PbGenerator" HorizontalAlignment="Left" Height="34" Margin="203,34,0,0" VerticalAlignment="Top" Width="427"/>
+                <Label Content="Remember to use TOP to limit the amount of data you are querying." HorizontalAlignment="Left" Margin="203,3,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="LblPbValues" Content="0/0 = 0%" HorizontalAlignment="Left" Margin="373,38,0,0" VerticalAlignment="Top"/>
             </Grid>
         </GroupBox>
     </Grid>
