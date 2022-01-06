@@ -98,17 +98,22 @@ namespace SimpleClassCreator.Lib.Services.Generators
 
             if (property.SystemType == typeof(string))
             {
-                strValue = string.IsNullOrEmpty(strValue) ? "string.Empty" : $"\"{strValue}\"";
+                return string.IsNullOrEmpty(strValue) ? "string.Empty" : $"\"{strValue}\"";
+            }
+
+            if (property.SystemType == typeof(bool))
+            {
+                return strValue.ToLower();
             }
 
             if (property.SystemType == typeof(DateTime))
             {
-                strValue = $"DateTime.Parse(\"{strValue}\")";
+                return $"DateTime.Parse(\"{strValue}\")";
             }
 
             if (property.SystemType == typeof(Guid))
             {
-                strValue = $"Guid.Parse(\"{strValue}\")";
+                return $"Guid.Parse(\"{strValue}\")";
             }
 
             return strValue;

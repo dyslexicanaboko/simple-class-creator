@@ -9,7 +9,7 @@
                 <my:QueryToClassControl x:Name="CtrlQueryToClass" Margin="10,-1,0,0" VerticalAlignment="Top" Height="645" HorizontalAlignment="Left" />
             </TabItem>
             <TabItem Header="SQL to Mock data" Name="TabMockData">
-                <my:QueryToMockDataControl x:Name="CtrlQueryToMockData" Margin="10,-1,0,0" VerticalAlignment="Top" Height="645" HorizontalAlignment="Left" />
+                <my:QueryToMockDataControl x:Name="CtrlQueryToMockData" Margin="10,-1,0,0" VerticalAlignment="Top" Height="670" HorizontalAlignment="Left" />
             </TabItem>
             <TabItem Header="Make DTO" Name="TabMakeDto">
                 <my:DtoMakerControl x:Name="CtrlDtoMaker" />

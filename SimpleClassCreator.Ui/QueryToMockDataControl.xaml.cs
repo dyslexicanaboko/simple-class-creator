@@ -7,6 +7,7 @@ using SimpleClassCreator.Lib.Services;
 using SimpleClassCreator.Ui.Profile;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -48,8 +49,7 @@ namespace SimpleClassCreator.Ui
             _repoGeneral = repository;
 
             _svcQueryToMockData = queryToMockDataService;
-            _svcQueryToMockData.RowProcessed += MockData_RowProcessed;
-
+            
             ConnectionStringCb.Dependencies(profileManager, _repoGeneral);
         }
 
@@ -75,9 +75,13 @@ namespace SimpleClassCreator.Ui
             {
                 var p = GetParameters();
 
+                if (p == null) return;
+
                 TbEntityResult.Text = _svcQueryToMockData.GetEntity(p);
 
                 TbMockDataResults.Text = _svcQueryToMockData.GetMockData(p, 5).Contents;
+
+                LblPreviewTimestamp.Content = DateTime.Now.ToString(CultureInfo.CurrentCulture);
             }
             catch (Exception ex)
             {
@@ -167,6 +171,8 @@ namespace SimpleClassCreator.Ui
         {
             try
             {
+                _svcQueryToMockData.RowProcessed += MockData_RowProcessed;
+
                 var obj = GetParameters();
 
                 if (obj == null) return;
@@ -184,6 +190,10 @@ namespace SimpleClassCreator.Ui
             catch (Exception ex)
             {
                 B.ShowErrorMessage(ex);
+            }
+            finally
+            {
+                _svcQueryToMockData.RowProcessed -= MockData_RowProcessed;
             }
         }
 
