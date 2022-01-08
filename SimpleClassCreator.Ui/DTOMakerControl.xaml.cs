@@ -13,9 +13,9 @@ namespace SimpleClassCreator.Ui
     {
         private readonly IDtoGenerator _generator;
         
-        private string AssemblyFullPath => txtAssemblyFullFilePath.Text;
+        private string AssemblyFullPath => TxtAssemblyFullFilePath.Text;
         
-        private string ClassFqdn => txtFullyQualifiedClassName.Text;
+        private string ClassFqdn => TxtFullyQualifiedClassName.Text;
 
         public DtoMakerControl()
         {
@@ -25,29 +25,29 @@ namespace SimpleClassCreator.Ui
             _generator = new DtoGenerator();
         }
 
-        private void btnAssemblyOpenDialog_Click(object sender, RoutedEventArgs e)
+        private void BtnAssemblyOpenDialog_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
 
             if (!ofd.ShowDialog().Value)
                 return;
 
-            txtAssemblyFullFilePath.Text = ofd.FileName;
+            TxtAssemblyFullFilePath.Text = ofd.FileName;
 
-            lblAssemblyChosen.Content = System.IO.Path.GetFileName(ofd.FileName);
+            LblAssemblyChosen.Content = System.IO.Path.GetFileName(ofd.FileName);
         }
 
-        private void lblClassName_MouseEnter(object sender, MouseEventArgs e)
+        private void LblClassName_MouseEnter(object sender, MouseEventArgs e)
         {
             Cursor = Cursors.Help;
         }
 
-        private void lblClassName_MouseLeave(object sender, MouseEventArgs e)
+        private void LblClassName_MouseLeave(object sender, MouseEventArgs e)
         {
             Cursor = Cursors.Arrow;
         }
 
-        private void lblClassName_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void LblClassName_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             string strHelp = 
 @"A Fully Qualified Class Name is providing the class name with its namespace separated by periods. 
@@ -58,7 +58,7 @@ Please keep in mind casing matters.";
             MessageBox.Show(strHelp, "What is a Fully Qualified Class Name?");
         }
 
-        private void btnLoadClass_Click(object sender, RoutedEventArgs e)
+        private void BtnLoadClass_Click(object sender, RoutedEventArgs e)
         {
             _generator.LoadAssembly(AssemblyFullPath);
 
@@ -85,17 +85,17 @@ Please keep in mind casing matters.";
                 asm.Items.Add(cls);
             }
 
-            tvAssebliesAndClasses.Items.Add(asm);
+            TvAssembliesAndClasses.Items.Add(asm);
         }
 
         private StackPanel MakeOption(PropertyInfo info)
         {
             var cbx = new CheckBox();
-            cbx.Name = "cbx_" + info.Name;
+            cbx.Name = "Cb_" + info.Name;
             cbx.IsChecked = true;
 
             var lbl = new Label();
-            lbl.Name = "lbl_" + info.Name;
+            lbl.Name = "Lbl_" + info.Name;
             lbl.Content = info.ToString();
 
             var sp = new StackPanel();
@@ -111,23 +111,15 @@ Please keep in mind casing matters.";
             //Not every parameter will be in use yet
             var p = new DtoMakerParameters
             {
-                IncludeCloneMethod = GetValue(cbxIncludeCloneMethod),
-                ExcludeCollections = GetValue(cbxExcludeCollections),
-                IncludeTranslateMethod = GetValue(cbxIncludeTranslateMethod),
-                IncludeIEquatableOfTMethods = GetValue(cbxIncludeIEquatableOfTMethod)
+                IncludeCloneMethod = CbIncludeCloneMethod.IsChecked(),
+                IncludeTranslateMethod = CbIncludeTranslateMethod.IsChecked(),
+                IncludeIEquatableOfTMethods = CbIncludeIEquatableOfTMethod.IsChecked()
             };
 
             return p;
         }
 
-        private bool GetValue(CheckBox cb)
-        {
-            var value = cb.IsChecked.GetValueOrDefault();
-
-            return value;
-        }
-
-        private void btnGenerate_Click(object sender, RoutedEventArgs e)
+        private void BtnGenerate_Click(object sender, RoutedEventArgs e)
         {
             var p = GetParametersFromUi();
 
