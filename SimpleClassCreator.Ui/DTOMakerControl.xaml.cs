@@ -1,8 +1,13 @@
-﻿using SimpleClassCreator.Lib.Models;
+﻿using Microsoft.Win32;
+using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services;
+using System;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SimpleClassCreator.Ui
 {
@@ -11,9 +16,8 @@ namespace SimpleClassCreator.Ui
     /// </summary>
     public partial class DtoMakerControl : UserControl
     {
+        private Brush _dragAndDropTargetBackgroundOriginal;
         private readonly IDtoGenerator _generator;
-        
-        private string AssemblyFullPath => TxtAssemblyFullFilePath.Text;
         
         private string ClassFqdn => TxtFullyQualifiedClassName.Text;
 
@@ -23,18 +27,28 @@ namespace SimpleClassCreator.Ui
 
             //TODO: Need to use Dependency Injection here
             _generator = new DtoGenerator();
+
+            //Lock in what the background color is at start
+            _dragAndDropTargetBackgroundOriginal = DragAndDropTarget.Background;
         }
 
         private void BtnAssemblyOpenDialog_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            var ofd = new OpenFileDialog();
 
-            if (!ofd.ShowDialog().Value)
+            var ok = ofd.ShowDialog();
+
+            if (ok.GetValueOrDefault())
                 return;
 
-            TxtAssemblyFullFilePath.Text = ofd.FileName;
+            SetSelectedAssembly(ofd.FileName);
+        }
 
-            LblAssemblyChosen.Content = System.IO.Path.GetFileName(ofd.FileName);
+        private void SetSelectedAssembly(string fullFilePath)
+        {
+            TxtAssemblyFullFilePath.Text = fullFilePath;
+
+            LblAssemblyChosen.Content = Path.GetFileName(fullFilePath);
         }
 
         private void LblClassName_MouseEnter(object sender, MouseEventArgs e)
@@ -60,11 +74,18 @@ Please keep in mind casing matters.";
 
         private void BtnLoadClass_Click(object sender, RoutedEventArgs e)
         {
-            _generator.LoadAssembly(AssemblyFullPath);
+            try
+            {
+                _generator.LoadAssembly(TxtAssemblyFullFilePath.Text);
 
-            var asm = _generator.GetClassProperties(ClassFqdn);
+                var asm = _generator.GetClassProperties(ClassFqdn);
 
-            LoadTreeView(asm);
+                LoadTreeView(asm);
+            }
+            catch (Exception ex)
+            {
+                ex.ShowAsErrorMessage();
+            }
         }
 
         private void LoadTreeView(AssemblyInfo assembly)
@@ -123,11 +144,36 @@ Please keep in mind casing matters.";
         {
             var p = GetParametersFromUi();
 
-            _generator.LoadAssembly(AssemblyFullPath);
+            _generator.LoadAssembly(TxtAssemblyFullFilePath.Text);
 
             var win = new ResultWindow("Dto", _generator.MakeDto(ClassFqdn, p));
             
             win.Show();
         }
+
+        private void DragAndDropTarget_OnDrop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+                    return;
+
+                var arr = e.Data.GetData(DataFormats.FileDrop) as string[];
+
+                if (arr == null) return;
+
+                SetSelectedAssembly(arr.First());
+            }
+            catch (Exception ex)
+            {
+                ex.ShowAsErrorMessage();
+            }
+        }
+
+        private void DragAndDropTarget_OnMouseEnter(object sender, MouseEventArgs e)
+            => DragAndDropTarget.Background = Brushes.Yellow;
+
+        private void DragAndDropTarget_OnMouseLeave(object sender, MouseEventArgs e)
+            => DragAndDropTarget.Background = _dragAndDropTargetBackgroundOriginal;
     }
 }
