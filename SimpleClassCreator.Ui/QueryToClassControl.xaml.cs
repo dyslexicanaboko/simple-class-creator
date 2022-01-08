@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using SimpleClassCreator.Lib.Exceptions;
+using SimpleClassCreator.Ui.Helpers;
 using SimpleClassCreator.Ui.Profile;
 using B = SimpleClassCreator.Ui.UserControlExtensions;
 
@@ -17,7 +18,7 @@ namespace SimpleClassCreator.Ui
     /// <summary>
     ///     Interaction logic for QueryToClassControl.xaml
     /// </summary>
-    public partial class QueryToClassControl : UserControl
+    public partial class QueryToClassControl : UserControl, IUsesResultWindow
     {
         private INameFormatService _svcNameFormat;
         private IQueryToClassService _svcQueryToClass;
@@ -28,8 +29,8 @@ namespace SimpleClassCreator.Ui
 
         private static string DefaultPath => AppDomain.CurrentDomain.BaseDirectory;
 
-        private List<ResultWindow> ResultWindows { get; }
-        
+        private readonly ResultWindowManager _resultWindowManager;
+
         // Empty constructor Required by WPF
         public QueryToClassControl()
         {
@@ -37,8 +38,8 @@ namespace SimpleClassCreator.Ui
 
             SetPathAsDefault();
 
-            ResultWindows = new List<ResultWindow>();
-            
+            _resultWindowManager = new ResultWindowManager();
+
             TxtNamespaceName.ApplyDefault();
 
             TxtEntityName.DefaultButton_UnregisterDefaultEvent();
@@ -302,7 +303,7 @@ namespace SimpleClassCreator.Ui
 
             win.Show();
 
-            ResultWindows.Add(win);
+            _resultWindowManager.Add(win);
         }
 
         private SourceSqlType GetSourceType()
@@ -310,22 +311,7 @@ namespace SimpleClassCreator.Ui
             return RbSourceTypeQuery.IsChecked.GetValueOrDefault() ? SourceSqlType.Query : SourceSqlType.TableName;
         }
 
-        public void CloseResultWindows()
-        {
-            if (ResultWindows == null) return;
-
-            foreach (var obj in ResultWindows)
-            {
-                try
-                {
-                    obj?.Close();
-                }
-                catch
-                {
-                    //Trap
-                }
-            }
-        }
+        public void CloseResultWindows() => _resultWindowManager.CloseAll();
 
         private void TxtClassEntityName_MouseDown(object sender, MouseButtonEventArgs e)
         {

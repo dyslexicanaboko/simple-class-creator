@@ -1,7 +1,9 @@
-﻿using System.Windows;
-using SimpleClassCreator.Lib.DataAccess;
+﻿using SimpleClassCreator.Lib.DataAccess;
 using SimpleClassCreator.Lib.Services;
+using SimpleClassCreator.Ui.Helpers;
 using SimpleClassCreator.Ui.Profile;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace SimpleClassCreator.Ui
 {
@@ -11,11 +13,14 @@ namespace SimpleClassCreator.Ui
     public partial class MainWindow
         : Window
     {
+        private readonly List<IUsesResultWindow> _resultWindows;
+
         public MainWindow(INameFormatService classService,
             IQueryToClassService queryToClassService,
             IQueryToMockDataService queryToMockDataService,
             IGeneralDatabaseQueries repository,
-            IProfileManager profileManager)
+            IProfileManager profileManager,
+            IDtoGenerator dtoGenerator)
         {
             InitializeComponent();
 
@@ -32,13 +37,20 @@ namespace SimpleClassCreator.Ui
                 queryToMockDataService,
                 repository,
                 profileManager);
+
+            CtrlDtoMaker.Dependencies(
+                dtoGenerator);
+
+            _resultWindows = new List<IUsesResultWindow>
+            {
+                CtrlQueryToMockData,
+                CtrlDtoMaker,
+                CtrlQueryToClass
+            };
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            CtrlQueryToClass.CloseResultWindows();
-            CtrlQueryToMockData.CloseResultWindows();
-        }
+            =>_resultWindows.ForEach(x => x.CloseResultWindows());
 
         private void btnAbout_Click(object sender, RoutedEventArgs e)
         {

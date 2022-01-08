@@ -4,9 +4,9 @@ using SimpleClassCreator.Lib.Events;
 using SimpleClassCreator.Lib.Exceptions;
 using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services;
+using SimpleClassCreator.Ui.Helpers;
 using SimpleClassCreator.Ui.Profile;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,20 +20,19 @@ namespace SimpleClassCreator.Ui
     /// <summary>
     ///     Interaction logic for QueryToMockDataControl.xaml
     /// </summary>
-    public partial class QueryToMockDataControl : UserControl
+    public partial class QueryToMockDataControl : UserControl, IUsesResultWindow
     {
         private INameFormatService _svcNameFormat;
         private IQueryToMockDataService _svcQueryToMockData;
         private IGeneralDatabaseQueries _repoGeneral;
+        private readonly ResultWindowManager _resultWindowManager;
 
-        private List<ResultWindow> ResultWindows { get; }
-        
         // Empty constructor Required by WPF
         public QueryToMockDataControl()
         {
             InitializeComponent();
 
-            ResultWindows = new List<ResultWindow>();
+            _resultWindowManager = new ResultWindowManager();
 
             TxtClassEntityName.DefaultButton_UnregisterDefaultEvent();
             TxtClassEntityName.DefaultButton.Click += BtnClassEntityNameDefault_Click;
@@ -220,7 +219,7 @@ namespace SimpleClassCreator.Ui
 
             win.Show();
 
-            ResultWindows.Add(win);
+            _resultWindowManager.Add(win);
         }
 
         private SourceSqlType GetSourceType()
@@ -228,21 +227,6 @@ namespace SimpleClassCreator.Ui
             return RbSourceTypeQuery.IsChecked.GetValueOrDefault() ? SourceSqlType.Query : SourceSqlType.TableName;
         }
 
-        public void CloseResultWindows()
-        {
-            if (ResultWindows == null) return;
-
-            foreach (var obj in ResultWindows)
-            {
-                try
-                {
-                    obj?.Close();
-                }
-                catch
-                {
-                    //Trap
-                }
-            }
-        }
+        public void CloseResultWindows() => _resultWindowManager.CloseAll();
     }
 }

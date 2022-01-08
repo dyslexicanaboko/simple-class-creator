@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services;
+using SimpleClassCreator.Ui.Helpers;
 using System;
 using System.IO;
 using System.Linq;
@@ -14,10 +15,11 @@ namespace SimpleClassCreator.Ui
     /// <summary>
     /// Interaction logic for DTOMakerControl.xaml
     /// </summary>
-    public partial class DtoMakerControl : UserControl
+    public partial class DtoMakerControl : UserControl, IUsesResultWindow
     {
-        private Brush _dragAndDropTargetBackgroundOriginal;
-        private readonly IDtoGenerator _generator;
+        private readonly ResultWindowManager _resultWindowManager;
+        private readonly Brush _dragAndDropTargetBackgroundOriginal;
+        private IDtoGenerator _generator;
         
         private string ClassFqdn => TxtFullyQualifiedClassName.Text;
 
@@ -25,11 +27,10 @@ namespace SimpleClassCreator.Ui
         {
             InitializeComponent();
 
-            //TODO: Need to use Dependency Injection here
-            _generator = new DtoGenerator();
-
             //Lock in what the background color is at start
             _dragAndDropTargetBackgroundOriginal = DragAndDropTarget.Background;
+
+            _resultWindowManager = new ResultWindowManager();
         }
 
         private void BtnAssemblyOpenDialog_Click(object sender, RoutedEventArgs e)
@@ -42,6 +43,11 @@ namespace SimpleClassCreator.Ui
                 return;
 
             SetSelectedAssembly(ofd.FileName);
+        }
+
+        internal void Dependencies(IDtoGenerator generator)
+        {
+            _generator = generator;
         }
 
         private void SetSelectedAssembly(string fullFilePath)
@@ -149,6 +155,8 @@ Please keep in mind casing matters.";
             var win = new ResultWindow("Dto", _generator.MakeDto(ClassFqdn, p));
             
             win.Show();
+
+            _resultWindowManager.Add(win);
         }
 
         private void DragAndDropTarget_OnDrop(object sender, DragEventArgs e)
@@ -175,5 +183,7 @@ Please keep in mind casing matters.";
 
         private void DragAndDropTarget_OnMouseLeave(object sender, MouseEventArgs e)
             => DragAndDropTarget.Background = _dragAndDropTargetBackgroundOriginal;
+
+        public void CloseResultWindows() => _resultWindowManager.CloseAll();
     }
 }
