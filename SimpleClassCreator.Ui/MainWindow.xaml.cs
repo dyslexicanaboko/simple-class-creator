@@ -13,7 +13,7 @@ namespace SimpleClassCreator.Ui
     public partial class MainWindow
         : Window
     {
-        private readonly List<IUsesResultWindow> _resultWindows;
+        private readonly List<IUsesResultWindow> _hasResultWindows;
 
         public MainWindow(INameFormatService classService,
             IQueryToClassService queryToClassService,
@@ -41,7 +41,7 @@ namespace SimpleClassCreator.Ui
             CtrlDtoMaker.Dependencies(
                 dtoGenerator);
 
-            _resultWindows = new List<IUsesResultWindow>
+            _hasResultWindows = new List<IUsesResultWindow>
             {
                 CtrlQueryToMockData,
                 CtrlDtoMaker,
@@ -50,7 +50,7 @@ namespace SimpleClassCreator.Ui
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-            =>_resultWindows.ForEach(x => x.CloseResultWindows());
+            =>_hasResultWindows.ForEach(x => x.CloseResultWindows());
 
         private void btnAbout_Click(object sender, RoutedEventArgs e)
         {

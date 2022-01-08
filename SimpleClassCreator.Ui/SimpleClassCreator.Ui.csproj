@@ -116,7 +116,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CheckBoxGroup.cs" />
+    <Compile Include="Helpers\CheckBoxGroup.cs" />
     <Compile Include="ConnectionStringControl.xaml.cs">
       <DependentUpon>ConnectionStringControl.xaml</DependentUpon>
     </Compile>
@@ -238,6 +238,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\StatusHelp_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

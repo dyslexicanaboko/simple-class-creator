@@ -21,8 +21,6 @@ namespace SimpleClassCreator.Ui
         private readonly Brush _dragAndDropTargetBackgroundOriginal;
         private IDtoGenerator _generator;
         
-        private string ClassFqdn => TxtFullyQualifiedClassName.Text;
-
         public DtoMakerControl()
         {
             InitializeComponent();
@@ -69,7 +67,7 @@ namespace SimpleClassCreator.Ui
 
         private void LblClassName_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            string strHelp = 
+            var strHelp = 
 @"A Fully Qualified Class Name is providing the class name with its namespace separated by periods. 
 Example: If you have a class named Product, but it exists in My.Project.Business,
 then enter: My.Project.Business.Product, in the text box below. 
@@ -84,7 +82,9 @@ Please keep in mind casing matters.";
             {
                 _generator.LoadAssembly(TxtAssemblyFullFilePath.Text);
 
-                var asm = _generator.GetClassProperties(ClassFqdn);
+                var asm = string.IsNullOrWhiteSpace(TxtFullyQualifiedClassName.Text) ? 
+                    _generator.GetListOfClasses() : 
+                    _generator.GetClassProperties(TxtFullyQualifiedClassName.Text);
 
                 LoadTreeView(asm);
             }
@@ -99,30 +99,44 @@ Please keep in mind casing matters.";
             var asm = new TreeViewItem();
             
             asm.Header = assembly.Name;
+            asm.IsExpanded = true;
 
             foreach(var ci in assembly.Classes)
             {
                 var cls = new TreeViewItem();
                 cls.Header = ci.FullName;
                 cls.IsExpanded = true;
+                cls.MouseDoubleClick += TreeViewClasses_OnMouseDoubleClick;
 
-                foreach(var pi in ci.Properties)
+                foreach (var pi in ci.Properties)
+                {
                     cls.Items.Add(MakeOption(pi));
+                }
 
                 asm.Items.Add(cls);
             }
 
+            TvAssembliesAndClasses.Items.Clear();
             TvAssembliesAndClasses.Items.Add(asm);
+        }
+
+        private void TreeViewClasses_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var tvi = e.Source as TreeViewItem;
+
+            if (tvi == null) return;
+
+            TxtFullyQualifiedClassName.Text = Convert.ToString(tvi.Header);
         }
 
         private StackPanel MakeOption(PropertyInfo info)
         {
             var cbx = new CheckBox();
-            cbx.Name = "Cb_" + info.Name;
+            cbx.Name = "Cb" + info.Name;
             cbx.IsChecked = true;
 
             var lbl = new Label();
-            lbl.Name = "Lbl_" + info.Name;
+            lbl.Name = "Lbl" + info.Name;
             lbl.Content = info.ToString();
 
             var sp = new StackPanel();
@@ -152,7 +166,7 @@ Please keep in mind casing matters.";
 
             _generator.LoadAssembly(TxtAssemblyFullFilePath.Text);
 
-            var win = new ResultWindow("Dto", _generator.MakeDto(ClassFqdn, p));
+            var win = new ResultWindow("Dto", _generator.MakeDto(TxtFullyQualifiedClassName.Text, p));
             
             win.Show();
 
@@ -185,5 +199,8 @@ Please keep in mind casing matters.";
             => DragAndDropTarget.Background = _dragAndDropTargetBackgroundOriginal;
 
         public void CloseResultWindows() => _resultWindowManager.CloseAll();
+
+        private void BtnHelp_OnClick(object sender, RoutedEventArgs e)
+            => LblClassName_MouseDoubleClick(sender, null);
     }
 }

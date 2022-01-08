@@ -1,5 +1,4 @@
 ﻿using SimpleClassCreator.Lib.Models;
-using System;
 
 namespace SimpleClassCreator.Lib.Services
 {
@@ -9,12 +8,8 @@ namespace SimpleClassCreator.Lib.Services
 
         AssemblyInfo GetClassProperties(string className);
 
-        string GetTypeAsString(Type target);
-
         string MakeDto(string className, DtoMakerParameters parameters);
 
-        Type PrintClass(string className);
-
-        void PrintClasses();
+        AssemblyInfo GetListOfClasses();
     }
 }

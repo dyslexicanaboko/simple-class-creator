@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SimpleClassCreator.Lib.Models;
+using System.Linq;
 
 namespace SimpleClassCreator.Lib.Models
 {
@@ -12,20 +12,27 @@ namespace SimpleClassCreator.Lib.Models
 
         public string Name { get; set; }
 
-        public List<ClassInfo> Classes { get; set; }
+        public List<ClassInfo> Classes { get; }
 
-        public ClassInfo AddClass(string fullyQualifiedClassName)
+        public ClassInfo Add(string fullyQualifiedClassName)
         {
-            ClassInfo info = new ClassInfo { FullName = fullyQualifiedClassName };
+            var info = new ClassInfo { FullName = fullyQualifiedClassName };
 
             Classes.Add(info);
 
             return info;
         }
 
-        public void AddClass(ClassInfo info)
+        public void Add(IEnumerable<string> fullyQualifiedClassNames)
         {
-            Classes.Add(info);
+            var lst = fullyQualifiedClassNames.Select(x => new ClassInfo { FullName = x });
+
+            Classes.AddRange(lst);
         }
+
+        //public void Add(ClassInfo info)
+        //{
+        //    Classes.Add(info);
+        //}
     }
 }

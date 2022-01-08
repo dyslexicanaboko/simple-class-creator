@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace SimpleClassCreator.Ui.Helpers
 {
@@ -11,6 +12,8 @@ namespace SimpleClassCreator.Ui.Helpers
         public void CloseAll()
         {
             if (ResultWindows == null) return;
+
+            if (!ResultWindows.Any()) return;
 
             foreach (var obj in ResultWindows)
             {

@@ -7,14 +7,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="532" d:DesignWidth="675">
     <Grid Background="White" Margin="0,0,0,-59">
-        <GroupBox Header="1. Choose source file" Margin="0,0,248,471">
+        <GroupBox Header="1. Choose source file" HorizontalAlignment="Left" Width="675" Height="120" VerticalAlignment="Top">
             <Grid>
                 <Label Content="Source file path" Height="28" HorizontalAlignment="Left" Margin="10,10,0,0" Name="LblAssembly" VerticalAlignment="Top" />
                 <TextBox Height="23" HorizontalAlignment="Left" Margin="12,33,0,0" Name="TxtAssemblyFullFilePath" VerticalAlignment="Top" Width="270"  />
                 <Button Content="..." Height="23" HorizontalAlignment="Left" Margin="287,33,0,0" Name="BtnAssemblyOpenDialog" VerticalAlignment="Top" Width="28" Click="BtnAssemblyOpenDialog_Click" RenderTransformOrigin="-0.286,0.457" />
                 <Label Content="Chosen file" Height="28" HorizontalAlignment="Left" Margin="12,61,0,0" Name="LblAssemblyTarget" VerticalAlignment="Top" Width="70" />
                 <Label Height="28" HorizontalAlignment="Left" Margin="87,61,0,0" Name="LblAssemblyChosen" VerticalAlignment="Top" Width="195" BorderBrush="Black" BorderThickness="1" />
-                <Border Name="DragAndDropTarget" Margin="324,10,0,0" ToolTip="Drag and drop files here" Drop="DragAndDropTarget_OnDrop" AllowDrop="True" MouseEnter="DragAndDropTarget_OnMouseEnter" MouseLeave="DragAndDropTarget_OnMouseLeave" BorderBrush="Red" BorderThickness="1" Height="85" VerticalAlignment="Top" HorizontalAlignment="Left" Width="88">
+                <Border Name="DragAndDropTarget" Margin="324,10,0,0" ToolTip="Drag and drop files here" Drop="DragAndDropTarget_OnDrop" AllowDrop="True" MouseEnter="DragAndDropTarget_OnMouseEnter" MouseLeave="DragAndDropTarget_OnMouseLeave" BorderBrush="Red" BorderThickness="0" Height="85" VerticalAlignment="Top" HorizontalAlignment="Left" Width="88">
                     <Grid>
                         <Ellipse Fill="#FFF4F4F5" Height="80" Stroke="Black" VerticalAlignment="Top" StrokeThickness="3" HorizontalAlignment="Left" Width="80" Margin="3,1,0,0" />
                         <Ellipse Fill="Red" HorizontalAlignment="Left" Height="60" Margin="13,11,0,0" Stroke="Black" VerticalAlignment="Top" Width="60"/>
@@ -24,35 +24,30 @@
                 </Border>
             </Grid>
         </GroupBox>
-        <GroupBox Header="2. Target class by FQDN" Margin="0,125,0,388">
+        <GroupBox Header="2. Target class by FQDN" Margin="0,125,0,0" HorizontalAlignment="Left" Width="675" Height="78" VerticalAlignment="Top">
             <Grid>
-                <Label Content="Fully qualified class name" Height="28" HorizontalAlignment="Left" Margin="10,4,0,0" Name="LblClassName" VerticalAlignment="Top" MouseEnter="LblClassName_MouseEnter" MouseLeave="LblClassName_MouseLeave" ToolTip="Double click for help..." MouseDoubleClick="LblClassName_MouseDoubleClick" />
-                <Button Content="Load Class" Height="23" HorizontalAlignment="Left" Margin="287,31,0,0" Name="BtnLoadClass" VerticalAlignment="Top" Width="74" Click="BtnLoadClass_Click" />
+                <Label Content="Fully qualified class name" Height="28" HorizontalAlignment="Left" Margin="10,4,0,0" Name="LblClassName" VerticalAlignment="Top" MouseEnter="LblClassName_MouseEnter" MouseLeave="LblClassName_MouseLeave" ToolTip="Double click for help..." MouseDoubleClick="LblClassName_MouseDoubleClick" Width="162" />
+                <TextBox Height="23" Margin="14,29,0,0" Name="TxtFullyQualifiedClassName" VerticalAlignment="Top" HorizontalAlignment="Left" Width="270" />
+                <Button Content="Load Class" Height="23" HorizontalAlignment="Left" Margin="287,29,0,0" Name="BtnLoadClass" VerticalAlignment="Top" Width="74" Click="BtnLoadClass_Click" />
+                <Button Name="BtnHelp" Margin="152,7,491,29" ToolTip="Click for help..." Click="BtnHelp_OnClick">
+                    <Image Source="images/StatusHelp_16x.png" />
+                </Button>
             </Grid>
         </GroupBox>
-        <GroupBox Header="3. Choose class properties and options" Margin="0,208,0,10">
+        <GroupBox Header="3. Choose class properties and options" Margin="0,208,0,0" HorizontalAlignment="Left" Width="675" Height="373" VerticalAlignment="Top">
             <Grid>
-
+                <TreeView Height="346" 
+                          HorizontalAlignment="Left" 
+                          Name="TvAssembliesAndClasses" VerticalAlignment="Top" Width="479"/>
+                <GroupBox Header="Generation options" Height="85" HorizontalAlignment="Left" Margin="490,0,0,0" Name="GroupOptions" VerticalAlignment="Top" Width="157">
+                    <Grid Margin="0,0,-2,0">
+                        <CheckBox Content="Clone method" HorizontalAlignment="Left" Margin="1,4,0,0" Name="CbIncludeCloneMethod" Height="16" VerticalAlignment="Top" ToolTip="Add a method for cloning this DTO" />
+                        <CheckBox Content="Translate method" HorizontalAlignment="Left" Margin="0,25,0,0" Name="CbIncludeTranslateMethod" Height="16" VerticalAlignment="Top" ToolTip="Add a method for cloning this DTO" />
+                        <CheckBox Content="IEquatable&lt;T&gt; method" HorizontalAlignment="Left" Margin="0,44,0,0" x:Name="CbIncludeIEquatableOfTMethod" Height="16" VerticalAlignment="Top" ToolTip="Include all of the methods used for equality" />
+                    </Grid>
+                </GroupBox>
+                <Button Content="Generate DTO" Height="54" HorizontalAlignment="Left" Margin="490,286,0,0" Name="BtnGenerate" VerticalAlignment="Top" Width="164" Click="BtnGenerate_Click" />
             </Grid>
         </GroupBox>
-        <TreeView Height="346" 
-                              HorizontalAlignment="Left" 
-                              Margin="17,229,0,0" 
-                              Name="TvAssembliesAndClasses" VerticalAlignment="Top" Width="479">
-        </TreeView>
-        <TextBox Height="23" Margin="17,172,0,0" Name="TxtFullyQualifiedClassName" VerticalAlignment="Top" HorizontalAlignment="Left" Width="270" />
-        <GroupBox Header="Generation options" Height="85" HorizontalAlignment="Left" Margin="501,229,0,0" Name="GroupOptions" VerticalAlignment="Top" Width="157">
-            <Grid Margin="0,0,-2,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="89*"/>
-                    <ColumnDefinition Width="59*"/>
-                </Grid.ColumnDefinitions>
-                <CheckBox Content="Clone method" HorizontalAlignment="Left" Margin="1,4,0,0" Name="CbIncludeCloneMethod" Height="16" VerticalAlignment="Top" ToolTip="Add a method for cloning this DTO" Grid.ColumnSpan="2" />
-                <CheckBox Content="Translate method" HorizontalAlignment="Left" Margin="0,25,0,0" Name="CbIncludeTranslateMethod" Height="16" VerticalAlignment="Top" ToolTip="Add a method for cloning this DTO" Grid.ColumnSpan="2" />
-                <CheckBox Content="IEquatable&lt;T&gt; method" HorizontalAlignment="Left" Margin="0,44,0,0" x:Name="CbIncludeIEquatableOfTMethod" Height="16" VerticalAlignment="Top" ToolTip="Include all of the methods used for equality" Grid.ColumnSpan="2" />
-            </Grid>
-        </GroupBox>
-        <Button Content="Generate DTO" Height="54" HorizontalAlignment="Left" Margin="501,521,0,0" Name="BtnGenerate" VerticalAlignment="Top" Width="164" Click="BtnGenerate_Click" />
-
     </Grid>
 </UserControl>

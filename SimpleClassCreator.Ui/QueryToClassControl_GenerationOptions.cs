@@ -3,6 +3,7 @@ using SimpleClassCreator.Lib.Models;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using SimpleClassCreator.Ui.Helpers;
 using B = SimpleClassCreator.Ui.UserControlExtensions;
 
 namespace SimpleClassCreator.Ui
