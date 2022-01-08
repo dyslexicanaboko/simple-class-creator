@@ -129,21 +129,45 @@ Please keep in mind casing matters.";
             TxtFullyQualifiedClassName.Text = Convert.ToString(tvi.Header);
         }
 
-        private StackPanel MakeOption(PropertyInfo info)
+        private StackPanel MakeOption(ClassProperty info)
         {
             var cbx = new CheckBox();
             cbx.Name = "Cb" + info.Name;
             cbx.IsChecked = true;
 
-            var lbl = new Label();
-            lbl.Name = "Lbl" + info.Name;
-            lbl.Content = info.ToString();
+            //TODO: Many to dos
+            /* When the row is highlighted the blue text is hard to read
+             * Make the background black
+             * Maybe have a radio button per class? That way it's clear only one can be used at a time.
+             * Show the number of properties next to the class.
+             *      For the double click event:
+             *          1. Find way to get ClassProperty object from event
+             *          2. When user double clicks class name automatically load that class
+             *              a. Or maybe dynamically load just that class?
+             *          3. Have a back button to start over?
+             * How to handle large assemblies?
+             * This should be asynchronous with a way to cancel the task
+             * Progress bar can be shown if any of this is measurable
+             * Select/Deselect all
+             * Select multiple using CTRL and SHIFT keys as normal
+             * Generate DTO button should read from the Tree View to take full advantage of it
+             * I want the colors to match Visual Studio, primitives are dark blue, and objects are a teal
+             * Extract interface option. What other options make sense? */
+            var lblType = new Label();
+            lblType.Name = "Lbl" + info.TypeName;
+            lblType.Content = info.TypeName;
+            lblType.Foreground = Brushes.CadetBlue;
+
+            var lblName = new Label();
+            lblName.Name = "Lbl" + info.Name;
+            lblName.Content = info.Name;
 
             var sp = new StackPanel();
             sp.Orientation = Orientation.Horizontal;
             sp.Children.Add(cbx);
-            sp.Children.Add(lbl);
-            
+            sp.Children.Add(lblType);
+            sp.Children.Add(lblName);
+
             return sp;
         }
 

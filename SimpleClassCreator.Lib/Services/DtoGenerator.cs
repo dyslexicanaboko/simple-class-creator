@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using SimpleClassCreator.Lib.Services.CodeFactory;
 
 namespace SimpleClassCreator.Lib.Services
 {
@@ -64,10 +65,12 @@ namespace SimpleClassCreator.Lib.Services
             {
                 Console.WriteLine(pi.Name);
 
-                cInfo.Properties.Add(new Models.PropertyInfo
+                var cms = new ClassMemberStrings(pi);
+
+                cInfo.Properties.Add(new ClassProperty
                 {
                     Name = pi.Name,
-                    TypeName = "Not implemented", //GetTypeAsString(pi.PropertyType),
+                    TypeName = cms.SystemTypeAlias,
                     IsSerializable = pi.PropertyType.IsDefined(typeof(SerializableAttribute), false)
                 });
             }

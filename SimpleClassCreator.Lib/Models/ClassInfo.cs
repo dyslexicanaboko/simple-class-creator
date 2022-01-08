@@ -6,7 +6,7 @@ namespace SimpleClassCreator.Lib.Models
     {
         public ClassInfo()
         {
-            Properties = new List<PropertyInfo>();
+            Properties = new List<ClassProperty>();
         }
 
         public string FullName { get; set; }
@@ -15,6 +15,6 @@ namespace SimpleClassCreator.Lib.Models
 
         public string Namespace { get; set; }
 
-        public List<PropertyInfo> Properties { get; set; }
+        public List<ClassProperty> Properties { get; set; }
     }
 }

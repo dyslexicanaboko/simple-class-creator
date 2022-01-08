@@ -12,6 +12,12 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
     {
         private readonly CodeDomProvider _provider;
 
+        public ClassMemberStrings(System.Reflection.PropertyInfo property)
+            : this(new SchemaColumn(property))
+        {
+            
+        }
+
         public ClassMemberStrings(SchemaColumn sc, CodeType type = CodeType.CSharp)
         {
             if (type == CodeType.CSharp)

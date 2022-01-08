@@ -113,7 +113,7 @@
     <Compile Include="Services\Generators\ClassEntityGenerator.cs" />
     <Compile Include="Services\NameFormatService.cs" />
     <Compile Include="Services\DtoGenerator.cs" />
-    <Compile Include="Models\PropertyInfo.cs" />
+    <Compile Include="Models\ClassProperty.cs" />
     <Compile Include="DataAccess\GeneralDatabaseQueries.cs" />
     <Compile Include="DataAccess\IGeneralDatabaseQueries.cs" />
     <Compile Include="DataAccess\IQueryToClassRepository.cs" />

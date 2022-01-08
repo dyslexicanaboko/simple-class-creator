@@ -1,6 +1,6 @@
 ﻿namespace SimpleClassCreator.Lib.Models
 {
-    public class PropertyInfo
+    public class ClassProperty
     {
         public string Name { get; set; }
         public string TypeName { get; set; }
