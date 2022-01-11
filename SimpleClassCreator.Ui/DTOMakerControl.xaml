@@ -15,7 +15,11 @@
                 <Button Content="..." Height="23" HorizontalAlignment="Left" Margin="287,33,0,0" Name="BtnAssemblyOpenDialog" VerticalAlignment="Top" Width="28" Click="BtnAssemblyOpenDialog_Click" RenderTransformOrigin="-0.286,0.457" />
                 <Label Content="Chosen file" Height="28" HorizontalAlignment="Left" Margin="12,61,0,0" Name="LblAssemblyTarget" VerticalAlignment="Top" Width="70" />
                 <Label Height="28" HorizontalAlignment="Left" Margin="87,61,0,0" Name="LblAssemblyChosen" VerticalAlignment="Top" Width="195" BorderBrush="Black" BorderThickness="1" />
-                <Border Name="DragAndDropTarget" Margin="324,10,0,0" ToolTip="Drag and drop files here" Drop="DragAndDropTarget_OnDrop" AllowDrop="True" MouseEnter="DragAndDropTarget_OnMouseEnter" MouseLeave="DragAndDropTarget_OnMouseLeave" BorderBrush="Red" BorderThickness="0" Height="85" VerticalAlignment="Top" HorizontalAlignment="Left" Width="88">
+                <Border Name="DragAndDropTarget" Margin="324,10,0,0" ToolTip="Drag and drop files here" 
+                        Drop="DragAndDropTarget_OnDrop" AllowDrop="True" 
+                        MouseEnter="DragAndDropTarget_OnMouseEnter" 
+                        MouseLeave="DragAndDropTarget_OnMouseLeave" 
+                        BorderBrush="Red" BorderThickness="0" Height="85" VerticalAlignment="Top" HorizontalAlignment="Left" Width="88">
                     <Grid>
                         <Ellipse Fill="#FFF4F4F5" Height="80" Stroke="Black" VerticalAlignment="Top" StrokeThickness="3" HorizontalAlignment="Left" Width="80" Margin="3,1,0,0" />
                         <Ellipse Fill="Red" HorizontalAlignment="Left" Height="60" Margin="13,11,0,0" Stroke="Black" VerticalAlignment="Top" Width="60"/>
@@ -57,8 +61,10 @@
                             <TreeViewItem Header="{Binding Path=Name}"
                                           Style="{StaticResource WhiteFont2}"
                                           IsExpanded="True">
-                                Classes
-                                <Label Style="{StaticResource WhiteFont1}" Content="{Binding Classes.Count}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock>Classes</TextBlock>
+                                    <Label Style="{StaticResource WhiteFont1}" Content="{Binding Classes.Count}" />
+                                </StackPanel>
                             </TreeViewItem>
                         </HierarchicalDataTemplate>
                         <!-- Classes -->
