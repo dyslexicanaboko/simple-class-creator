@@ -47,37 +47,41 @@
                           VerticalAlignment="Top" 
                           HorizontalAlignment="Left" 
                           Background="Black">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <EventSetter Event="MouseDoubleClick" Handler="TreeViewClasses_OnMouseDoubleClick" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
                     <TreeView.Resources>
                         <Style x:Key="WhiteFont1" TargetType="Label">
-                            <Setter Property="Foreground" Value="White"/>
-                        </Style>
-                        <Style x:Key="WhiteFont2" TargetType="TreeViewItem">
                             <Setter Property="Foreground" Value="White"/>
                         </Style>
                         <!-- Assembly -->
                         <HierarchicalDataTemplate 
                             DataType="{x:Type models:AssemblyInfo}" 
                             ItemsSource="{Binding Classes}">
-                            <TreeViewItem Header="{Binding Path=Name}"
-                                          Style="{StaticResource WhiteFont2}"
-                                          IsExpanded="True">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock>Classes</TextBlock>
-                                    <Label Style="{StaticResource WhiteFont1}" Content="{Binding Classes.Count}" />
-                                </StackPanel>
-                            </TreeViewItem>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Style="{StaticResource WhiteFont1}" Content="{Binding Path=Name}" />
+                                <Label Style="{StaticResource WhiteFont1}"> Classes: </Label>
+                                <Label Style="{StaticResource WhiteFont1}" Content="{Binding Classes.Count}" />
+                            </StackPanel>
                         </HierarchicalDataTemplate>
                         <!-- Classes -->
-                        <HierarchicalDataTemplate DataType="{x:Type models:ClassInfo}" ItemsSource="{Binding Properties}">
-                            <TreeViewItem Header="{Binding Path=FullName}"
-                                          Style="{StaticResource WhiteFont2}"
-                                          MouseDoubleClick="TreeViewClasses_OnMouseDoubleClick">
+                        <HierarchicalDataTemplate 
+                            DataType="{x:Type models:ClassInfo}" 
+                            ItemsSource="{Binding Properties}">
+                            <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
-                                    <RadioButton GroupName="OneClassOnlyGroup"/>
-                                    <TextBlock>Properties </TextBlock>
+                                    <Label Style="{StaticResource WhiteFont1}" 
+                                           Content="{Binding Path=FullName}" />
+                                    <Label Style="{StaticResource WhiteFont1}">Properties:</Label>
                                     <Label Style="{StaticResource WhiteFont1}" Content="{Binding Properties.Count}" />
                                 </StackPanel>
-                            </TreeViewItem>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox IsChecked="True" />
+                                    <Label Style="{StaticResource WhiteFont1}">Select all</Label>
+                                </StackPanel>
+                            </StackPanel>
                         </HierarchicalDataTemplate>
                         <!-- Properties -->
                         <HierarchicalDataTemplate DataType="{x:Type models:ClassProperty}">
