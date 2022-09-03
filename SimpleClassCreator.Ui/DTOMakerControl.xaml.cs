@@ -128,10 +128,10 @@ Please keep in mind casing matters.";
          *   Interfaces, grnyellow -> RGB 184, 215, 163 - #b8d7a3 - estimated
          *   enums     , grnyellow -> RGB 184, 215, 163 - #b8d7a3 - estimated
          *
-         * Select/Deselect all
+         * Select/Deselect all - Have to make a shift over to an observable collection among other things
          * Select multiple using CTRL and SHIFT keys as normal
          * Generate DTO button should read from the Tree View to take full advantage of it
-         *          *
+         * 
          * Drag and drop still doesn't work. Something is blocking it from happening.
          * 
          * How to handle large assemblies?
@@ -204,5 +204,15 @@ Please keep in mind casing matters.";
 
         private void TxtFullyQualifiedClassName_OnGotFocus(object sender, RoutedEventArgs e)
             => CheckFqdnForGhostText();
+
+        private void CbPropertiesSelectAll_OnChecked(object sender, RoutedEventArgs e)
+        {
+            if (true) ;
+        }
+
+        private void CbPropertiesSelectAll_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            if (true) ;
+        }
     }
 }

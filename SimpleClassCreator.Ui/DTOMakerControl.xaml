@@ -54,17 +54,53 @@
                         </Style>
                     </TreeView.ItemContainerStyle>
                     <TreeView.Resources>
+                        <!-- Label white foreground color -->
                         <Style x:Key="WhiteFont1" TargetType="Label">
                             <Setter Property="Foreground" Value="White"/>
                         </Style>
+                        <!-- Don't show the Class count when it's zero -->
+                        <Style x:Key="ClassesHideWhenEmpty" TargetType="{x:Type Label}">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Classes.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                        <!-- Don't show the Property count when it's zero -->
+                        <Style x:Key="PropertiesHideWhenEmpty" TargetType="{x:Type Label}">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Properties.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                        <!-- Don't show the Properties' Select All check box when there are no Properties -->
+                        <Style x:Key="PropertiesHideWhenEmptySp" TargetType="{x:Type StackPanel}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Properties.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                        <!-- Override the default color for selected TreeViewItem -->
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                         Color="#333333" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                                         Color="#333333" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                                         Color="#333333" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                                         Color="#333333" />
                         <!-- Assembly -->
                         <HierarchicalDataTemplate 
                             DataType="{x:Type models:AssemblyInfo}" 
                             ItemsSource="{Binding Classes}">
                             <StackPanel Orientation="Horizontal">
                                 <Label Style="{StaticResource WhiteFont1}" Content="{Binding Path=Name}" />
-                                <Label Style="{StaticResource WhiteFont1}"> Classes: </Label>
-                                <Label Style="{StaticResource WhiteFont1}" Content="{Binding Classes.Count}" />
+                                <Label Style="{StaticResource ClassesHideWhenEmpty}"> Classes: </Label>
+                                <Label Style="{StaticResource ClassesHideWhenEmpty}" Content="{Binding Classes.Count}" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
                         <!-- Classes -->
@@ -75,11 +111,13 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Label Style="{StaticResource WhiteFont1}" 
                                            Content="{Binding Path=FullName}" />
-                                    <Label Style="{StaticResource WhiteFont1}">Properties:</Label>
-                                    <Label Style="{StaticResource WhiteFont1}" Content="{Binding Properties.Count}" />
+                                    <Label Style="{StaticResource PropertiesHideWhenEmpty}">Properties:</Label>
+                                    <Label Style="{StaticResource PropertiesHideWhenEmpty}" Content="{Binding Properties.Count}" />
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <CheckBox IsChecked="True" />
+                                <StackPanel Orientation="Horizontal" Style="{StaticResource PropertiesHideWhenEmptySp}">
+                                    <CheckBox IsChecked="True" VerticalAlignment="Center" 
+                                              Checked="CbPropertiesSelectAll_OnChecked"
+                                              Unchecked="CbPropertiesSelectAll_OnUnchecked" />
                                     <Label Style="{StaticResource WhiteFont1}">Select all</Label>
                                 </StackPanel>
                             </StackPanel>
@@ -87,7 +125,7 @@
                         <!-- Properties -->
                         <HierarchicalDataTemplate DataType="{x:Type models:ClassProperty}">
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox IsChecked="True" />
+                                <CheckBox IsChecked="True" VerticalAlignment="Center" />
                                 <!-- Type -->
                                 <Label FontWeight="Bold" Content="{Binding TypeName}">
                                     <Label.Style>
@@ -112,7 +150,7 @@
                                     </Label.Style>
                                 </Label>
                                 <!-- Name -->
-                                <Label Content="{Binding Path=Name}" Style="{StaticResource WhiteFont1}" />
+                                <Label Content="{Binding Name}" Style="{StaticResource WhiteFont1}" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
                     </TreeView.Resources>
