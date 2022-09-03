@@ -152,6 +152,7 @@
     <Content Include="Templates\EntityIComparable.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Templates\ReadMe.md" />
     <Content Include="Templates\ServiceSerializationCsv.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

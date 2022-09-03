@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="532" d:DesignWidth="675">
     <Grid Background="White" Margin="0,0,0,-59">
-        <GroupBox Header="1. Choose source file" HorizontalAlignment="Left" Width="675" Height="120" VerticalAlignment="Top">
+        <GroupBox Header="1. Choose source file" HorizontalAlignment="Left" Width="675" Height="120" VerticalAlignment="Top" AllowDrop="True">
             <Grid>
                 <Label Content="Source file path" Height="28" HorizontalAlignment="Left" Margin="10,10,0,0" Name="LblAssembly" VerticalAlignment="Top" />
                 <TextBox Height="23" HorizontalAlignment="Left" Margin="12,33,0,0" Name="TxtAssemblyFullFilePath" VerticalAlignment="Top" Width="270"  />
@@ -32,8 +32,9 @@
         <GroupBox Header="2. Target class by FQDN" Margin="0,125,0,0" HorizontalAlignment="Left" Width="675" Height="78" VerticalAlignment="Top">
             <Grid>
                 <Label Content="Fully qualified class name" Height="28" HorizontalAlignment="Left" Margin="10,4,0,0" Name="LblClassName" VerticalAlignment="Top" MouseEnter="LblClassName_MouseEnter" MouseLeave="LblClassName_MouseLeave" ToolTip="Double click for help..." MouseDoubleClick="LblClassName_MouseDoubleClick" Width="162" />
-                <TextBox Height="23" Margin="14,29,0,0" Name="TxtFullyQualifiedClassName" VerticalAlignment="Top" HorizontalAlignment="Left" Width="270" />
+                <TextBox Height="23" Margin="14,29,0,0" Name="TxtFullyQualifiedClassName" VerticalAlignment="Top" HorizontalAlignment="Left" Width="270" Text="Caution: Everything is loaded by default..." Foreground="#FF998E8E" GotFocus="TxtFullyQualifiedClassName_OnGotFocus" />
                 <Button Content="Load Class" Height="23" HorizontalAlignment="Left" Margin="287,29,0,0" Name="BtnLoadClass" VerticalAlignment="Top" Width="74" Click="BtnLoadClass_Click" />
+                <Button Content="Reset" Height="23" HorizontalAlignment="Left" Margin="366,29,0,0" Name="BtnResetTree" VerticalAlignment="Top" Width="46" Click="BtnResetTree_OnClick" />
                 <Button Name="BtnHelp" Margin="152,7,491,29" ToolTip="Click for help..." Click="BtnHelp_OnClick">
                     <Image Source="images/StatusHelp_16x.png" />
                 </Button>
@@ -87,7 +88,30 @@
                         <HierarchicalDataTemplate DataType="{x:Type models:ClassProperty}">
                             <StackPanel Orientation="Horizontal">
                                 <CheckBox IsChecked="True" />
-                                <Label Foreground="#569cd6" FontWeight="Bold" Content="{Binding TypeName}" />
+                                <!-- Type -->
+                                <Label FontWeight="Bold" Content="{Binding TypeName}">
+                                    <Label.Style>
+                                        <Style TargetType="{x:Type Label}">
+                                            <!-- Primitives -->
+                                            <Setter Property="Foreground" Value="#569cd6"/>
+                                            <Style.Triggers>
+                                                <!-- Classes -->
+                                                <DataTrigger Binding="{Binding IsPrimitive}" Value="False">
+                                                    <Setter Property="Foreground" Value="#4ec9b0"/>
+                                                </DataTrigger>
+                                                <!-- Enumerations -->
+                                                <DataTrigger Binding="{Binding IsEnum}" Value="True">
+                                                    <Setter Property="Foreground" Value="#b8d7a3"/>
+                                                </DataTrigger>
+                                                <!-- Interfaces -->
+                                                <DataTrigger Binding="{Binding IsInterface}" Value="True">
+                                                    <Setter Property="Foreground" Value="#b8d7a3"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Label.Style>
+                                </Label>
+                                <!-- Name -->
                                 <Label Content="{Binding Path=Name}" Style="{StaticResource WhiteFont1}" />
                             </StackPanel>
                         </HierarchicalDataTemplate>

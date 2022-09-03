@@ -1,11 +1,11 @@
 ﻿using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Services.CodeFactory;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using SimpleClassCreator.Lib.Services.CodeFactory;
 
 namespace SimpleClassCreator.Lib.Services
 {
@@ -67,11 +67,16 @@ namespace SimpleClassCreator.Lib.Services
 
                 var cms = new ClassMemberStrings(pi);
 
+                var pt = pi.PropertyType;
+
                 cInfo.Properties.Add(new ClassProperty
                 {
                     Name = pi.Name,
                     TypeName = cms.SystemTypeAlias,
-                    IsSerializable = pi.PropertyType.IsDefined(typeof(SerializableAttribute), false)
+                    IsPrimitive = pt.IsValueType || pt == typeof(string),
+                    IsEnum = pt.IsEnum,
+                    IsInterface = pt.IsInterface,
+                    IsSerializable = pt.IsDefined(typeof(SerializableAttribute), false)
                 });
             }
 

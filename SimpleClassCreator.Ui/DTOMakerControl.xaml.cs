@@ -17,6 +17,7 @@ namespace SimpleClassCreator.Ui
     /// </summary>
     public partial class DtoMakerControl : UserControl, IUsesResultWindow
     {
+        private const string GhostText = "Caution: Everything is loaded by default...";
         private readonly ResultWindowManager _resultWindowManager;
         private readonly Brush _dragAndDropTargetBackgroundOriginal;
         private IDtoGenerator _generator;
@@ -29,6 +30,8 @@ namespace SimpleClassCreator.Ui
             _dragAndDropTargetBackgroundOriginal = DragAndDropTarget.Background;
 
             _resultWindowManager = new ResultWindowManager();
+
+            TxtFullyQualifiedClassName.Text = GhostText;
         }
 
         private void BtnAssemblyOpenDialog_Click(object sender, RoutedEventArgs e)
@@ -37,7 +40,7 @@ namespace SimpleClassCreator.Ui
 
             var ok = ofd.ShowDialog();
 
-            if (ok.GetValueOrDefault())
+            if (!ok.GetValueOrDefault())
                 return;
 
             SetSelectedAssembly(ofd.FileName);
@@ -76,8 +79,15 @@ Please keep in mind casing matters.";
             MessageBox.Show(strHelp, "What is a Fully Qualified Class Name?");
         }
 
+        private void CheckFqdnForGhostText()
+        {
+            if (TxtFullyQualifiedClassName.Text == GhostText) TxtFullyQualifiedClassName.Clear();
+        }
+
         private void BtnLoadClass_Click(object sender, RoutedEventArgs e)
         {
+            CheckFqdnForGhostText();
+
             LoadClass();
         }
 
@@ -91,8 +101,9 @@ Please keep in mind casing matters.";
                     _generator.GetListOfClasses() :
                     _generator.GetClassProperties(TxtFullyQualifiedClassName.Text);
 
-                //LoadTreeView(asm);
+                //Everything is loaded via XAML bindings
                 TvAssembliesAndClasses.ItemsSource = new[] { asm };
+                TvAssembliesAndClasses.Focus();
             }
             catch (Exception ex)
             {
@@ -112,17 +123,21 @@ Please keep in mind casing matters.";
         }
 
         //TODO: Many to dos
-        /* When the row is highlighted the blue text is hard to read
-         * Have a restart button to start over?
-         * How to handle large assemblies?
-         * This should be asynchronous with a way to cancel the task
-         * Progress bar can be shown if any of this is measurable
+        /*   primitives, dark blue -> RGB  86, 156, 214 - #569cd6 - visual studio keyword
+         *   classes   , teal      -> RGB  78, 201, 176 - #4ec9b0 - estimated
+         *   Interfaces, grnyellow -> RGB 184, 215, 163 - #b8d7a3 - estimated
+         *   enums     , grnyellow -> RGB 184, 215, 163 - #b8d7a3 - estimated
+         *
          * Select/Deselect all
          * Select multiple using CTRL and SHIFT keys as normal
          * Generate DTO button should read from the Tree View to take full advantage of it
-         * I want the colors to match Visual Studio
-         *      primitives are dark blue - RGB 86,156,214 - #569cd6 - visual studio keyword
-         *      objects are a teal, such as Guid and DateTime
+         *          *
+         * Drag and drop still doesn't work. Something is blocking it from happening.
+         * 
+         * How to handle large assemblies?
+         * This should be asynchronous with a way to cancel the task
+         * Progress bar can be shown if any of this is measurable
+         * 
          * Extract interface option. What other options make sense? */
         private DtoMakerParameters GetParametersFromUi()
         {
@@ -179,5 +194,15 @@ Please keep in mind casing matters.";
 
         private void BtnHelp_OnClick(object sender, RoutedEventArgs e)
             => LblClassName_MouseDoubleClick(sender, null);
+
+        private void BtnResetTree_OnClick(object sender, RoutedEventArgs e)
+        {
+            TxtFullyQualifiedClassName.Text = GhostText;
+            
+            TvAssembliesAndClasses.ItemsSource = Array.Empty<AssemblyInfo>();
+        }
+
+        private void TxtFullyQualifiedClassName_OnGotFocus(object sender, RoutedEventArgs e)
+            => CheckFqdnForGhostText();
     }
 }
