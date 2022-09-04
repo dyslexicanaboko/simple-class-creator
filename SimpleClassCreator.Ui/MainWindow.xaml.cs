@@ -2,6 +2,7 @@
 using SimpleClassCreator.Lib.Services;
 using SimpleClassCreator.Ui.Helpers;
 using SimpleClassCreator.Ui.Profile;
+using SimpleClassCreator.Ui.Services;
 using System.Collections.Generic;
 using System.Windows;
 
@@ -20,16 +21,17 @@ namespace SimpleClassCreator.Ui
             IQueryToMockDataService queryToMockDataService,
             IGeneralDatabaseQueries repository,
             IProfileManager profileManager,
-            IDtoGenerator dtoGenerator)
+            IDtoGenerator dtoGenerator,
+            IMetaViewModelService metaViewModelService)
         {
             InitializeComponent();
 
             //I am probably doing this wrong, but I don't care right now. I will have to circle back and try to do it right later.
             //The MVVM model seems like a lot of extra unnecessary work.
             CtrlQueryToClass.Dependencies(
-                classService, 
-                queryToClassService, 
-                repository, 
+                classService,
+                queryToClassService,
+                repository,
                 profileManager);
 
             CtrlQueryToMockData.Dependencies(
@@ -39,7 +41,8 @@ namespace SimpleClassCreator.Ui
                 profileManager);
 
             CtrlDtoMaker.Dependencies(
-                dtoGenerator);
+                dtoGenerator,
+                metaViewModelService);
 
             _hasResultWindows = new List<IUsesResultWindow>
             {

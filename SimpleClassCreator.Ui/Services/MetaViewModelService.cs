@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SimpleClassCreator.Ui.Services
 {
-    public class MetaViewModelService
+    public class MetaViewModelService : IMetaViewModelService
     {
         public MetaAssemblyViewModel ToViewModel(MetaAssembly assembly)
         {

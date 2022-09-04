@@ -1,7 +1,10 @@
 ﻿using Microsoft.Win32;
 using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Models.Meta;
 using SimpleClassCreator.Lib.Services;
 using SimpleClassCreator.Ui.Helpers;
+using SimpleClassCreator.Ui.Services;
+using SimpleClassCreator.Ui.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -10,9 +13,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using SimpleClassCreator.Lib.Models.Meta;
-using SimpleClassCreator.Ui.Services;
-using SimpleClassCreator.Ui.ViewModels;
 
 namespace SimpleClassCreator.Ui
 {
@@ -25,7 +25,8 @@ namespace SimpleClassCreator.Ui
         private readonly ResultWindowManager _resultWindowManager;
         private readonly Brush _dragAndDropTargetBackgroundOriginal;
         private IDtoGenerator _generator;
-        
+        private IMetaViewModelService _viewModelService;
+
         public DtoMakerControl()
         {
             InitializeComponent();
@@ -50,9 +51,10 @@ namespace SimpleClassCreator.Ui
             SetSelectedAssembly(ofd.FileName);
         }
 
-        internal void Dependencies(IDtoGenerator generator)
+        internal void Dependencies(IDtoGenerator generator, IMetaViewModelService viewModelService)
         {
             _generator = generator;
+            _viewModelService = viewModelService;
         }
 
         private void SetSelectedAssembly(string fullFilePath)
