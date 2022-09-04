@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿//using System.Collections.Generic;
 
 namespace SimpleClassCreator.Lib.Models.Meta
 {
@@ -10,6 +10,6 @@ namespace SimpleClassCreator.Lib.Models.Meta
         
         string Namespace { get; set; }
         
-        List<IMetaProperty> Properties { get; set; }
+        //List<IMetaProperty> Properties { get; set; }
     }
 }

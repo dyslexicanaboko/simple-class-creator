@@ -11,6 +11,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using SimpleClassCreator.Lib.Models.Meta;
+using SimpleClassCreator.Ui.Services;
+using SimpleClassCreator.Ui.ViewModels;
 
 namespace SimpleClassCreator.Ui
 {
@@ -99,12 +101,14 @@ Please keep in mind casing matters.";
             {
                 _generator.LoadAssembly(TxtAssemblyFullFilePath.Text);
 
-                var asm = string.IsNullOrWhiteSpace(TxtFullyQualifiedClassName.Text) ?
+                var asmData = string.IsNullOrWhiteSpace(TxtFullyQualifiedClassName.Text) ?
                     _generator.GetListOfClasses() :
                     _generator.GetClassProperties(TxtFullyQualifiedClassName.Text);
 
+                var asmViewModel = new MetaViewModelService().ToViewModel(asmData);
+
                 //Everything is loaded via XAML bindings
-                TvAssembliesAndClasses.ItemsSource = new ObservableCollection<MetaAssembly> { asm };
+                TvAssembliesAndClasses.ItemsSource = new ObservableCollection<MetaAssemblyViewModel> { asmViewModel };
                 TvAssembliesAndClasses.Focus();
             }
             catch (Exception ex)
@@ -117,7 +121,7 @@ Please keep in mind casing matters.";
         {
             var tvi = e.Source as TreeViewItem;
 
-            if (!(tvi?.Header is MetaClass c)) return;
+            if (!(tvi?.Header is IMetaClass c)) return;
 
             TxtFullyQualifiedClassName.Text = c.FullName;
 

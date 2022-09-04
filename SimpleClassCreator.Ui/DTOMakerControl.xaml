@@ -4,7 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:meta="clr-namespace:SimpleClassCreator.Lib.Models.Meta;assembly=SimpleClassCreator.Lib"
+             xmlns:viewModels="clr-namespace:SimpleClassCreator.Ui.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="532" d:DesignWidth="675">
     <Grid Background="White" Margin="0,0,0,-59">
@@ -95,7 +95,7 @@
                                          Color="#333333" />
                         <!-- Assembly -->
                         <HierarchicalDataTemplate 
-                            DataType="{x:Type meta:MetaAssembly}" 
+                            DataType="{x:Type viewModels:MetaAssemblyViewModel}" 
                             ItemsSource="{Binding Classes}">
                             <StackPanel Orientation="Horizontal">
                                 <Label Style="{StaticResource WhiteFont1}" Content="{Binding Path=Name}" />
@@ -105,7 +105,7 @@
                         </HierarchicalDataTemplate>
                         <!-- Classes -->
                         <HierarchicalDataTemplate 
-                            DataType="{x:Type meta:MetaClass}" 
+                            DataType="{x:Type viewModels:MetaClassViewModel}" 
                             ItemsSource="{Binding Properties}">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
@@ -123,7 +123,7 @@
                             </StackPanel>
                         </HierarchicalDataTemplate>
                         <!-- Properties -->
-                        <HierarchicalDataTemplate DataType="{x:Type meta:MetaProperty}">
+                        <HierarchicalDataTemplate DataType="{x:Type viewModels:MetaPropertyViewModel}">
                             <StackPanel Orientation="Horizontal">
                                 <CheckBox IsChecked="True" VerticalAlignment="Center" />
                                 <!-- Type -->

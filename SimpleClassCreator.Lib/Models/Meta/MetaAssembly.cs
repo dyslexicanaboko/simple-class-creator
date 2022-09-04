@@ -3,16 +3,18 @@ using System.Linq;
 
 namespace SimpleClassCreator.Lib.Models.Meta
 {
+    //NOTE: I want the interface to enforce a list of interface, but its not going to work. Not sure how to deal with this right now.
     public class MetaAssembly : IMetaAssembly
     {
         public MetaAssembly()
         {
-            Classes = new List<IMetaClass>();
+            Classes = new List<MetaClass>();
         }
 
         public string Name { get; set; }
 
-        public List<IMetaClass> Classes { get; }
+        //Type cannot be enforced by interface
+        public List<MetaClass> Classes { get; }
 
         public MetaClass Add(string fullyQualifiedClassName)
         {

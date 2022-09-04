@@ -6,7 +6,7 @@ namespace SimpleClassCreator.Lib.Models.Meta
     {
         public MetaClass()
         {
-            Properties = new List<IMetaProperty>();
+            Properties = new List<MetaProperty>();
         }
 
         public string FullName { get; set; }
@@ -15,6 +15,7 @@ namespace SimpleClassCreator.Lib.Models.Meta
 
         public string Namespace { get; set; }
 
-        public List<IMetaProperty> Properties { get; set; }
+        //Type cannot be enforced by interface
+        public List<MetaProperty> Properties { get; set; }
     }
 }

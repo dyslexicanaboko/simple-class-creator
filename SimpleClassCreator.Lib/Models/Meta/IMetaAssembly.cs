@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿//using System.Collections.Generic;
 
 namespace SimpleClassCreator.Lib.Models.Meta
 {
@@ -6,6 +6,7 @@ namespace SimpleClassCreator.Lib.Models.Meta
     {
         string Name { get; set; }
         
-        List<IMetaClass> Classes { get; }
+        //I want to enforce a list of interface, but any inheritors are confined to this exact interface
+        //List<IMetaClass> Classes { get; }
     }
 }

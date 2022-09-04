@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace SimpleClassCreator.Ui.ViewModels
 {
-    public class AssemblyInfoModel : IMetaAssembly
+    public class MetaAssemblyViewModel : IMetaAssembly
     {
         public string Name { get; set; }
 
-        public List<IMetaClass> Classes { get; }
+        //Type cannot be enforced by interface
+        public List<MetaClassViewModel> Classes { get; set; }
     }
 }

@@ -17,5 +17,8 @@ namespace SimpleClassCreator.Ui.ViewModels
         public bool IsSerializable { get; set; }
         
         public bool IsCollection { get; set; }
+
+        //View properties
+        public bool IsChecked { get; set; }
     }
 }
