@@ -147,6 +147,8 @@
       <DependentUpon>TextBoxWithDefaultControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControlExtensions.cs" />
+    <Compile Include="ViewModels\MetaClassViewModel.cs" />
+    <Compile Include="ViewModels\MetaPropertyViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindow.xaml.cs">

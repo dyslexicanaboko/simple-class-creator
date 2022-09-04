@@ -84,6 +84,9 @@
     <Compile Include="DataAccess\IBaseRepository.cs" />
     <Compile Include="Events\RowProcessedEventArgs.cs" />
     <Compile Include="Exceptions\NonUniqueColumnException.cs" />
+    <Compile Include="Models\Meta\IMetaAssembly.cs" />
+    <Compile Include="Models\Meta\IMetaClass.cs" />
+    <Compile Include="Models\Meta\IMetaProperty.cs" />
     <Compile Include="Models\Meta\MetaAssembly.cs" />
     <Compile Include="Models\Meta\MetaClass.cs" />
     <Compile Include="Models\ClassInstructions.cs" />

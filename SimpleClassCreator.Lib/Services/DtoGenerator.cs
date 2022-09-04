@@ -1,4 +1,5 @@
 ﻿using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Models.Meta;
 using SimpleClassCreator.Lib.Services.CodeFactory;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using SimpleClassCreator.Lib.Models.Meta;
 
 namespace SimpleClassCreator.Lib.Services
 {

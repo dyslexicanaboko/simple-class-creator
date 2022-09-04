@@ -3,16 +3,16 @@ using System.Linq;
 
 namespace SimpleClassCreator.Lib.Models.Meta
 {
-    public class MetaAssembly
+    public class MetaAssembly : IMetaAssembly
     {
         public MetaAssembly()
         {
-            Classes = new List<MetaClass>();
+            Classes = new List<IMetaClass>();
         }
 
         public string Name { get; set; }
 
-        public List<MetaClass> Classes { get; }
+        public List<IMetaClass> Classes { get; }
 
         public MetaClass Add(string fullyQualifiedClassName)
         {

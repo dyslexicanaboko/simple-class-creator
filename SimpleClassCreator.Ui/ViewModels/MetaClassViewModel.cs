@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using SimpleClassCreator.Lib.Models.Meta;
 
-namespace SimpleClassCreator.Lib.Models.Meta
+namespace SimpleClassCreator.Ui.ViewModels
 {
-    public class MetaClass : IMetaClass
+    public class MetaClassViewModel : IMetaClass
     {
-        public MetaClass()
+        public MetaClassViewModel()
         {
             Properties = new List<IMetaProperty>();
         }

@@ -1,6 +1,8 @@
-﻿namespace SimpleClassCreator.Lib.Models.Meta
+﻿using SimpleClassCreator.Lib.Models.Meta;
+
+namespace SimpleClassCreator.Ui.ViewModels
 {
-    public class MetaProperty : IMetaProperty
+    public class MetaPropertyViewModel : IMetaProperty
     {
         public string Name { get; set; }
         

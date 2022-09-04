@@ -1,13 +1,12 @@
-﻿using System;
+﻿using SimpleClassCreator.Lib.Models.Meta;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SimpleClassCreator.Ui.Models
+namespace SimpleClassCreator.Ui.ViewModels
 {
-    public class AssemblyInfoModel
+    public class AssemblyInfoModel : IMetaAssembly
     {
+        public string Name { get; set; }
 
+        public List<IMetaClass> Classes { get; }
     }
 }
