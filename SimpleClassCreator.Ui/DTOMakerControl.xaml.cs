@@ -7,6 +7,7 @@ using SimpleClassCreator.Ui.Services;
 using SimpleClassCreator.Ui.ViewModels;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -26,6 +27,7 @@ namespace SimpleClassCreator.Ui
         private readonly Brush _dragAndDropTargetBackgroundOriginal;
         private IDtoGenerator _generator;
         private IMetaViewModelService _viewModelService;
+        private ObservableCollection<MetaAssemblyViewModel> _treeViewItemSource;
 
         public DtoMakerControl()
         {
@@ -107,10 +109,12 @@ Please keep in mind casing matters.";
                     _generator.GetListOfClasses() :
                     _generator.GetClassProperties(TxtFullyQualifiedClassName.Text);
 
-                var asmViewModel = new MetaViewModelService().ToViewModel(asmData);
+                var asmViewModel = new MetaViewModelService().ToViewModel(asmData, CbPropertiesSelectAllToggle);
+
+                _treeViewItemSource = new ObservableCollection<MetaAssemblyViewModel> { asmViewModel };
 
                 //Everything is loaded via XAML bindings
-                TvAssembliesAndClasses.ItemsSource = new ObservableCollection<MetaAssemblyViewModel> { asmViewModel };
+                TvAssembliesAndClasses.ItemsSource = _treeViewItemSource;
                 TvAssembliesAndClasses.Focus();
             }
             catch (Exception ex)
@@ -213,14 +217,18 @@ Please keep in mind casing matters.";
         private void TxtFullyQualifiedClassName_OnGotFocus(object sender, RoutedEventArgs e)
             => CheckFqdnForGhostText();
 
-        private void CbPropertiesSelectAll_OnChecked(object sender, RoutedEventArgs e)
+        //sender is the MetaClassViewModel
+        //e just says which property changed, in this case it's always "IsChecked"
+        private void CbPropertiesSelectAllToggle(object sender, PropertyChangedEventArgs e)
         {
-            if (true) ;
-        }
+            if (sender == null) return;
 
-        private void CbPropertiesSelectAll_OnUnchecked(object sender, RoutedEventArgs e)
-        {
-            if (true) ;
+            var vmClass = (MetaClassViewModel)sender;
+
+            foreach (var p in vmClass.Properties)
+            {
+                p.IsChecked = vmClass.IsChecked;
+            }
         }
     }
 }

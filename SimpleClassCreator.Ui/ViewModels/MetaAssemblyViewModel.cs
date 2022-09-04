@@ -1,5 +1,5 @@
 ﻿using SimpleClassCreator.Lib.Models.Meta;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SimpleClassCreator.Ui.ViewModels
 {
@@ -7,7 +7,6 @@ namespace SimpleClassCreator.Ui.ViewModels
     {
         public string Name { get; set; }
 
-        //Type cannot be enforced by interface
-        public List<MetaClassViewModel> Classes { get; set; }
+        public ObservableCollection<MetaClassViewModel> Classes { get; set; }
     }
 }

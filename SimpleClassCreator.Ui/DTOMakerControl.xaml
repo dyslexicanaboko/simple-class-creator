@@ -115,9 +115,7 @@
                                     <Label Style="{StaticResource PropertiesHideWhenEmpty}" Content="{Binding Properties.Count}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Style="{StaticResource PropertiesHideWhenEmptySp}">
-                                    <CheckBox IsChecked="True" VerticalAlignment="Center" 
-                                              Checked="CbPropertiesSelectAll_OnChecked"
-                                              Unchecked="CbPropertiesSelectAll_OnUnchecked" />
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsChecked}" />
                                     <Label Style="{StaticResource WhiteFont1}">Select all</Label>
                                 </StackPanel>
                             </StackPanel>
@@ -125,7 +123,7 @@
                         <!-- Properties -->
                         <HierarchicalDataTemplate DataType="{x:Type viewModels:MetaPropertyViewModel}">
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox IsChecked="True" VerticalAlignment="Center" />
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsChecked}" />
                                 <!-- Type -->
                                 <Label FontWeight="Bold" Content="{Binding TypeName}">
                                     <Label.Style>
