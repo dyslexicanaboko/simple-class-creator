@@ -1,6 +1,6 @@
-﻿namespace SimpleClassCreator.Lib.Models
+﻿namespace SimpleClassCreator.Lib.Models.Meta
 {
-    public class ClassProperty
+    public class MetaProperty
     {
         public string Name { get; set; }
         
@@ -15,10 +15,5 @@
         public bool IsSerializable { get; set; }
         
         public bool IsCollection { get; set; }
-
-        public override string ToString()
-        {
-            return Name + " " + TypeName;
-        }
     }
 }

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using SimpleClassCreator.Lib.Models.Meta;
 
 namespace SimpleClassCreator.Lib.Services
 {
@@ -32,14 +33,14 @@ namespace SimpleClassCreator.Lib.Services
             AssemblyReference = Assembly.LoadFile(AssemblyPath);
         }
 
-        private AssemblyInfo GetEmptyAssemblyInfo()
+        private MetaAssembly GetEmptyAssemblyInfo()
         {
-            var asm = new AssemblyInfo {Name = FileName};
+            var asm = new MetaAssembly {Name = FileName};
 
             return asm;
         }
 
-        public AssemblyInfo GetListOfClasses()
+        public MetaAssembly GetListOfClasses()
         {
             var asm = GetEmptyAssemblyInfo();
 
@@ -53,7 +54,7 @@ namespace SimpleClassCreator.Lib.Services
             return asm;
         }
 
-        public AssemblyInfo GetClassProperties(string className)
+        public MetaAssembly GetClassProperties(string className)
         {
             var t = GetTypeOrThrow(className);
 
@@ -69,7 +70,7 @@ namespace SimpleClassCreator.Lib.Services
 
                 var pt = pi.PropertyType;
 
-                cInfo.Properties.Add(new ClassProperty
+                cInfo.Properties.Add(new MetaProperty
                 {
                     Name = pi.Name,
                     TypeName = cms.SystemTypeAlias,

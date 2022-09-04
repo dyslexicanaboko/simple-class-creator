@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace SimpleClassCreator.Lib.Models
+namespace SimpleClassCreator.Lib.Models.Meta
 {
-    public class ClassInfo
+    public class MetaClass
     {
-        public ClassInfo()
+        public MetaClass()
         {
-            Properties = new List<ClassProperty>();
+            Properties = new List<MetaProperty>();
         }
 
         public string FullName { get; set; }
@@ -15,6 +15,6 @@ namespace SimpleClassCreator.Lib.Models
 
         public string Namespace { get; set; }
 
-        public List<ClassProperty> Properties { get; set; }
+        public List<MetaProperty> Properties { get; set; }
     }
 }

@@ -125,6 +125,7 @@
     </Compile>
     <Compile Include="Helpers\IUsesResultWindow.cs" />
     <Compile Include="Helpers\ResultWindowManager.cs" />
+    <Compile Include="ViewModels\MetaAssemblyViewModel.cs" />
     <Compile Include="Profile\IProfileManager.cs" />
     <Compile Include="Profile\ProfileManager.cs" />
     <Compile Include="Profile\ProfileSaver.cs" />

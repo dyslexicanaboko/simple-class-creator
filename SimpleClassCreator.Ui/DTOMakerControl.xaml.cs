@@ -3,12 +3,14 @@ using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services;
 using SimpleClassCreator.Ui.Helpers;
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using SimpleClassCreator.Lib.Models.Meta;
 
 namespace SimpleClassCreator.Ui
 {
@@ -102,7 +104,7 @@ Please keep in mind casing matters.";
                     _generator.GetClassProperties(TxtFullyQualifiedClassName.Text);
 
                 //Everything is loaded via XAML bindings
-                TvAssembliesAndClasses.ItemsSource = new[] { asm };
+                TvAssembliesAndClasses.ItemsSource = new ObservableCollection<MetaAssembly> { asm };
                 TvAssembliesAndClasses.Focus();
             }
             catch (Exception ex)
@@ -115,7 +117,7 @@ Please keep in mind casing matters.";
         {
             var tvi = e.Source as TreeViewItem;
 
-            if (!(tvi?.Header is ClassInfo c)) return;
+            if (!(tvi?.Header is MetaClass c)) return;
 
             TxtFullyQualifiedClassName.Text = c.FullName;
 
@@ -199,7 +201,7 @@ Please keep in mind casing matters.";
         {
             TxtFullyQualifiedClassName.Text = GhostText;
             
-            TvAssembliesAndClasses.ItemsSource = Array.Empty<AssemblyInfo>();
+            TvAssembliesAndClasses.ItemsSource = Array.Empty<MetaAssembly>();
         }
 
         private void TxtFullyQualifiedClassName_OnGotFocus(object sender, RoutedEventArgs e)

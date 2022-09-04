@@ -84,8 +84,8 @@
     <Compile Include="DataAccess\IBaseRepository.cs" />
     <Compile Include="Events\RowProcessedEventArgs.cs" />
     <Compile Include="Exceptions\NonUniqueColumnException.cs" />
-    <Compile Include="Models\AssemblyInfo.cs" />
-    <Compile Include="Models\ClassInfo.cs" />
+    <Compile Include="Models\Meta\MetaAssembly.cs" />
+    <Compile Include="Models\Meta\MetaClass.cs" />
     <Compile Include="Models\ClassInstructions.cs" />
     <Compile Include="Models\ClassOptions.cs" />
     <Compile Include="Models\CompilerResult.cs" />
@@ -113,7 +113,7 @@
     <Compile Include="Services\Generators\ClassEntityGenerator.cs" />
     <Compile Include="Services\NameFormatService.cs" />
     <Compile Include="Services\DtoGenerator.cs" />
-    <Compile Include="Models\ClassProperty.cs" />
+    <Compile Include="Models\Meta\MetaProperty.cs" />
     <Compile Include="DataAccess\GeneralDatabaseQueries.cs" />
     <Compile Include="DataAccess\IGeneralDatabaseQueries.cs" />
     <Compile Include="DataAccess\IQueryToClassRepository.cs" />

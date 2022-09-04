@@ -1,4 +1,5 @@
 ﻿using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Models.Meta;
 
 namespace SimpleClassCreator.Lib.Services
 {
@@ -6,10 +7,10 @@ namespace SimpleClassCreator.Lib.Services
     {
         void LoadAssembly(string assemblyPath);
 
-        AssemblyInfo GetClassProperties(string className);
+        MetaAssembly GetClassProperties(string className);
 
         string MakeDto(string className, DtoMakerParameters parameters);
 
-        AssemblyInfo GetListOfClasses();
+        MetaAssembly GetListOfClasses();
     }
 }
