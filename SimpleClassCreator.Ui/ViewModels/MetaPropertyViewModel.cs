@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using SimpleClassCreator.Lib.Models.Meta;
+﻿using SimpleClassCreator.Lib.Models.Meta;
 
 namespace SimpleClassCreator.Ui.ViewModels
 {

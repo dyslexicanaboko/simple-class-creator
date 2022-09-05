@@ -123,10 +123,11 @@ Please keep in mind casing matters.";
             }
         }
 
-        private void TreeViewClasses_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void TreeViewMetaClass_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var tvi = e.Source as TreeViewItem;
 
+            //TODO: This is still triggering even when double clicking properties - replace with button?
             if (!(tvi?.Header is IMetaClass c)) return;
 
             TxtFullyQualifiedClassName.Text = c.FullName;
@@ -140,16 +141,19 @@ Please keep in mind casing matters.";
          *   Interfaces, grnyellow -> RGB 184, 215, 163 - #b8d7a3 - estimated
          *   enums     , grnyellow -> RGB 184, 215, 163 - #b8d7a3 - estimated
          *
-         * Select multiple using CTRL and SHIFT keys as normal
+         * Extract interface option. What other options make sense?
+         *
          * Generate DTO button should read from the Tree View to take full advantage of it
          * 
          * Drag and drop still doesn't work. Something is blocking it from happening.
          * 
          * How to handle large assemblies?
-         * This should be asynchronous with a way to cancel the task
-         * Progress bar can be shown if any of this is measurable
-         * 
-         * Extract interface option. What other options make sense? */
+         *
+         * Show progress bar when user clicks to expand a TreeViewItem. Can't find a way to do this, only found OnExpanded event.
+         * I need something like "On data loading" or "User expanded TV Item". I don't think it exists.
+         *
+         * Multi-select is not supported by TreeView.
+         * */
         private DtoMakerParameters GetParametersFromUi()
         {
             //Not every parameter will be in use yet

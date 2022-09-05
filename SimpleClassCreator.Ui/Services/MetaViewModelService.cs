@@ -1,7 +1,5 @@
-﻿using System;
-using SimpleClassCreator.Lib.Models.Meta;
+﻿using SimpleClassCreator.Lib.Models.Meta;
 using SimpleClassCreator.Ui.ViewModels;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;

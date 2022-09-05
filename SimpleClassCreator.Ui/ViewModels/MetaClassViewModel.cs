@@ -1,6 +1,5 @@
 ﻿using SimpleClassCreator.Lib.Models.Meta;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace SimpleClassCreator.Ui.ViewModels
 {
