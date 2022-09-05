@@ -1,8 +1,10 @@
-﻿using SimpleClassCreator.Lib.Models.Meta;
+﻿using System.ComponentModel;
+using SimpleClassCreator.Lib.Models.Meta;
 
 namespace SimpleClassCreator.Ui.ViewModels
 {
-    public class MetaPropertyViewModel : IMetaProperty
+    public class MetaPropertyViewModel 
+        : ObservableObject, IMetaProperty
     {
         public string Name { get; set; }
         
@@ -19,6 +21,17 @@ namespace SimpleClassCreator.Ui.ViewModels
         public bool IsCollection { get; set; }
 
         //View properties
-        public bool IsChecked { get; set; }
+        private bool _isChecked;
+
+        public bool IsChecked
+        {
+            get => _isChecked;
+            set
+            {
+                _isChecked = value;
+
+                OnPropertyChanged(nameof(IsChecked));
+            }
+        }
     }
 }

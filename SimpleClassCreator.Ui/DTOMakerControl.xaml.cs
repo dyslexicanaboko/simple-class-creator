@@ -140,7 +140,6 @@ Please keep in mind casing matters.";
          *   Interfaces, grnyellow -> RGB 184, 215, 163 - #b8d7a3 - estimated
          *   enums     , grnyellow -> RGB 184, 215, 163 - #b8d7a3 - estimated
          *
-         * Select/Deselect all - Have to make a shift over to an observable collection among other things
          * Select multiple using CTRL and SHIFT keys as normal
          * Generate DTO button should read from the Tree View to take full advantage of it
          * 

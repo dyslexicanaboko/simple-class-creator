@@ -98,7 +98,7 @@
                             DataType="{x:Type viewModels:MetaAssemblyViewModel}" 
                             ItemsSource="{Binding Classes}">
                             <StackPanel Orientation="Horizontal">
-                                <Label Style="{StaticResource WhiteFont1}" Content="{Binding Path=Name}" />
+                                <Label Style="{StaticResource WhiteFont1}" Content="{Binding Name}" />
                                 <Label Style="{StaticResource ClassesHideWhenEmpty}"> Classes: </Label>
                                 <Label Style="{StaticResource ClassesHideWhenEmpty}" Content="{Binding Classes.Count}" />
                             </StackPanel>
@@ -115,7 +115,7 @@
                                     <Label Style="{StaticResource PropertiesHideWhenEmpty}" Content="{Binding Properties.Count}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Style="{StaticResource PropertiesHideWhenEmptySp}">
-                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsChecked}" />
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" />
                                     <Label Style="{StaticResource WhiteFont1}">Select all</Label>
                                 </StackPanel>
                             </StackPanel>

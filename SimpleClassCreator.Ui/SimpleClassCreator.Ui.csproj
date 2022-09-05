@@ -151,6 +151,7 @@
     <Compile Include="UserControlExtensions.cs" />
     <Compile Include="ViewModels\MetaClassViewModel.cs" />
     <Compile Include="ViewModels\MetaPropertyViewModel.cs" />
+    <Compile Include="ViewModels\ObservableObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindow.xaml.cs">

@@ -5,7 +5,7 @@ using System.ComponentModel;
 namespace SimpleClassCreator.Ui.ViewModels
 {
     public class MetaClassViewModel 
-        : IMetaClass, INotifyPropertyChanged
+        : ObservableObject, IMetaClass
     {
         public string FullName { get; set; }
 
@@ -15,8 +15,6 @@ namespace SimpleClassCreator.Ui.ViewModels
 
         //Type cannot be enforced by interface
         public ObservableCollection<MetaPropertyViewModel> Properties { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         //View properties
         private bool _isChecked;
@@ -28,7 +26,7 @@ namespace SimpleClassCreator.Ui.ViewModels
             {
                 _isChecked = value;
 
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsChecked)));
+                OnPropertyChanged(nameof(IsChecked));
             }
         }
     }
