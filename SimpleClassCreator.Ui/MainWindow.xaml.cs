@@ -42,7 +42,8 @@ namespace SimpleClassCreator.Ui
 
             CtrlDtoMaker.Dependencies(
                 dtoGenerator,
-                metaViewModelService);
+                metaViewModelService,
+                queryToClassService);
 
             _hasResultWindows = new List<IUsesResultWindow>
             {

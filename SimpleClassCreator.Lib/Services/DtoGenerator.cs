@@ -1,48 +1,43 @@
-﻿using SimpleClassCreator.Lib.Models;
-using SimpleClassCreator.Lib.Models.Meta;
+﻿using SimpleClassCreator.Lib.Models.Meta;
 using SimpleClassCreator.Lib.Services.CodeFactory;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace SimpleClassCreator.Lib.Services
 {
-    public class DtoGenerator 
+    public class DtoGenerator
         : IDtoGenerator
     {
-        public DtoGenerator()
-        {
-            
-        }
-        
-        private string AssemblyPath { get; set; }
-        
-        private string FileName { get; set; }
+        private string _assemblyPath;
+
+        private string _fileName;
         
         public Assembly AssemblyReference { get; private set; }
 
+        public bool IsLoaded => AssemblyReference != null;
+
         public void LoadAssembly(string assemblyPath)
         {
-            AssemblyPath = assemblyPath;
+            _assemblyPath = assemblyPath;
 
-            FileName = Path.GetFileName(assemblyPath);
+            _fileName = Path.GetFileName(assemblyPath);
 
-            AssemblyReference = Assembly.LoadFile(AssemblyPath);
+            AssemblyReference = Assembly.LoadFile(_assemblyPath);
         }
 
-        private MetaAssembly GetEmptyAssemblyInfo()
+        private MetaAssembly GetEmptyMetaAssembly()
         {
-            var asm = new MetaAssembly {Name = FileName};
+            var asm = new MetaAssembly {Name = _fileName};
 
             return asm;
         }
 
-        public MetaAssembly GetListOfClasses()
+        public MetaAssembly GetMetaClasses()
         {
-            var asm = GetEmptyAssemblyInfo();
+            var asm = GetEmptyMetaAssembly();
 
             var lst = AssemblyReference
                 .GetTypes()
@@ -54,11 +49,18 @@ namespace SimpleClassCreator.Lib.Services
             return asm;
         }
 
-        public MetaAssembly GetClassProperties(string className)
+        public IList<ClassMemberStrings> GetProperties(Type metaClass)
         {
-            var t = GetTypeOrThrow(className);
+            var lst = metaClass.GetProperties().Select(x => new ClassMemberStrings(x)).ToList();
 
-            var asm = GetEmptyAssemblyInfo();
+            return lst;
+        }
+
+        public MetaAssembly GetMetaClassProperties(string className)
+        {
+            var t = GetClass(className);
+
+            var asm = GetEmptyMetaAssembly();
 
             var cInfo = asm.Add(className);
 
@@ -84,125 +86,14 @@ namespace SimpleClassCreator.Lib.Services
             return asm;
         }
 
-        public string MakeDto(string className, DtoMakerParameters parameters)
+        public Type GetClass(string fullyQualifiedClassName)
         {
-            var p = parameters;
-
-            var t = GetTypeOrThrow(className);
+            var t = AssemblyReference.GetType(fullyQualifiedClassName, false, false);
 
             if (t == null)
-                return "Type cannot be null";
-
-            var sb = new StringBuilder(); //Class
-
-            var cn = t.Name + "Dto";
-
-            sb.Append("public class ").AppendLine(cn);
-
-            if (p.IncludeIEquatableOfTMethods) sb.Append("\t : IEquatable<").Append(cn).AppendLine(">");
-
-            sb.AppendLine("{");
-
-            var arrProperties = t.GetProperties();
-
-            var lstPropertyNames = new List<string>(arrProperties.Length);
-
-            foreach (var pi in arrProperties)
-            {
-                Console.WriteLine(pi.Name);
-
-                lstPropertyNames.Add(pi.Name);
-
-                var tp = pi.PropertyType;
-
-                sb.Append("public ").Append("NOT IMPLEMENTED");
-
-                sb.Append(" ").Append(pi.Name).AppendLine(" { get; set; } ").AppendLine();
-            }
-
-            sb.AppendLine();
-
-            //Methods to include in the class
-            if (p.IncludeTranslateMethod)
-            {
-                //var tm = GetTranslateMethod(t.Name, cn, lstPropertyNames);
-
-                //sb.Append(tm);
-            }
-
-            if (p.IncludeCloneMethod)
-            {
-                //var cm = GetCloneMethod(cn, lstPropertyNames);
-
-                //sb.Append(cm);
-            }
-
-            if (p.IncludeIEquatableOfTMethods)
-            {
-                //var eq = GetIEquatableOfTMethods(cn, lstPropertyNames);
-
-                //sb.Append(eq);
-            }
-
-            sb.AppendLine("}");
-
-            return sb.ToString();
-        }
-
-        private Type GetTypeOrThrow(string className)
-        {
-            var t = AssemblyReference.GetType(className, false, false);
-
-            if (t == null)
-                throw new Exception("The class named: [" + className + "] could not be found.");
+                throw new Exception("The class named: [" + fullyQualifiedClassName + "] could not be found.");
 
             return t;
         }
-
-        #region Needs to be replaced
-        //private StringBuilder GetTranslateMethod(string originalClassName, string dtoClassName, List<string> propertyNames)
-        //{
-        //    var cn = dtoClassName;
-
-        //    var sb = new StringBuilder();
-
-        //    //Open
-        //    sb.Append("public ").Append(cn).Append(" Translate(").Append(originalClassName).AppendLine(" obj)");
-        //    sb.AppendLine("{");
-        //    sb.Append("var dto = new ").Append(cn).AppendLine("();");
-        //    sb.AppendLine();
-
-        //    //Properties
-        //    propertyNames.ForEach(x => sb.Append("dto.").Append(x).Append(" = obj.").Append(x).AppendLine(";"));
-
-        //    //Close
-        //    sb.AppendLine("return dto;");
-        //    sb.AppendLine("}");
-
-        //    return sb;
-        //}
-
-        //private StringBuilder GetCloneMethod(string className, List<string> propertyNames)
-        //{
-        //    var cn = className;
-
-        //    var sb = new StringBuilder();
-
-        //    //Open
-        //    sb.Append("public ").Append(cn).AppendLine(" Clone()");
-        //    sb.AppendLine("{");
-        //    sb.Append("var c = new ").Append(cn).AppendLine("();");
-        //    sb.AppendLine();
-
-        //    //Properties
-        //    propertyNames.ForEach(x => sb.Append("c.").Append(x).Append(" = ").Append(x).AppendLine(";"));
-
-        //    //Close
-        //    sb.AppendLine("return c;");
-        //    sb.AppendLine("}");
-
-        //    return sb;
-        //} 
-        #endregion
     }
 }

@@ -92,7 +92,7 @@
     <Compile Include="Models\ClassInstructions.cs" />
     <Compile Include="Models\ClassOptions.cs" />
     <Compile Include="Models\CompilerResult.cs" />
-    <Compile Include="Models\DtoMakerParameters.cs" />
+    <Compile Include="Models\DtoInstructions.cs" />
     <Compile Include="Models\GeneratedResult.cs" />
     <Compile Include="Models\QueryToMockDataParameters.cs" />
     <Compile Include="Models\SchemaColumn.cs" />

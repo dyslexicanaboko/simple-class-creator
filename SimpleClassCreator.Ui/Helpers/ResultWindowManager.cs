@@ -9,6 +9,15 @@ namespace SimpleClassCreator.Ui.Helpers
 
         public void Add(ResultWindow resultWindow) => ResultWindows.Add(resultWindow);
 
+        public void Show(string title, string contents)
+        {
+            var win = new ResultWindow(title, contents);
+
+            win.Show();
+
+            Add(win);
+        }
+
         public void CloseAll()
         {
             if (ResultWindows == null) return;

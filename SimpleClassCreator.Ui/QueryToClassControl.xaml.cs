@@ -280,7 +280,7 @@ namespace SimpleClassCreator.Ui
 
                 foreach (var g in results)
                 {
-                    ShowResultWindow(g.Filename, g.Contents);
+                    _resultWindowManager.Show(g.Filename, g.Contents);
                 }
             }
             catch (NonUniqueColumnException nucEx)
@@ -295,15 +295,6 @@ namespace SimpleClassCreator.Ui
             {
                 PbGenerator.IsIndeterminate = false;
             }
-        }
-
-        private void ShowResultWindow(string title, string contents)
-        {
-            var win = new ResultWindow(title, contents);
-
-            win.Show();
-
-            _resultWindowManager.Add(win);
         }
 
         private SourceSqlType GetSourceType()

@@ -106,6 +106,48 @@ namespace SimpleClassCreator.Lib.Services
         //}
         #endregion
 
+        public IList<GeneratedResult> Generate(DtoInstructions parameters)
+        {
+            var p = parameters;
+
+            var ci = new ClassInstructions
+            {
+                ClassEntityName = p.ClassName,
+                ClassModelName = p.ClassName + "Dto",
+                InterfaceName = "I" + p.ClassName,
+                Namespace = "Namespace1",
+                Properties = p.Properties,
+                IsPartial = p.ImplementIEquatableOfTInterface
+            };
+
+            var co = new ClassOptions
+            {
+                ClassEntityName = ci.ClassEntityName,
+                ClassModelName = ci.ClassModelName,
+                GenerateEntity = true,
+                GenerateModel = true,
+                GenerateEntityIEquatable = p.ImplementIEquatableOfTInterface,
+                GenerateInterface = p.ExtractInterface
+            };
+
+            var qtcParameters = new QueryToClassParameters
+            {
+                ClassOptions = co
+            };
+
+            if (p.MethodEntityToDto)
+            {
+                qtcParameters.ClassServices |= ClassServices.CloneEntityToModel;
+            }
+
+            if (p.MethodDtoToEntity)
+            {
+                qtcParameters.ClassServices |= ClassServices.CloneModelToEntity;
+            }
+
+            return GenerateClasses(qtcParameters, ci);
+        }
+
         /// <summary>
         /// The main internal method that orchestrates the code generation for the provided parameters
         /// </summary>
@@ -245,31 +287,5 @@ namespace SimpleClassCreator.Lib.Services
 
             return lst;
         }
-
-        #region Old code - not sure for what
-        ///// <summary>
-        ///// Manufacture the physical code file
-        ///// </summary>
-        ///// <param name="p">Generation parameters</param>
-        ///// <param name="content">Class contents</param>
-        //private void WriteClassToFile(QueryToClassParameters p, string content)
-        //{
-        //    var fullFilePath = Path.Combine(p.FilePath, p.Filename);
-
-        //    File.WriteAllText(fullFilePath, content);
-
-        //    Console.WriteLine($"{content.Length} Characters Written to {fullFilePath}");
-        //}
-
-        ////I don't remember what this was for. Will keep it around until later.
-        //private bool IsNumber(Type targetType)
-        //{
-        //    return targetType == typeof(int) ||
-        //           targetType == typeof(byte) ||
-        //           targetType == typeof(short) ||
-        //           targetType == typeof(double) ||
-        //           targetType == typeof(decimal);
-        //} 
-        #endregion
     }
 }

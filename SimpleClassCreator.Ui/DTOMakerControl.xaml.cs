@@ -26,6 +26,7 @@ namespace SimpleClassCreator.Ui
         private readonly ResultWindowManager _resultWindowManager;
         private readonly Brush _dragAndDropTargetBackgroundOriginal;
         private IDtoGenerator _generator;
+        private IQueryToClassService _queryToClassService;
         private IMetaViewModelService _viewModelService;
         private ObservableCollection<MetaAssemblyViewModel> _treeViewItemSource;
 
@@ -41,6 +42,16 @@ namespace SimpleClassCreator.Ui
             TxtFullyQualifiedClassName.Text = GhostText;
         }
 
+        internal void Dependencies(
+            IDtoGenerator generator, 
+            IMetaViewModelService viewModelService, 
+            IQueryToClassService queryToClassService)
+        {
+            _generator = generator;
+            _viewModelService = viewModelService;
+            _queryToClassService = queryToClassService;
+        }
+
         private void BtnAssemblyOpenDialog_Click(object sender, RoutedEventArgs e)
         {
             var ofd = new OpenFileDialog();
@@ -51,12 +62,6 @@ namespace SimpleClassCreator.Ui
                 return;
 
             SetSelectedAssembly(ofd.FileName);
-        }
-
-        internal void Dependencies(IDtoGenerator generator, IMetaViewModelService viewModelService)
-        {
-            _generator = generator;
-            _viewModelService = viewModelService;
         }
 
         private void SetSelectedAssembly(string fullFilePath)
@@ -96,20 +101,23 @@ Please keep in mind casing matters.";
         {
             CheckFqdnForGhostText();
 
-            LoadClass();
+            LoadClass(true);
         }
 
-        private void LoadClass()
+        private void LoadClass(bool reloadAssembly)
         {
             try
             {
-                _generator.LoadAssembly(TxtAssemblyFullFilePath.Text);
+                if (reloadAssembly)
+                {
+                    _generator.LoadAssembly(TxtAssemblyFullFilePath.Text);
+                }
 
                 var asmData = string.IsNullOrWhiteSpace(TxtFullyQualifiedClassName.Text) ?
-                    _generator.GetListOfClasses() :
-                    _generator.GetClassProperties(TxtFullyQualifiedClassName.Text);
+                    _generator.GetMetaClasses() :
+                    _generator.GetMetaClassProperties(TxtFullyQualifiedClassName.Text);
 
-                var asmViewModel = new MetaViewModelService().ToViewModel(asmData, CbPropertiesSelectAllToggle);
+                var asmViewModel = _viewModelService.ToViewModel(asmData, CbPropertiesSelectAllToggle);
 
                 _treeViewItemSource = new ObservableCollection<MetaAssemblyViewModel> { asmViewModel };
 
@@ -132,7 +140,7 @@ Please keep in mind casing matters.";
 
             TxtFullyQualifiedClassName.Text = c.FullName;
 
-            LoadClass();
+            LoadClass(false);
         }
 
         //TODO: Many to dos
@@ -145,8 +153,6 @@ Please keep in mind casing matters.";
          *
          * Generate DTO button should read from the Tree View to take full advantage of it
          * 
-         * Drag and drop still doesn't work. Something is blocking it from happening.
-         * 
          * How to handle large assemblies?
          *
          * Show progress bar when user clicks to expand a TreeViewItem. Can't find a way to do this, only found OnExpanded event.
@@ -154,32 +160,51 @@ Please keep in mind casing matters.";
          *
          * Multi-select is not supported by TreeView.
          * */
-        private DtoMakerParameters GetParametersFromUi()
+        private DtoInstructions GetInstructions(IDtoGenerator generator)
         {
-            //Not every parameter will be in use yet
-            var p = new DtoMakerParameters
+            //Since using the FQDN, need to get class name by itself
+            var t = generator.GetClass(TxtFullyQualifiedClassName.Text);
+
+            var p = new DtoInstructions
             {
-                IncludeCloneMethod = CbIncludeCloneMethod.IsChecked(),
-                IncludeTranslateMethod = CbIncludeTranslateMethod.IsChecked(),
-                IncludeIEquatableOfTMethods = CbIncludeIEquatableOfTMethod.IsChecked()
+                MethodEntityToDto = CbMethodEntityToDto.IsChecked(),
+                MethodDtoToEntity = CbMethodDtoToEntity.IsChecked(),
+                ImplementIEquatableOfTInterface = CbImplementIEquatableOfTInterface.IsChecked(),
+                ExtractInterface = CbExtractInterface.IsChecked(),
+                ClassName = t.Name
             };
+
+            //There should only be one assembly and one class loaded
+            var electedProperties = 
+                _treeViewItemSource.Single() //Only one Assembly
+                .Classes.Single() //Only one class
+                .Properties.Where(x => x.IsChecked) //Elected properties of that class
+                .ToList();
+
+            //Get all of the reflected properties as ClassMemberStrings and only return what was elected
+            p.Properties = generator.GetProperties(t)
+                .Where(x => electedProperties.Exists(e => e.Name == x.Property))
+                .ToList();
 
             return p;
         }
 
         private void BtnGenerate_Click(object sender, RoutedEventArgs e)
         {
-            var p = GetParametersFromUi();
+            if (!_generator.IsLoaded)
+            {
+                _generator.LoadAssembly(TxtAssemblyFullFilePath.Text);
+            }
 
-            _generator.LoadAssembly(TxtAssemblyFullFilePath.Text);
+            var p = GetInstructions(_generator);
 
-            var win = new ResultWindow("Dto", _generator.MakeDto(TxtFullyQualifiedClassName.Text, p));
-            
-            win.Show();
-
-            _resultWindowManager.Add(win);
+            foreach (var g in _queryToClassService.Generate(p))
+            {
+                _resultWindowManager.Show(g.Filename, g.Contents);
+            }
         }
 
+        // NOTE: Drag and drop won't work when running VS as admin, but it works when running normally.
         private void DragAndDropTarget_OnDrop(object sender, DragEventArgs e)
         {
             try

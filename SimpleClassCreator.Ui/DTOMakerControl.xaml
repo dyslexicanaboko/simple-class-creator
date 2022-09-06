@@ -153,11 +153,12 @@
                         </HierarchicalDataTemplate>
                     </TreeView.Resources>
                 </TreeView>
-                <GroupBox Header="Generation options" Height="85" HorizontalAlignment="Left" Margin="490,0,0,0" Name="GroupOptions" VerticalAlignment="Top" Width="157">
+                <GroupBox Header="Generation options" Height="103" HorizontalAlignment="Left" Margin="490,0,0,0" Name="GroupOptions" VerticalAlignment="Top" Width="173">
                     <Grid Margin="0,0,-2,0">
-                        <CheckBox Content="Clone method" HorizontalAlignment="Left" Margin="1,4,0,0" Name="CbIncludeCloneMethod" Height="16" VerticalAlignment="Top" ToolTip="Add a method for cloning this DTO" />
-                        <CheckBox Content="Translate method" HorizontalAlignment="Left" Margin="0,25,0,0" Name="CbIncludeTranslateMethod" Height="16" VerticalAlignment="Top" ToolTip="Add a method for cloning this DTO" />
-                        <CheckBox Content="IEquatable&lt;T&gt; method" HorizontalAlignment="Left" Margin="0,44,0,0" x:Name="CbIncludeIEquatableOfTMethod" Height="16" VerticalAlignment="Top" ToolTip="Include all of the methods used for equality" />
+                        <CheckBox IsChecked="True" Content="Entity to DTO method" HorizontalAlignment="Left" Margin="1,4,0,0" Name="CbMethodEntityToDto" Height="16" VerticalAlignment="Top" ToolTip="Add method for converting Entity to DTO." />
+                        <CheckBox IsChecked="True" Content="DTO to Entity method" HorizontalAlignment="Left" Margin="0,25,0,0" Name="CbMethodDtoToEntity" Height="16" VerticalAlignment="Top" ToolTip="Add method for converting DTO back to Entity." />
+                        <CheckBox IsChecked="True" Content="Implement IEquatable&lt;T&gt;" HorizontalAlignment="Left" Margin="0,44,0,0" x:Name="CbImplementIEquatableOfTInterface" Height="16" VerticalAlignment="Top" ToolTip="Implement all of the methods used for equality." />
+                        <CheckBox IsChecked="True" Content="Extract interface" HorizontalAlignment="Left" Margin="0,65,0,-19" x:Name="CbExtractInterface" Height="16" VerticalAlignment="Top" ToolTip="Create an interface based on all public properties found." />
                     </Grid>
                 </GroupBox>
                 <Button Content="Generate DTO" Height="54" HorizontalAlignment="Left" Margin="490,286,0,0" Name="BtnGenerate" VerticalAlignment="Top" Width="164" Click="BtnGenerate_Click" />
