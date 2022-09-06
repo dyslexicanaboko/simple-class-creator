@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 using SimpleClassCreator.Lib;
 using SimpleClassCreator.Lib.DataAccess;
 using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Services;
 using SimpleClassCreator.Tests.DummyObjects;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace SimpleClassCreator.Tests.Lib.Services
@@ -27,9 +25,10 @@ namespace SimpleClassCreator.Tests.Lib.Services
                 Namespace = "SimpleClassCreator.Tests.DummyObjects"
             };
 
-            var repo = new Mock<IQueryToClassRepository>();
+            var repoQueryToClass = new Mock<IQueryToClassRepository>();
+            var repoGeneral = new Mock<IGeneralDatabaseQueries>();
 
-            var svc = new QueryToClassService(repo.Object);
+            var svc = new QueryToClassService(repoQueryToClass.Object, repoGeneral.Object);
 
             //Act
             var actual = svc.Generate(p);
@@ -66,10 +65,13 @@ namespace SimpleClassCreator.Tests.Lib.Services
             p.ClassOptions.GenerateEntity = true;
             p.ClassOptions.ClassEntityName = sq.TableQuery.Table;
 
-            var repo = new Mock<IQueryToClassRepository>();
-            repo.Setup(x => x.GetSchema(p.TableQuery, It.IsAny<string>())).Returns(sq); //TODO: Fix this later
+            var repoQueryToClass = new Mock<IQueryToClassRepository>();
+            repoQueryToClass.Setup(x => x.GetSchema(p.TableQuery, It.IsAny<string>())).Returns(sq); //TODO: Fix this later
 
-            var svc = new QueryToClassService(repo.Object);
+            var repoGeneral = new Mock<IGeneralDatabaseQueries>();
+
+
+            var svc = new QueryToClassService(repoQueryToClass.Object, repoGeneral.Object);
 
             //Act
             var actual = svc.Generate(p).Single().Contents;

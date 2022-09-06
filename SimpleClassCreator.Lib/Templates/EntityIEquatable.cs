@@ -30,9 +30,9 @@ namespace {{Namespace}}
 {{PropertiesEquals}};
 		}
 
-		public override int GetHashCode() => (
-{{PropertiesHashCode}}
-        ).GetHashCode();
+		//Default sum of parts used
+		public override int GetHashCode() =>
+{{PropertiesHashCode}};
 
 		public static bool operator ==({{ClassName}} lhs, {{ClassName}} rhs)
 		{

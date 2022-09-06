@@ -1,20 +1,25 @@
-﻿using SimpleClassCreator.Lib.Models;
+﻿using SimpleClassCreator.Lib.Models.Meta;
+using SimpleClassCreator.Lib.Services.CodeFactory;
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace SimpleClassCreator.Lib.Services
 {
     public interface IDtoGenerator
     {
+        bool IsLoaded { get; }
+
+        Assembly AssemblyReference { get; }
+
         void LoadAssembly(string assemblyPath);
 
-        AssemblyInfo GetClassProperties(string className);
+        Type GetClass(string fullyQualifiedClassName);
 
-        string GetTypeAsString(Type target);
+        IList<ClassMemberStrings> GetProperties(Type metaClass);
 
-        string MakeDto(string className, DtoMakerParameters parameters);
+        MetaAssembly GetMetaClassProperties(string className);
 
-        Type PrintClass(string className);
-
-        void PrintClasses();
+        MetaAssembly GetMetaClasses();
     }
 }

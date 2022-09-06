@@ -3,6 +3,7 @@ using SimpleClassCreator.Lib.Services;
 using SimpleClassCreator.Ui.Profile;
 using SimpleInjector;
 using System;
+using SimpleClassCreator.Ui.Services;
 
 namespace SimpleClassCreator.Ui
 {
@@ -28,6 +29,7 @@ namespace SimpleClassCreator.Ui
             var container = new Container();
 
             // Register your types, for instance:
+            container.Register<IMetaViewModelService, MetaViewModelService>();
             container.Register<IGeneralDatabaseQueries, GeneralDatabaseQueries>();
             container.Register<IQueryToClassRepository, QueryToClassRepository>();
             container.Register<IDtoGenerator, DtoGenerator>();

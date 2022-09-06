@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Controls;
 using System.Linq;
+using System.Windows.Controls;
 
-namespace SimpleClassCreator.Ui
+namespace SimpleClassCreator.Ui.Helpers
 {
     public class CheckBoxGroup
     {

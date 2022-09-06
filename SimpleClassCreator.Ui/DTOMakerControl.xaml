@@ -3,33 +3,166 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:SimpleClassCreator.Ui.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="532" d:DesignWidth="675">
     <Grid Background="White" Margin="0,0,0,-59">
-        <TreeView Height="326" 
-                              HorizontalAlignment="Left" 
-                              Margin="17,229,0,0" 
-                              Name="tvAssebliesAndClasses" VerticalAlignment="Top" Width="528">
-        </TreeView>
-        <Label Content="Assembly File Path" Height="28" HorizontalAlignment="Left" Margin="12,10,0,0" Name="lblAssembly" VerticalAlignment="Top" />
-        <Label Content="Fully Qualified Class Name" Height="28" HorizontalAlignment="Left" Margin="12,176,0,0" Name="lblClassName" VerticalAlignment="Top" MouseEnter="lblClassName_MouseEnter" MouseLeave="lblClassName_MouseLeave" ToolTip="Double click for help..." MouseDoubleClick="lblClassName_MouseDoubleClick" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="17,34,0,0" Name="txtAssemblyFullFilePath" VerticalAlignment="Top" Width="270" />
-        <TextBox Height="23" Margin="17,200,0,0" Name="txtFullyQualifiedClassName" VerticalAlignment="Top" HorizontalAlignment="Left" Width="270" />
-        <Button Content="..." Height="23" HorizontalAlignment="Left" Margin="293,33,0,0" Name="btnAssemblyOpenDialog" VerticalAlignment="Top" Width="28" Click="btnAssemblyOpenDialog_Click" />
-        <Label Content="Chosen Assembly:" Height="28" HorizontalAlignment="Left" Margin="12,63,0,0" Name="lblAssemblyTarget" VerticalAlignment="Top" Width="109" />
-        <Label Height="28" HorizontalAlignment="Left" Margin="124,63,0,0" Name="lblAssemblyChosen" VerticalAlignment="Top" Width="158" />
-        <Button Content="Load Class" Height="23" HorizontalAlignment="Left" Margin="293,200,0,0" Name="btnLoadClass" VerticalAlignment="Top" Width="74" Click="btnLoadClass_Click" />
-        <GroupBox Header="Options" Height="149" HorizontalAlignment="Left" Margin="388,25,0,0" Name="groupOptions" VerticalAlignment="Top" Width="203">
-            <Grid Margin="0,0,-2,0">
-                <CheckBox Content="Add WCF Attributes" HorizontalAlignment="Left" Margin="29,48,0,0" Name="cbxWcfEnabled" Height="16" VerticalAlignment="Top" ToolTip="Add standard WCF attributes to the DTO" />
-                <CheckBox Content="Serializable Only" Height="16" HorizontalAlignment="Left" Margin="6,26,0,0" Name="cbxSerializableOnly" VerticalAlignment="Top" ToolTip="Only include serializable properties (helpful for web services)" />
-                <CheckBox Content="Exclude Collections" Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Name="cbxExcludeCollections" VerticalAlignment="Top" ToolTip="Exclude collections from the DTO output" />
-                <CheckBox Content="Include clone method" HorizontalAlignment="Left" Margin="7,66,0,0" Name="cbxIncludeCloneMethod" Height="16" VerticalAlignment="Top" ToolTip="Add a method for cloning this DTO" />
-                <CheckBox Content="Include translate method" HorizontalAlignment="Left" Margin="6,87,0,0" Name="cbxIncludeTranslateMethod" Height="16" VerticalAlignment="Top" ToolTip="Add a method for cloning this DTO" />
-                <CheckBox Content="Include IEquatable&lt;T&gt; method" HorizontalAlignment="Left" Margin="6,106,0,0" x:Name="cbxIncludeIEquatableOfTMethod" Height="16" VerticalAlignment="Top" ToolTip="Include all of the methods used for equality" />
+        <GroupBox Header="1. Choose source file" HorizontalAlignment="Left" Width="675" Height="120" VerticalAlignment="Top" AllowDrop="True">
+            <Grid>
+                <Label Content="Source file path" Height="28" HorizontalAlignment="Left" Margin="10,10,0,0" Name="LblAssembly" VerticalAlignment="Top" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="12,33,0,0" Name="TxtAssemblyFullFilePath" VerticalAlignment="Top" Width="270"  />
+                <Button Content="..." Height="23" HorizontalAlignment="Left" Margin="287,33,0,0" Name="BtnAssemblyOpenDialog" VerticalAlignment="Top" Width="28" Click="BtnAssemblyOpenDialog_Click" RenderTransformOrigin="-0.286,0.457" />
+                <Label Content="Chosen file" Height="28" HorizontalAlignment="Left" Margin="12,61,0,0" Name="LblAssemblyTarget" VerticalAlignment="Top" Width="70" />
+                <Label Height="28" HorizontalAlignment="Left" Margin="87,61,0,0" Name="LblAssemblyChosen" VerticalAlignment="Top" Width="195" BorderBrush="Black" BorderThickness="1" />
+                <Border Name="DragAndDropTarget" Margin="324,10,0,0" ToolTip="Drag and drop files here" 
+                        Drop="DragAndDropTarget_OnDrop" AllowDrop="True" 
+                        MouseEnter="DragAndDropTarget_OnMouseEnter" 
+                        MouseLeave="DragAndDropTarget_OnMouseLeave" 
+                        BorderBrush="Red" BorderThickness="0" Height="85" VerticalAlignment="Top" HorizontalAlignment="Left" Width="88">
+                    <Grid>
+                        <Ellipse Fill="#FFF4F4F5" Height="80" Stroke="Black" VerticalAlignment="Top" StrokeThickness="3" HorizontalAlignment="Left" Width="80" Margin="3,1,0,0" />
+                        <Ellipse Fill="Red" HorizontalAlignment="Left" Height="60" Margin="13,11,0,0" Stroke="Black" VerticalAlignment="Top" Width="60"/>
+                        <Ellipse Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="40" Margin="23,21,0,0" Stroke="Black" VerticalAlignment="Top" Width="40"/>
+                        <Ellipse Fill="Red" HorizontalAlignment="Left" Height="20" Margin="33,31,0,0" Stroke="Black" VerticalAlignment="Top" Width="20"/>
+                    </Grid>
+                </Border>
             </Grid>
         </GroupBox>
-        <Button Content="Generate DTO" Height="23" HorizontalAlignment="Left" Margin="578,532,0,0" Name="btnGenerate" VerticalAlignment="Top" Width="87" Click="btnGenerate_Click" />
+        <GroupBox Header="2. Target class by FQDN" Margin="0,125,0,0" HorizontalAlignment="Left" Width="675" Height="78" VerticalAlignment="Top">
+            <Grid>
+                <Label Content="Fully qualified class name" Height="28" HorizontalAlignment="Left" Margin="10,4,0,0" Name="LblClassName" VerticalAlignment="Top" MouseEnter="LblClassName_MouseEnter" MouseLeave="LblClassName_MouseLeave" ToolTip="Double click for help..." MouseDoubleClick="LblClassName_MouseDoubleClick" Width="162" />
+                <TextBox Height="23" Margin="14,29,0,0" Name="TxtFullyQualifiedClassName" VerticalAlignment="Top" HorizontalAlignment="Left" Width="270" Text="Caution: Everything is loaded by default..." Foreground="#FF998E8E" GotFocus="TxtFullyQualifiedClassName_OnGotFocus" />
+                <Button Content="Load Class" Height="23" HorizontalAlignment="Left" Margin="287,29,0,0" Name="BtnLoadClass" VerticalAlignment="Top" Width="74" Click="BtnLoadClass_Click" />
+                <Button Content="Reset" Height="23" HorizontalAlignment="Left" Margin="366,29,0,0" Name="BtnResetTree" VerticalAlignment="Top" Width="46" Click="BtnResetTree_OnClick" />
+                <Button Name="BtnHelp" Margin="152,7,491,29" ToolTip="Click for help..." Click="BtnHelp_OnClick">
+                    <Image Source="images/StatusHelp_16x.png" />
+                </Button>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="3. Choose class properties and options" Margin="0,208,0,0" HorizontalAlignment="Left" Width="675" Height="373" VerticalAlignment="Top">
+            <Grid>
+                <TreeView Name="TvAssembliesAndClasses"
+                          Height="346" 
+                          Width="479" 
+                          VerticalAlignment="Top" 
+                          HorizontalAlignment="Left" 
+                          Background="Black">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <EventSetter Event="MouseDoubleClick" Handler="TreeViewMetaClass_OnMouseDoubleClick" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.Resources>
+                        <!-- Label white foreground color -->
+                        <Style x:Key="WhiteFont1" TargetType="Label">
+                            <Setter Property="Foreground" Value="White"/>
+                        </Style>
+                        <!-- Don't show the Class count when it's zero -->
+                        <Style x:Key="ClassesHideWhenEmpty" TargetType="{x:Type Label}">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Classes.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                        <!-- Don't show the Property count when it's zero -->
+                        <Style x:Key="PropertiesHideWhenEmpty" TargetType="{x:Type Label}">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Properties.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                        <!-- Don't show the Properties' Select All check box when there are no Properties -->
+                        <Style x:Key="PropertiesHideWhenEmptySp" TargetType="{x:Type StackPanel}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Properties.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                        <!-- Override the default color for selected TreeViewItem -->
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                         Color="#333333" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                                         Color="#333333" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                                         Color="#333333" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                                         Color="#333333" />
+                        <!-- Assembly -->
+                        <HierarchicalDataTemplate 
+                            DataType="{x:Type viewModels:MetaAssemblyViewModel}" 
+                            ItemsSource="{Binding Classes}">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Style="{StaticResource WhiteFont1}" Content="{Binding Name}" />
+                                <Label Style="{StaticResource ClassesHideWhenEmpty}"> Classes: </Label>
+                                <Label Style="{StaticResource ClassesHideWhenEmpty}" Content="{Binding Classes.Count}" />
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                        <!-- Classes -->
+                        <HierarchicalDataTemplate 
+                            DataType="{x:Type viewModels:MetaClassViewModel}" 
+                            ItemsSource="{Binding Properties}">
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Style="{StaticResource WhiteFont1}" 
+                                           Content="{Binding Path=FullName}" />
+                                    <Label Style="{StaticResource PropertiesHideWhenEmpty}">Properties:</Label>
+                                    <Label Style="{StaticResource PropertiesHideWhenEmpty}" Content="{Binding Properties.Count}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Style="{StaticResource PropertiesHideWhenEmptySp}">
+                                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Label Style="{StaticResource WhiteFont1}">Select all</Label>
+                                </StackPanel>
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                        <!-- Properties -->
+                        <HierarchicalDataTemplate DataType="{x:Type viewModels:MetaPropertyViewModel}">
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsChecked}" />
+                                <!-- Type -->
+                                <Label FontWeight="Bold" Content="{Binding TypeName}">
+                                    <Label.Style>
+                                        <Style TargetType="{x:Type Label}">
+                                            <!-- Primitives -->
+                                            <Setter Property="Foreground" Value="#569cd6"/>
+                                            <Style.Triggers>
+                                                <!-- Classes -->
+                                                <DataTrigger Binding="{Binding IsPrimitive}" Value="False">
+                                                    <Setter Property="Foreground" Value="#4ec9b0"/>
+                                                </DataTrigger>
+                                                <!-- Enumerations -->
+                                                <DataTrigger Binding="{Binding IsEnum}" Value="True">
+                                                    <Setter Property="Foreground" Value="#b8d7a3"/>
+                                                </DataTrigger>
+                                                <!-- Interfaces -->
+                                                <DataTrigger Binding="{Binding IsInterface}" Value="True">
+                                                    <Setter Property="Foreground" Value="#b8d7a3"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Label.Style>
+                                </Label>
+                                <!-- Name -->
+                                <Label Content="{Binding Name}" Style="{StaticResource WhiteFont1}" />
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                    </TreeView.Resources>
+                </TreeView>
+                <GroupBox Header="Generation options" Height="103" HorizontalAlignment="Left" Margin="490,0,0,0" Name="GroupOptions" VerticalAlignment="Top" Width="173">
+                    <Grid Margin="0,0,-2,0">
+                        <CheckBox IsChecked="True" Content="Entity to DTO method" HorizontalAlignment="Left" Margin="1,4,0,0" Name="CbMethodEntityToDto" Height="16" VerticalAlignment="Top" ToolTip="Add method for converting Entity to DTO." />
+                        <CheckBox IsChecked="True" Content="DTO to Entity method" HorizontalAlignment="Left" Margin="0,25,0,0" Name="CbMethodDtoToEntity" Height="16" VerticalAlignment="Top" ToolTip="Add method for converting DTO back to Entity." />
+                        <CheckBox IsChecked="True" Content="Implement IEquatable&lt;T&gt;" HorizontalAlignment="Left" Margin="0,44,0,0" x:Name="CbImplementIEquatableOfTInterface" Height="16" VerticalAlignment="Top" ToolTip="Implement all of the methods used for equality." />
+                        <CheckBox IsChecked="True" Content="Extract interface" HorizontalAlignment="Left" Margin="0,65,0,-19" x:Name="CbExtractInterface" Height="16" VerticalAlignment="Top" ToolTip="Create an interface based on all public properties found." />
+                    </Grid>
+                </GroupBox>
+                <Button Content="Generate DTO" Height="54" HorizontalAlignment="Left" Margin="490,286,0,0" Name="BtnGenerate" VerticalAlignment="Top" Width="164" Click="BtnGenerate_Click" />
+            </Grid>
+        </GroupBox>
     </Grid>
 </UserControl>

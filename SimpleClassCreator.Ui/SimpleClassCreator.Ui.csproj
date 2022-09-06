@@ -116,13 +116,18 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CheckBoxGroup.cs" />
+    <Compile Include="Helpers\CheckBoxGroup.cs" />
     <Compile Include="ConnectionStringControl.xaml.cs">
       <DependentUpon>ConnectionStringControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DtoMakerControl.xaml.cs">
       <DependentUpon>DtoMakerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\IUsesResultWindow.cs" />
+    <Compile Include="Helpers\ResultWindowManager.cs" />
+    <Compile Include="Services\IMetaViewModelService.cs" />
+    <Compile Include="Services\MetaViewModelService.cs" />
+    <Compile Include="ViewModels\MetaAssemblyViewModel.cs" />
     <Compile Include="Profile\IProfileManager.cs" />
     <Compile Include="Profile\ProfileManager.cs" />
     <Compile Include="Profile\ProfileSaver.cs" />
@@ -144,6 +149,9 @@
       <DependentUpon>TextBoxWithDefaultControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControlExtensions.cs" />
+    <Compile Include="ViewModels\MetaClassViewModel.cs" />
+    <Compile Include="ViewModels\MetaPropertyViewModel.cs" />
+    <Compile Include="ViewModels\ObservableObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindow.xaml.cs">
@@ -236,6 +244,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\StatusHelp_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

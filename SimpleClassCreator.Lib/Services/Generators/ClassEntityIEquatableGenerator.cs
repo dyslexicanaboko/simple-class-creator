@@ -52,8 +52,8 @@ namespace SimpleClassCreator.Lib.Services.Generators
         private string FormatForHashCode(IList<ClassMemberStrings> properties)
         {
             var content = GetTextBlock(properties,
-                (p) => $"                {p.Property}",
-                separator: "," + Environment.NewLine);
+                (p) => $"                {p.Property}.GetHashCode()",
+                separator: " + " + Environment.NewLine);
 
             return content;
         }
