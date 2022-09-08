@@ -22,7 +22,8 @@ namespace SimpleClassCreator.Ui
     /// </summary>
     public partial class DtoMakerControl : UserControl, IUsesResultWindow
     {
-        private const string GhostText = "Caution: Everything is loaded by default...";
+        private const string TxtFullyQualifiedClassName_GhostText = "Caution: Everything is loaded by default...";
+        private const string TxtClassSourceCode_GhostText = "Optional: Enter source code for one class here";
         private readonly ResultWindowManager _resultWindowManager;
         private readonly Brush _dragAndDropTargetBackgroundOriginal;
         private IDtoGenerator _generator;
@@ -39,7 +40,7 @@ namespace SimpleClassCreator.Ui
 
             _resultWindowManager = new ResultWindowManager();
 
-            TxtFullyQualifiedClassName.Text = GhostText;
+            ResetInputs();
         }
 
         internal void Dependencies(
@@ -94,7 +95,7 @@ Please keep in mind casing matters.";
 
         private void CheckFqdnForGhostText()
         {
-            if (TxtFullyQualifiedClassName.Text == GhostText) TxtFullyQualifiedClassName.Clear();
+            if (TxtFullyQualifiedClassName.Text == TxtFullyQualifiedClassName_GhostText) TxtFullyQualifiedClassName.Clear();
         }
 
         private void BtnLoadClass_Click(object sender, RoutedEventArgs e)
@@ -205,6 +206,7 @@ Please keep in mind casing matters.";
         }
 
         // NOTE: Drag and drop won't work when running VS as admin, but it works when running normally.
+        // Might want to consider putting a label that shows up when in admin mode.
         private void DragAndDropTarget_OnDrop(object sender, DragEventArgs e)
         {
             try
@@ -236,14 +238,24 @@ Please keep in mind casing matters.";
             => LblClassName_MouseDoubleClick(sender, null);
 
         private void BtnResetTree_OnClick(object sender, RoutedEventArgs e)
+            => ResetInputs();
+
+        private void ResetInputs()
         {
-            TxtFullyQualifiedClassName.Text = GhostText;
-            
+            TxtFullyQualifiedClassName.Text = TxtFullyQualifiedClassName_GhostText;
+
+            TxtClassSourceCode.Text = TxtClassSourceCode_GhostText;
+
             TvAssembliesAndClasses.ItemsSource = Array.Empty<MetaAssembly>();
         }
 
         private void TxtFullyQualifiedClassName_OnGotFocus(object sender, RoutedEventArgs e)
             => CheckFqdnForGhostText();
+
+        private void TxtClassSourceCode_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (TxtClassSourceCode.Text == TxtClassSourceCode_GhostText) TxtClassSourceCode.Clear();
+        }
 
         //sender is the MetaClassViewModel
         //e just says which property changed, in this case it's always "IsChecked"
@@ -257,6 +269,11 @@ Please keep in mind casing matters.";
             {
                 p.IsChecked = vmClass.IsChecked;
             }
+        }
+
+        private void TxtClassSourceCode_LostFocus(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
