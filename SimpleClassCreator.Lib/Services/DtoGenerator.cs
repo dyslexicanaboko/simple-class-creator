@@ -1,4 +1,5 @@
-﻿using SimpleClassCreator.Lib.Models.Meta;
+﻿using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Models.Meta;
 using SimpleClassCreator.Lib.Services.CodeFactory;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,15 @@ namespace SimpleClassCreator.Lib.Services
             _fileName = Path.GetFileName(assemblyPath);
 
             AssemblyReference = Assembly.LoadFile(_assemblyPath);
+        }
+
+        public void LoadAssembly(CompilerResult dynamicAssembly)
+        {
+            _assemblyPath = dynamicAssembly.AssemblyPath;
+
+            _fileName = Path.GetFileName(dynamicAssembly.AssemblyPath);
+
+            AssemblyReference = dynamicAssembly.VirtualAssembly;
         }
 
         private MetaAssembly GetEmptyMetaAssembly()

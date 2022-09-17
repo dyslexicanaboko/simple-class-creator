@@ -1,4 +1,5 @@
-﻿using SimpleClassCreator.Lib.Models.Meta;
+﻿using SimpleClassCreator.Lib.Models;
+using SimpleClassCreator.Lib.Models.Meta;
 using SimpleClassCreator.Lib.Services.CodeFactory;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace SimpleClassCreator.Lib.Services
         Assembly AssemblyReference { get; }
 
         void LoadAssembly(string assemblyPath);
+
+        void LoadAssembly(CompilerResult dynamicAssembly);
 
         Type GetClass(string fullyQualifiedClassName);
 

@@ -2,6 +2,7 @@
 using SimpleClassCreator.Lib.Models;
 using SimpleClassCreator.Lib.Models.Meta;
 using SimpleClassCreator.Lib.Services;
+using SimpleClassCreator.Lib.Services.CodeFactory;
 using SimpleClassCreator.Ui.Helpers;
 using SimpleClassCreator.Ui.Services;
 using SimpleClassCreator.Ui.ViewModels;
@@ -18,7 +19,7 @@ using System.Windows.Media;
 namespace SimpleClassCreator.Ui
 {
     /// <summary>
-    /// Interaction logic for DTOMakerControl.xaml
+    /// Interaction logic for DtoMakerControl.xaml
     /// </summary>
     public partial class DtoMakerControl : UserControl, IUsesResultWindow
     {
@@ -29,6 +30,7 @@ namespace SimpleClassCreator.Ui
         private IDtoGenerator _generator;
         private IQueryToClassService _queryToClassService;
         private IMetaViewModelService _viewModelService;
+        private ICSharpCompilerService _compilerService;
         private ObservableCollection<MetaAssemblyViewModel> _treeViewItemSource;
 
         public DtoMakerControl()
@@ -46,11 +48,13 @@ namespace SimpleClassCreator.Ui
         internal void Dependencies(
             IDtoGenerator generator, 
             IMetaViewModelService viewModelService, 
-            IQueryToClassService queryToClassService)
+            IQueryToClassService queryToClassService,
+            ICSharpCompilerService compilerService)
         {
             _generator = generator;
             _viewModelService = viewModelService;
             _queryToClassService = queryToClassService;
+            _compilerService = compilerService;
         }
 
         private void BtnAssemblyOpenDialog_Click(object sender, RoutedEventArgs e)
@@ -84,7 +88,7 @@ namespace SimpleClassCreator.Ui
 
         private void LblClassName_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var strHelp = 
+            const string strHelp = 
 @"A Fully Qualified Class Name is providing the class name with its namespace separated by periods. 
 Example: If you have a class named Product, but it exists in My.Project.Business,
 then enter: My.Project.Business.Product, in the text box below. 
@@ -273,7 +277,38 @@ Please keep in mind casing matters.";
 
         private void TxtClassSourceCode_LostFocus(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                var result = _compilerService.Compile(TxtClassSourceCode.Text);
 
+                if (result.CompiledSuccessfully)
+                {
+                    //Point the generator's assembly reference to the fake assembly loaded in memory already. No need to save it to disk.
+                    _generator.LoadAssembly(result);
+
+                    SetSelectedAssembly(result.AssemblyPath);
+
+                    //Clear it so that the one class is shown
+                    TxtFullyQualifiedClassName.Clear();
+
+                    LoadClass(false);
+
+                    return;
+                }
+
+                var problems = string.Join(Environment.NewLine, result.Errors);
+
+                MessageBox.Show($"The compiler didn't like your code:{Environment.NewLine}{problems}", "Compile error - use an IDE to debug it");
+            }
+            catch (Exception ex)
+            {
+                var error =
+                    "An exception occurred while attempting to compile the source code you provided. " +
+                    "Please make sure it works first in LinqPad or something similar before putting it here. " +
+                    $"This isn't an IDE. Here is the error message that surfaced if it helps:{Environment.NewLine}{ex.Message}";
+
+                MessageBox.Show(error, "Compile error");
+            }
         }
     }
 }

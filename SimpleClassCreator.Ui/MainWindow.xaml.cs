@@ -5,6 +5,7 @@ using SimpleClassCreator.Ui.Profile;
 using SimpleClassCreator.Ui.Services;
 using System.Collections.Generic;
 using System.Windows;
+using SimpleClassCreator.Lib.Services.CodeFactory;
 
 namespace SimpleClassCreator.Ui
 {
@@ -22,7 +23,8 @@ namespace SimpleClassCreator.Ui
             IGeneralDatabaseQueries repository,
             IProfileManager profileManager,
             IDtoGenerator dtoGenerator,
-            IMetaViewModelService metaViewModelService)
+            IMetaViewModelService metaViewModelService,
+            ICSharpCompilerService compilerService)
         {
             InitializeComponent();
 
@@ -43,7 +45,8 @@ namespace SimpleClassCreator.Ui
             CtrlDtoMaker.Dependencies(
                 dtoGenerator,
                 metaViewModelService,
-                queryToClassService);
+                queryToClassService,
+                compilerService);
 
             _hasResultWindows = new List<IUsesResultWindow>
             {

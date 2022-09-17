@@ -98,10 +98,10 @@
     <Compile Include="Models\SchemaColumn.cs" />
     <Compile Include="Models\SchemaQuery.cs" />
     <Compile Include="Models\SchemaRaw.cs" />
-    <Compile Include="Services\ClassCompiler.cs" />
     <Compile Include="Services\ClassMetaDataBase.cs" />
     <Compile Include="Services\CodeFactory\ClassMemberStrings.cs" />
     <Compile Include="Services\CodeFactory\CSharpCompilerService.cs" />
+    <Compile Include="Services\CodeFactory\ICSharpCompilerService.cs" />
     <Compile Include="Services\Generators\ClassEntitySimpleGenerator.cs" />
     <Compile Include="Services\Generators\ClassEntityIComparableGenerator.cs" />
     <Compile Include="Services\Generators\ClassEntityEqualityComparerGenerator.cs" />
