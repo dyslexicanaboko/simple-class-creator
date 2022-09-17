@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Reflection;
 
 namespace SimpleClassCreator.Lib.Models
 {
@@ -10,11 +7,9 @@ namespace SimpleClassCreator.Lib.Models
     {
         public bool CompiledSuccessfully { get; set; }
 
-        public string ClassName { get; set; }
+        public string AssemblyPath { get; set; }
 
-        public object Instance { get; set; }
-
-        public Type Type { get; set; }
+        public Assembly VirtualAssembly { get; set; }
 
         public List<string> Errors { get; set; }
     }

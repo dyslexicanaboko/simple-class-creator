@@ -1,9 +1,10 @@
 ﻿using SimpleClassCreator.Lib.DataAccess;
 using SimpleClassCreator.Lib.Services;
+using SimpleClassCreator.Lib.Services.CodeFactory;
 using SimpleClassCreator.Ui.Profile;
+using SimpleClassCreator.Ui.Services;
 using SimpleInjector;
 using System;
-using SimpleClassCreator.Ui.Services;
 
 namespace SimpleClassCreator.Ui
 {
@@ -37,6 +38,7 @@ namespace SimpleClassCreator.Ui
             container.Register<IQueryToClassService, QueryToClassService>();
             container.Register<IQueryToMockDataService, QueryToMockDataService>();
             container.Register<IProfileManager>(GetProfileManager, Lifestyle.Singleton);
+            container.Register<ICSharpCompilerService, CSharpCompilerService>();
 
             // Register your windows and view models:
             //container.Register<DtoMakerControl>();

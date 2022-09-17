@@ -27,6 +27,7 @@
                         <Ellipse Fill="Red" HorizontalAlignment="Left" Height="20" Margin="33,31,0,0" Stroke="Black" VerticalAlignment="Top" Width="20"/>
                     </Grid>
                 </Border>
+                <TextBox x:Name="TxtClassSourceCode" HorizontalAlignment="Left" Height="95" Margin="417,0,0,0" TextWrapping="Wrap" Text="Optional: Enter source code for one class here" VerticalAlignment="Top" Width="236" AcceptsReturn="True" GotFocus="TxtClassSourceCode_GotFocus" LostFocus="TxtClassSourceCode_LostFocus" />
             </Grid>
         </GroupBox>
         <GroupBox Header="2. Target class by FQDN" Margin="0,125,0,0" HorizontalAlignment="Left" Width="675" Height="78" VerticalAlignment="Top">
@@ -99,7 +100,7 @@
                             ItemsSource="{Binding Classes}">
                             <StackPanel Orientation="Horizontal">
                                 <Label Style="{StaticResource WhiteFont1}" Content="{Binding Name}" />
-                                <Label Style="{StaticResource ClassesHideWhenEmpty}"> Classes: </Label>
+                                <Label Style="{StaticResource ClassesHideWhenEmpty}">Classes:</Label>
                                 <Label Style="{StaticResource ClassesHideWhenEmpty}" Content="{Binding Classes.Count}" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
