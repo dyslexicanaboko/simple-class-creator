@@ -12,7 +12,9 @@ namespace SimpleClassCreator.Lib
     {
         CSharp = 0,
         [Obsolete("Looking to get rid of this option and therefore this Enum all together. VB sucks.")]
-        VBNet = 1
+        VBNet = 1,
+        JavaScript = 2,
+        TypeScript = 3
     }
 
     [Flags]

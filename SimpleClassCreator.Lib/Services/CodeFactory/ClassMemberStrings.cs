@@ -1,4 +1,5 @@
 ﻿using Microsoft.CSharp;
+using Microsoft.JScript;
 using Microsoft.VisualBasic;
 using SimpleClassCreator.Lib.Models;
 using System;
@@ -20,10 +21,21 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
 
         public ClassMemberStrings(SchemaColumn sc, CodeType type = CodeType.CSharp)
         {
-            if (type == CodeType.CSharp)
+            switch (type)
+            {
+              case CodeType.CSharp:
                 _provider = new CSharpCodeProvider();
-            else
+                break;
+              case CodeType.VBNet:
                 _provider = new VBCodeProvider();
+                break;
+              case CodeType.JavaScript:
+                _provider = new JScriptCodeProvider();
+                break;
+              case CodeType.TypeScript:
+                //_provider = new TypeScriptCodeProvider();
+                break;
+            }
 
             DatabaseTypeName = sc.SqlType.ToLower(); //Case is inconsistent, so making it lower on purpose
 
@@ -61,10 +73,10 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             SystemTypeAlias = GetSystemTypeAsAlias(sc.SystemType, IsImplicitlyNullable, IsDbNullable);
 
             ConversionMethodSignature = GetConversionMethodSignature(sc.SystemType, SystemTypeName);
-        }
+    }
 
-        //For cloning only, bypasses all of the logic and is a straight copy
-        private ClassMemberStrings(ClassMemberStrings source, CodeDomProvider provider)
+    //For cloning only, bypasses all of the logic and is a straight copy
+    private ClassMemberStrings(ClassMemberStrings source, CodeDomProvider provider)
         {
             _provider = provider;
 
@@ -139,7 +151,7 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
             //This removes the possibility of knowing what the base type is, but in code this is what is needed
             //If this column is nullable then mark it with a question mark
             if (!isImplicitlyNullable && isDbNullable)
-                str = str + "?";
+                str += "?";
 
             if (!str.StartsWith("System.")) return str;
 
@@ -152,7 +164,7 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
         }
 
         //TODO: How to handle arrays? Like blobs from the database?
-        private string GetConversionMethodSignature(Type type, string systemTypeName)
+        private static string GetConversionMethodSignature(Type type, string systemTypeName)
         {
             //Guid does not have a method in the Convert class
             if (type == typeof(Guid))
@@ -161,9 +173,7 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
                 return "Guid.Parse(Convert.ToString({0}))";
             }
 
-            var typeString = systemTypeName;
-
-            var c = "Convert.To" + typeString + "({0})";
+            var c = "Convert.To" + systemTypeName + "({0})";
 
             return c;
         }
@@ -193,5 +203,5 @@ namespace SimpleClassCreator.Lib.Services.CodeFactory
         }
 
         public ClassMemberStrings Clone() => new ClassMemberStrings(this, _provider);
-    }
+  }
 }
