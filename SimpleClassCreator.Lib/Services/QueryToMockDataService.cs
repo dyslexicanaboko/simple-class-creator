@@ -34,12 +34,10 @@ namespace SimpleClassCreator.Lib.Services
 
         public string GetEntity(QueryToMockDataParameters parameters)
         {
-            var p = parameters;
-
-            _repository.ChangeConnectionString(p.ConnectionString);
+          _repository.ChangeConnectionString(parameters.ConnectionString);
 
             //Get the meta data needed about the entity
-            var instructions = GetInstructions(p);
+            var instructions = GetInstructions(parameters);
 
             var generator = new ClassEntitySimpleGenerator(instructions);
 
@@ -53,16 +51,15 @@ namespace SimpleClassCreator.Lib.Services
         {
             //Generate the mock data constructs using the entity for as much data as is requested.
             //Most of this is going to be contained inside of this service because there is no other way
-            var p = parameters;
 
-            _repository.ChangeConnectionString(p.ConnectionString);
+            _repository.ChangeConnectionString(parameters.ConnectionString);
             
-            _genericDatabaseQueries.ChangeConnectionString(p.ConnectionString);
+            _genericDatabaseQueries.ChangeConnectionString(parameters.ConnectionString);
 
             //Get the meta data needed about the entity
-            var instructions = GetInstructions(p);
+            var instructions = GetInstructions(parameters);
 
-            var dt = GetRowData(p.SourceSqlType, p.SourceSqlText, top);
+            var dt = GetRowData(parameters.SourceSqlType, parameters.SourceSqlText, top);
 
             var generator = new ClassEntitySimpleGenerator(instructions);
             generator.RowProcessed += MockData_RowProcessed;
@@ -77,21 +74,25 @@ namespace SimpleClassCreator.Lib.Services
 
         private ClassInstructions GetInstructions(QueryToMockDataParameters parameters)
         {
-            if (_instructions != null) return _instructions;
+          //Only get the instructions if they are not already cached and have not changed since the last time
+          if (_instructions != null &&
+              _instructions.ClassEntityName == parameters.ClassEntityName &&
+              _instructions.TableQuery == parameters.TableQuery)
+          {
+            return _instructions;
+          }
 
-            var p = parameters;
+          var schema = GetSchema(parameters.SourceSqlType, parameters.SourceSqlText, parameters.TableQuery);
 
-            var schema = GetSchema(p.SourceSqlType, p.SourceSqlText, p.TableQuery);
+          var ins = new ClassInstructions();
 
-            var ins = new ClassInstructions();
+          ins.ClassEntityName = parameters.ClassEntityName;
+          ins.TableQuery = parameters.TableQuery;
+          ins.Properties = schema.ColumnsAll.Select(x => new ClassMemberStrings(x)).ToList();
 
-            ins.ClassEntityName = p.ClassEntityName;
-            ins.TableQuery = p.TableQuery;
-            ins.Properties = schema.ColumnsAll.Select(x => new ClassMemberStrings(x)).ToList();
+          _instructions = ins;
 
-            _instructions = ins;
-
-            return ins;
+          return ins;
         }
     }
 }
