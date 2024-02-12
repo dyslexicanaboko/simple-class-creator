@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Text;
 
+/* This is from a very old version one of the simple class creator when I
+ * was trying to support C# and VB.NET simultaneously.
+ * I will eventually pull this out of here and put it in a graveyard folder. */
 namespace SimpleClassCreator.Lib.Services.CodeFactory
 {
     public abstract partial class DotNetLanguage
